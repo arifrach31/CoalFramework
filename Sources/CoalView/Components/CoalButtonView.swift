@@ -13,16 +13,20 @@ import ThemeLGN
 public struct CoalButtonView: View {
   public let field: ConfigField
   public var isDisabled: Bool? = nil
+  public var action: () -> Void
   
-  public init(field: ConfigField, isDisabled: Bool? = nil) {
+  public init(field: ConfigField, isDisabled: Bool? = nil, action: @escaping () -> Void = {}) {
     self.field = field
     self.isDisabled = isDisabled
+    self.action = action
   }
   
   public var body: some View {
-    LGNSolidButton(title: field.label ?? "BUTTON", defaultBtnColor: Color.redButton)
-      .disableInteraction(isDisabled == true)
-      .variant(size: .medium, responsive: true)
-      .padding(.top, 10)
+    LGNSolidButton(title: field.label ?? "BUTTON", defaultBtnColor: Color.redButton) {
+      action()
+    }
+    .disableInteraction(isDisabled == true)
+    .variant(size: .medium, responsive: true)
+    .padding(.top, 10)
   }
 }
