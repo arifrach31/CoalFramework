@@ -84,7 +84,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   
   public func showInitialPage(isLoggedIn: Bool, backgroundColor: UIColor) {
     if isLoggedIn {
-      showHomePage(backgroundColor: backgroundColor)
+      showHomePage()
     } else {
       showLoginPage(backgroundColor: backgroundColor, clientLogoName: nil)
     }
@@ -102,7 +102,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
     setSwiftUIView(swiftUIView: loginView, backgroundColor: backgroundColor)
   }
   
-  public func showHomePage(backgroundColor: UIColor) {
+  public func showHomePage() {
     let tabBarController = CoalTabBarController()
     self.tabBarController = tabBarController
     setRootViewController(viewController: tabBarController, animated: true)

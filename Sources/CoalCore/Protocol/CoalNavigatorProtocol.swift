@@ -10,6 +10,6 @@ import UIKit
 public protocol CoalNavigatorProtocol {
   func showInitialPage(isLoggedIn: Bool, backgroundColor: UIColor)
   func showLoginPage(backgroundColor: UIColor, clientLogoName: String?)
-  func showHomePage(backgroundColor: UIColor)
+  func showHomePage()
   func showRegisterPage(backgroundColor: UIColor)
 }

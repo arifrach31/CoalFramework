@@ -100,7 +100,7 @@ let package = Package(
     ),
     .target(
       name: "CoalHome",
-      dependencies: ["CoalView"],
+      dependencies: ["CoalCore", "CoalModel", "CoalView"],
       path: "Sources/CoalModule/Home"
     )
   ]
