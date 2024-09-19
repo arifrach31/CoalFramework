@@ -1,0 +1,22 @@
+/*
+ Localizable.strings
+ CoalFramework
+ 
+ Created by ArifRachman on 10/09/24.
+ 
+ */
+
+"login_title" = "Login";
+"login_description" = "Please enter your username and password";
+"forgot_username_password" = "Forgot Username or Password?";
+"dont_have_account" = "Don't have an account?";
+"register" = "Register";
+"have_account_problem" = "Have an account problem?";
+"contact_us" = "Contact us";
+"register_description" = "Register your account";
+"agreement" = "I agree to";
+"term_condition" = "Term & Condition";
+"and" = "and";
+"privacy_policy" = "Privacy Policy";
+"already_have_account" = "Already have an account?";
+"zone_phone" = "+62";
