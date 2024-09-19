@@ -6,39 +6,32 @@
 //
 
 import SwiftUI
+import CoalCore
 import CoalModel
 import CoalView
 
 public struct HomeView: View {
   @StateObject private var viewModel: HomeViewModel
-  private let clientLogoName: String?
-  private let backgroundColor: Color
+  public var navigator: CoalNavigatorProtocol?
   
-  public init(config: ConfigModel? = nil, clientLogoName: String? = nil, backgroundColor: Color = .white) {
+  public init(navigator: CoalNavigatorProtocol? = nil) {
     _viewModel = StateObject(wrappedValue: HomeViewModel())
-    self.clientLogoName = clientLogoName
-    self.backgroundColor = backgroundColor
+    self.navigator = navigator
   }
   
   public var body: some View {
-    CoalBaseView(backgroundImage: Image.mainBackground, backgroundColor: backgroundColor) {
-      VStack(spacing: 40) {
-        Text("Home")
-          .font(.largeTitle)
-          .fontWeight(.bold)
-        
-        if let clientLogoName = clientLogoName {
-          Image(clientLogoName)
-            .resizable()
-            .scaledToFit()
-            .frame(height: 200)
-        }
-        
-        Text("Welcome to the Home View")
-          .font(.body)
-          .foregroundColor(.gray)
+    VStack(alignment: .center) {
+      GeometryReader { geometry in
+        CoalCarouselView(currentIndex: $viewModel.currentIndex, cards: viewModel.cards, geometry: geometry)
       }
-      .padding()
+      .padding(.horizontal, 16)
+      .frame(minHeight: 156, maxHeight: 250)
     }
+  }
+}
+
+struct HomeView_Previews: PreviewProvider {
+  static var previews: some View {
+    HomeView()
   }
 }
