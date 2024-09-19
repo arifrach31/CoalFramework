@@ -10,12 +10,14 @@ import SwiftUI
 public struct CarouselModel: Identifiable {
   public let id: Int
   public var color: Color
+  public var image: String
   public var page: CardPage
   
-  public init(id: Int, color: Color, page: CardPage) {
+  public init(id: Int, color: Color, page: CardPage, image: String = "") {
     self.id = id
     self.color = color
     self.page = page
+    self.image = image
   }
 }
 
