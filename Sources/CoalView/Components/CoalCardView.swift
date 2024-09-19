@@ -27,8 +27,9 @@ public struct CoalCardView<Content: View>: View {
   }
   
   public var body: some View {
-    let cardWidth = geometry.size.width * 0.8
-    let offset = (geometry.size.width - cardWidth) / 2
+    let cardWidth = geometry.size.width * 0.9
+    let _ = (geometry.size.width - cardWidth) / 2
+    let spacing: CGFloat = 8
     
     return Button(action: {
       action()
@@ -59,7 +60,7 @@ public struct CoalCardView<Content: View>: View {
           .padding(.all, 16)
       }
       .frame(width: cardWidth, height: cardHeight)
-      .offset(x: CGFloat(card.id - currentIndex) * offset)
+      .offset(x: (CGFloat(card.id - currentIndex) * (cardWidth + spacing)) / 2)
     }
     .buttonStyle(PlainButtonStyle())
   }
