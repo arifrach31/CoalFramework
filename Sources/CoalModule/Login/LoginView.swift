@@ -128,7 +128,9 @@ private struct ButtonView: View {
       }
       
       ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonView(field: field)
+        CoalButtonView(field: field) {
+          navigator?.showHomePage()
+        }
           .padding(.vertical, 10)
       }
       
