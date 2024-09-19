@@ -27,7 +27,7 @@ public struct CoalCardView<Content: View>: View {
   }
   
   public var body: some View {
-    let cardWidth = geometry.size.width * 0.9
+    let cardWidth = geometry.size.width * 0.8
     let offset = (geometry.size.width - cardWidth) / 2
     
     return Button(action: {
