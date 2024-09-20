@@ -38,7 +38,7 @@ public struct CoalCarouselView: View {
       )
       
       PageControl(index: $currentIndex, maxIndex: cards.count > 1 ? (cards.count - 1) : 0)
-        .padding(.top, 8)
+        .padding(.top, -30)
     }
   }
   
@@ -64,15 +64,16 @@ struct PageControl: View {
       ForEach(0...maxIndex, id: \.self) { idx in
         if idx == self.index {
           Capsule()
-            .fill(.red.opacity(0.7))
-            .frame(width: 8, height: 4)
-            .animation(Animation.spring().delay(0.5), value: idx)
+            .fill(.red.opacity(1))
+            .frame(width: 15, height: 4)
         } else {
           Circle()
-            .fill(.gray.opacity(0.6))
+            .fill(.white.opacity(1))
             .frame(width: 4, height: 4)
         }
       }
     }
+    .background(Capsule().fill(Color.white.opacity(1)))
+    .padding(.horizontal, 16)
   }
 }

@@ -10,12 +10,21 @@ import CoalModel
 
 public struct CoalCardView<Content: View>: View {
   @Binding var currentIndex: Int
-  
   let card: CarouselModel
   let content: Content
   let geometry: GeometryProxy
   let cardHeight: CGFloat
   let action: () -> Void
+  
+  private var cardWidth: CGFloat {
+    geometry.size.width * 0.97
+  }
+  
+  private var cardOffset: CGFloat {
+    let width = geometry.size.width * 0.8
+    let baseOffset = (geometry.size.width - width) / 0.75
+    return CGFloat(card.id - currentIndex) * baseOffset
+  }
   
   public init(card: CarouselModel, currentIndex: Binding<Int>, geometry: GeometryProxy, cardHeight: CGFloat = 188, action: @escaping () -> Void = {}, @ViewBuilder content: () -> Content) {
     self.card = card
@@ -27,41 +36,34 @@ public struct CoalCardView<Content: View>: View {
   }
   
   public var body: some View {
-    let cardWidth = geometry.size.width * 0.9
-    let _ = (geometry.size.width - cardWidth) / 2
-    let spacing: CGFloat = 8
-    
-    return Button(action: {
+    ZStack {
+      cardBackground
+      content
+        .padding(.all, 16)
+    }
+    .frame(width: cardWidth, height: cardHeight)
+    .offset(x: cardOffset)
+    .onTapGesture {
       action()
-    }) {
-      ZStack {
-        if let imageURL = URL(string: card.image) {
-          AsyncImage(url: imageURL) { image in
-            image
-              .resizable()
-              .scaledToFill()
-              .clipped()
-          } placeholder: {
-            RoundedRectangle(cornerRadius: 16)
-              .foregroundColor(card.color)
-          }
-        } else {
+    }
+  }
+  
+  private var cardBackground: some View {
+    Group {
+      if let imageURL = URL(string: card.image) {
+        AsyncImage(url: imageURL) { image in
+          image
+            .resizable()
+            .scaledToFill()
+            .clipped()
+        } placeholder: {
           RoundedRectangle(cornerRadius: 16)
             .foregroundColor(card.color)
         }
-        
+      } else {
         RoundedRectangle(cornerRadius: 16)
-          .stroke(.gray.opacity(0.16), lineWidth: 1)
-          .frame(width: cardWidth, height: cardHeight)
-          .opacity(card.id <= currentIndex + 1 ? 1.0 : 0.0)
-          .scaleEffect(card.id == currentIndex ? 1.0 : 0.9)
-        
-        content
-          .padding(.all, 16)
+          .foregroundColor(card.color)
       }
-      .frame(width: cardWidth, height: cardHeight)
-      .offset(x: (CGFloat(card.id - currentIndex) * (cardWidth + spacing)) / 2)
     }
-    .buttonStyle(PlainButtonStyle())
   }
 }
