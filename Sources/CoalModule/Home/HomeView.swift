@@ -41,6 +41,7 @@ public struct HomeView: View {
         }
         .padding(.horizontal, 16)
         .frame(minHeight: 150, maxHeight: 190)
+        .padding(.vertical, 50)
       } else {
         Text("No Carousel")
       }
@@ -49,7 +50,7 @@ public struct HomeView: View {
         .padding()
     case .productList:
       Text("Product List Section")
-        .padding(.vertical, 50)
+        .padding()
     }
   }
 }
