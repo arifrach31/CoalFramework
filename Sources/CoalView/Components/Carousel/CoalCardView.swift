@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoalModel
+import CoalCore
 
 public struct CoalCardView<Content: View>: View {
   @Binding var currentIndex: Int
@@ -52,8 +53,8 @@ public struct CoalCardView<Content: View>: View {
   
   private var cardBackground: some View {
     Group {
-      if let imageURL = URL(string: card.image) {
-        AsyncImage(url: imageURL) { image in
+      if card.image.isValidURL {
+        AsyncImage(url: URL(string: card.image)) { image in
           image
             .resizable()
             .clipped()
@@ -62,11 +63,17 @@ public struct CoalCardView<Content: View>: View {
           RoundedRectangle(cornerRadius: 16)
             .foregroundColor(.gray)
         }
+      } else if Image.exists(card.image) {
+        Image(card.image)
+          .resizable()
+          .clipped()
+          .cornerRadius(16)
       } else {
         RoundedRectangle(cornerRadius: 16)
           .foregroundColor(.gray)
       }
     }
   }
+
 }
 
