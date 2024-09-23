@@ -10,7 +10,7 @@ import CoalNetwork
 import CoalModel
 
 public protocol Config {
-  func configure(window: UIWindow?, backgroundColor: UIColor?, logo: String?)
+  func configure(window: UIWindow?, backgroundColor: UIColor?, logo: String?, homeSection: [HomeSection]?)
 }
 
 public class CoalConfig: Config {
@@ -19,13 +19,24 @@ public class CoalConfig: Config {
   private let networkManager: NetworkManager
   private let coalNavigator: CoalNavigator
   
+  public var homeSection: [HomeSection] = []
+  
   init(networkManager: NetworkManager = NetworkManager.shared, coalNavigator: CoalNavigator = CoalNavigator.shared) {
     self.networkManager = networkManager
     self.coalNavigator = coalNavigator
   }
   
-  public func configure(window: UIWindow?, backgroundColor: UIColor? = .white, logo: String? = nil) {
+  public func configure(
+    window: UIWindow?,
+    backgroundColor: UIColor? = .white,
+    logo: String? = nil,
+    homeSection: [HomeSection]? = [])
+  {
     coalNavigator.window = window
+    
+    if let sections = homeSection {
+      self.homeSection = sections
+    }
     
     if let config = ConfigModel.currentConfig {
       updateConfig(with: config)

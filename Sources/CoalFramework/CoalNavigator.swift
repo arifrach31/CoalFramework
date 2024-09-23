@@ -22,29 +22,20 @@ public class CoalNavigator: CoalNavigatorProtocol {
   private var tabBarController: CoalTabBarController?
   private var configLogoName: String?
   
+  private let config = CoalConfig.shared
+  
   public func addDefaultTabs() {
     guard let tabBarController = tabBarController else {
       print("TabBarController is not initialized")
       return
     }
     
-    let carouselItems = [
-      CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/camera/camera__bo5k5tfk6cmu_large_2x.jpg"),
-      CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/camera/pro_lens2__e9qgfxdvjt26_large_2x.jpg"),
-      CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/5x-zoom/pro-zoom_endframe__bpmc72f8qwgi_large_2x.jpg")
-    ]
-    
-    let sections: [HomeSection] = [
-      .category,
-      .carousel(items: carouselItems),
-      .productList
-    ]
-    
-    let homeView = HomeView(navigator: self, sections: sections)
+    let homeView = HomeView(navigator: self, section: config.homeSection)
     let homeHostingController = UIHostingController(rootView: homeView)
     
     tabBarController.addTab(viewController: homeHostingController, atIndex: 0)
   }
+
   
   public func setRootViewController(viewController: UIViewController, animated: Bool = true) {
     guard let window = window else {
