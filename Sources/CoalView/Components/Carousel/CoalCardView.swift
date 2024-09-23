@@ -15,23 +15,25 @@ public struct CoalCardView<Content: View>: View {
   let geometry: GeometryProxy
   let cardHeight: CGFloat
   let action: () -> Void
+  let index: Int
   
   private var cardWidth: CGFloat {
     geometry.size.width * 0.97
   }
   
   private var cardOffset: CGFloat {
-    let width = geometry.size.width * 0.8
-    let baseOffset = (geometry.size.width - width) / 0.75
-    return CGFloat(card.id - currentIndex) * baseOffset
+    let cardWidthFactor = geometry.size.width * 0.8
+    let baseOffset = (geometry.size.width - cardWidthFactor) / 0.75
+    return CGFloat(index - currentIndex) * baseOffset
   }
   
-  public init(card: CarouselModel, currentIndex: Binding<Int>, geometry: GeometryProxy, cardHeight: CGFloat = 188, action: @escaping () -> Void = {}, @ViewBuilder content: () -> Content) {
+  public init(card: CarouselModel, currentIndex: Binding<Int>, geometry: GeometryProxy, cardHeight: CGFloat = 188, index: Int, action: @escaping () -> Void = {}, @ViewBuilder content: () -> Content) {
     self.card = card
     self._currentIndex = currentIndex
     self.geometry = geometry
     self.cardHeight = cardHeight
     self.action = action
+    self.index = index
     self.content = content()
   }
   
@@ -54,16 +56,17 @@ public struct CoalCardView<Content: View>: View {
         AsyncImage(url: imageURL) { image in
           image
             .resizable()
-            .scaledToFill()
             .clipped()
+            .cornerRadius(16)
         } placeholder: {
           RoundedRectangle(cornerRadius: 16)
-            .foregroundColor(card.color)
+            .foregroundColor(.gray)
         }
       } else {
         RoundedRectangle(cornerRadius: 16)
-          .foregroundColor(card.color)
+          .foregroundColor(.gray)
       }
     }
   }
 }
+
