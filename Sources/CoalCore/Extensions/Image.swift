@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 
 public extension Image {
   static let logo = Image("imgLogo", bundle: .module)
@@ -21,5 +22,9 @@ public extension Image {
     self
       .resizable()
       .frame(width: size.width, height: size.height)
+  }
+  
+  static func exists(_ imageName: String) -> Bool {
+    return UIImage(named: imageName) != nil
   }
 }
