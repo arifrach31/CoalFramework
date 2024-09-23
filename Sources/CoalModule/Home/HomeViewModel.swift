@@ -9,14 +9,24 @@ import SwiftUI
 import Combine
 import CoalModel
 
+public enum HomeSection: Identifiable {
+  case carousel(items: [CarouselModel])
+  case category
+  case productList
+  
+  public var id: String {
+    switch self {
+    case .carousel:
+      return "carousel"
+    case .category:
+      return "category"
+    case .productList:
+      return "productList"
+    }
+  }
+}
+
+
 class HomeViewModel: ObservableObject {
   @Published var currentIndex: Int = 0
-  
-  let cards: [CarouselModel] = [
-    CarouselModel(id: 0, color: .red, page: .pageOne, url: "https://www.apple.com"),
-    CarouselModel(id: 1, color: .blue, page: .pageTwo),
-    CarouselModel(id: 2, color: .pink, page: .pageThree, url: "https://www.apple.com"),
-    CarouselModel(id: 3, color: .purple, page: .pageFour, url: "https://www.apple.com")
-  ]
-  
 }

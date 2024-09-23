@@ -22,12 +22,10 @@ public struct CoalCarouselView: View {
   public var body: some View {
     VStack {
       ZStack {
-        ForEach(cards) { card in
-          CoalCardView(card: card, currentIndex: $currentIndex, geometry: geometry) {
-            Text(card.page.rawValue)
-              .foregroundColor(.white)
+        ForEach(Array(cards.enumerated()), id: \.offset) { index, card in
+          CoalCardView(card: card, currentIndex: $currentIndex, geometry: geometry, index: index) {
           }
-          .offset(x: CGFloat(card.id - currentIndex) * (geometry.size.width * 0.72))
+          .offset(x: CGFloat(index - currentIndex) * (geometry.size.width * 0.72))
         }
       }
       .gesture(
@@ -36,9 +34,9 @@ public struct CoalCarouselView: View {
             handleDragGesture(value: value, geometry: geometry)
           }
       )
-      
       PageControl(index: $currentIndex, maxIndex: cards.count > 1 ? (cards.count - 1) : 0)
-        .padding(.top, -30)
+        .padding(.top, -35)
+      
     }
   }
   
