@@ -22,7 +22,9 @@ public class CoalNavigator: CoalNavigatorProtocol {
   private var tabBarController: CoalTabBarController?
   private var configLogoName: String?
   
-  private let config = CoalConfig.shared
+  private var config: CoalConfig {
+    return CoalConfig.shared
+  }
   
   public func addDefaultTabs() {
     guard let tabBarController = tabBarController else {
