@@ -11,20 +11,20 @@ import CoalModel
 import CoalView
 
 public struct HomeView: View {
-  public let sections: [HomeSection]
+  public let section: [HomeSection]
   @StateObject private var viewModel: HomeViewModel
     public var navigator: CoalNavigatorProtocol?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, sections: [HomeSection] = []) {
+  public init(navigator: CoalNavigatorProtocol? = nil, section: [HomeSection] = []) {
     _viewModel = StateObject(wrappedValue: HomeViewModel())
     self.navigator = navigator
-    self.sections = sections
+    self.section = section
   }
   
   public var body: some View {
     ScrollView {
       VStack(alignment: .center) {
-        ForEach(sections, id: \.id) { section in
+        ForEach(section, id: \.id) { section in
           sectionView(for: section)
         }
       }
@@ -56,7 +56,7 @@ public struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
   static var previews: some View {
-    HomeView(sections: [
+    HomeView(section: [
       .carousel(items: [CarouselModel()]),
       .category,
       .productList

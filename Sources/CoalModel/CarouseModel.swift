@@ -7,6 +7,23 @@
 
 import SwiftUI
 
+public enum HomeSection: Identifiable {
+  case carousel(items: [CarouselModel])
+  case category
+  case productList
+  
+  public var id: String {
+    switch self {
+    case .carousel:
+      return "carousel"
+    case .category:
+      return "category"
+    case .productList:
+      return "productList"
+    }
+  }
+}
+
 public struct CarouselModel: Identifiable {
   public let id: UUID
   public var image: String
