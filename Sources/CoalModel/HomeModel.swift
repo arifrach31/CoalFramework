@@ -1,5 +1,5 @@
 //
-//  CarouselModel.swift
+//  HomeModel.swift
 //
 //
 //  Created by ArifRachman on 19/09/24.
@@ -34,4 +34,8 @@ public struct CarouselModel: Identifiable {
     self.image = image
     self.url = url
   }
+}
+
+public protocol CoalHomeModelProtocol {
+  var carouselItems: [CarouselModel] { get set }
 }
