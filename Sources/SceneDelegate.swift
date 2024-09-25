@@ -6,20 +6,13 @@
 //
 
 import UIKit
-import CoalModel
 import CoalFramework
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalHomeModelProtocol {
-  var carouselItems: [CoalModel.CarouselModel] = [
-    CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/camera/camera__bo5k5tfk6cmu_large_2x.jpg"),
-    CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/camera/pro_lens2__e9qgfxdvjt26_large_2x.jpg"),
-    CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/5x-zoom/pro-zoom_endframe__bpmc72f8qwgi_large_2x.jpg"),
-    CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/camera/camera__bo5k5tfk6cmu_large_2x.jpg"),
-    CarouselModel(image: "garuda")
-  ]
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
   private let coalConfig = CoalConfig.shared
+  private let homeProvider = HomeProvider()
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -30,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalHomeModelProtocol {
       window: window,
       logo: "garuda",
       homeSection: [
-        .carousel(items: carouselItems),
+        .carousel(items: homeProvider.getCarouselItems()),
         .productList,
         .category
       ])
