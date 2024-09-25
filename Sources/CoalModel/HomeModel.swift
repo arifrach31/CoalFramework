@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+public protocol HomeSectionProvider {
+  func getCarouselItems() -> [CarouselModel]
+}
+
 public enum HomeSection: Identifiable {
   case carousel(items: [CarouselModel])
   case category
@@ -34,8 +38,4 @@ public struct CarouselModel: Identifiable {
     self.image = image
     self.url = url
   }
-}
-
-public protocol CoalHomeModelProtocol {
-  var carouselItems: [CarouselModel] { get set }
 }
