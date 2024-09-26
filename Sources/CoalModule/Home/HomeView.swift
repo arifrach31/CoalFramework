@@ -45,9 +45,12 @@ public struct HomeView: View {
       } else {
         Text("No Carousel")
       }
-    case .category:
-      Text("Category Section")
-        .padding()
+    case .category(let items):
+      if !items.isEmpty {
+        CoalListView(category: items)
+      } else {
+        Text("Category Section")
+      }
     case .productList:
       Text("Product List Section")
         .padding()

@@ -29,4 +29,6 @@ public struct CoalString {
   public static let termCondition = localized(forKey: "term_condition")
   public static let and = localized(forKey: "and")
   public static let privacyPolicy = localized(forKey: "privacy_policy")
+  public static let category = localized(forKey: "category")
+  public static let seeAll = localized(forKey: "see_all")
 }

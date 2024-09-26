@@ -13,7 +13,7 @@ public protocol HomeSectionProvider {
 
 public enum HomeSection: Identifiable {
   case carousel(items: [CarouselModel])
-  case category
+  case category(items: [CategoryModel])
   case productList
   
   public var id: String {
@@ -37,5 +37,19 @@ public struct CarouselModel: Identifiable {
     self.id = id
     self.image = image
     self.url = url
+  }
+}
+
+public struct CategoryModel: Identifiable {
+  public let id: UUID
+  public var background: String
+  public var icon: String
+  public var title: String
+  
+  public init(id: UUID = UUID(), background: String = "", icon: String = "", title: String = "") {
+    self.id = id
+    self.background = background
+    self.icon = icon
+    self.title = title
   }
 }
