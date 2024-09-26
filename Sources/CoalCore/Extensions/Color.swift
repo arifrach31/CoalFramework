@@ -14,13 +14,32 @@ public extension Color {
 
 public extension Color {
   init(hex: String) {
+    var hex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+    hex = hex.hasPrefix("#") ? String(hex.dropFirst()) : hex
+    
     let scanner = Scanner(string: hex)
-    _ = scanner.scanString("#")
-    var rgb: UInt64 = 0
-    scanner.scanHexInt64(&rgb)
-    let r = Double((rgb >> 16) & 0xFF) / 255.0
-    let g = Double((rgb >> 8) & 0xFF) / 255.0
-    let b = Double(rgb & 0xFF) / 255.0
-    self.init(red: r, green: g, blue: b)
+    var hexNumber: UInt64 = 0
+    
+    let r, g, b, a: Double
+    if scanner.scanHexInt64(&hexNumber) {
+      switch hex.count {
+      case 6:
+        r = Double((hexNumber & 0xFF0000) >> 16) / 255
+        g = Double((hexNumber & 0x00FF00) >> 8) / 255
+        b = Double(hexNumber & 0x0000FF) / 255
+        a = 1.0
+      case 8:
+        r = Double((hexNumber & 0xFF000000) >> 24) / 255
+        g = Double((hexNumber & 0x00FF0000) >> 16) / 255
+        b = Double((hexNumber & 0x0000FF00) >> 8) / 255
+        a = Double(hexNumber & 0x000000FF) / 255
+      default:
+        r = 1.0; g = 1.0; b = 1.0; a = 1.0
+      }
+    } else {
+      r = 1.0; g = 1.0; b = 1.0; a = 1.0
+    }
+    
+    self.init(.sRGB, red: r, green: g, blue: b, opacity: a)
   }
 }
