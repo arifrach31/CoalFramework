@@ -8,12 +8,16 @@
 import SwiftUI
 import CoalModel
 import CoalCore
+import LegionUI
+import ThemeLGN
 
 public struct CoalCategoryView: View {
   let category: CategoryModel
+  let action: () -> Void
   
-  public init(category: CategoryModel) {
+  public init(category: CategoryModel, action: @escaping () -> Void = {}) {
     self.category = category
+    self.action = action
   }
   
   public var body: some View {
@@ -27,8 +31,10 @@ public struct CoalCategoryView: View {
       }
       
       Text(category.title)
-        .font(.caption)
-        .foregroundColor(.black)
+        .lgnCaptionSmallRegular(color: LGNColor.tertiary500)
+    }
+    .onTapGesture {
+      action()
     }
   }
   
