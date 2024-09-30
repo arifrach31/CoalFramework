@@ -8,37 +8,36 @@
 import SwiftUI
 import CoalModel
 import CoalCore
+import LegionUI
+import ThemeLGN
 
 public struct CoalListView: View {
   let category: [CategoryModel]
+  let layoutType: LayoutDirection
+  let horizontalRows: Int
+  let verticalRows: Int
   
-  public init(category: [CategoryModel]) {
+  public init(category: [CategoryModel], layoutType: LayoutDirection, horizontalRows: Int = 0, verticalRows: Int = 0) {
     self.category = category
+    self.layoutType = layoutType
+    self.horizontalRows = horizontalRows
+    self.verticalRows = verticalRows
   }
   
   public var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       HStack {
         Text(CoalString.category)
-          .font(.headline)
-          .foregroundColor(.black)
+          .lgnBodyLargeBold()
         
         Spacer()
         
         Text(CoalString.seeAll)
-          .font(.subheadline)
-          .foregroundColor(.gray)
+          .lgnCaptionLargeSemiBold(color: LGNColor.tertiary500)
       }
       .padding(EdgeInsets(top: 16, leading: 20, bottom: 0, trailing: 20))
       
-      ScrollView(.horizontal, showsIndicators: false) {
-        HStack(spacing: 24) {
-          ForEach(Array(category.enumerated()), id: \.offset) { _, category in
-            CoalCategoryView(category: category)
-          }
-        }
-        .padding(EdgeInsets(top: 0, leading: 20, bottom: 16, trailing: 20))
-      }
+      CoalCategoryGridView(categories: category, layoutType: layoutType, horizontalRows: horizontalRows, verticalRows: verticalRows)
     }
     .padding(.vertical, 16)
     .background(Color(.systemGray6))
