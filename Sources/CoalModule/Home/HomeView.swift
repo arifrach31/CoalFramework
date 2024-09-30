@@ -47,7 +47,7 @@ public struct HomeView: View {
       }
     case .category(let items):
       if !items.isEmpty {
-        CoalListView(category: items)
+        CoalListView(category: items, layoutType: .vertical, verticalRows: 2)
       } else {
         Text("Category Section")
       }
@@ -62,7 +62,7 @@ struct HomeView_Previews: PreviewProvider {
   static var previews: some View {
     HomeView(section: [
       .carousel(items: [CarouselModel()]),
-      .category,
+      .category(items: [CategoryModel()]),
       .productList
     ])
   }
