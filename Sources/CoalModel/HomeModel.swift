@@ -14,7 +14,7 @@ public protocol HomeSectionProvider {
 public enum HomeSection: Identifiable {
   case carousel(items: [CarouselModel])
   case category(items: [CategoryModel])
-  case productList
+  case productList(items: [ProductListModel])
   
   public var id: String {
     switch self {
@@ -51,5 +51,21 @@ public struct CategoryModel: Identifiable {
     self.background = background
     self.icon = icon
     self.title = title
+  }
+}
+
+public struct ProductListModel: Identifiable {
+  public let id: UUID
+  public var image: String
+  public var category: String
+  public var title: String
+  public var description: String
+  
+  public init(id: UUID = UUID(), image: String = "", category: String = "", title: String = "", description: String = "") {
+    self.id = id
+    self.image = image
+    self.category = category
+    self.title = title
+    self.description = description
   }
 }

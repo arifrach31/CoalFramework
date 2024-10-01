@@ -14,7 +14,8 @@ public enum LayoutDirection {
 }
 
 public struct CoalGridView: View {
-  let categories: [CategoryModel]
+  let category: [CategoryModel]?
+  let catalog: [ProductListModel]?
   var layoutType: LayoutDirection
   var horizontalRows: Int = 0
   var verticalRows: Int = 0
@@ -28,8 +29,9 @@ public struct CoalGridView: View {
     }
   }
   
-  public init(categories: [CategoryModel], layoutType: LayoutDirection, horizontalRows: Int, verticalRows: Int) {
-    self.categories = categories
+  public init(category: [CategoryModel]? = nil, catalog: [ProductListModel]? = nil, layoutType: LayoutDirection, horizontalRows: Int, verticalRows: Int) {
+    self.category = category
+    self.catalog = catalog
     self.layoutType = layoutType
     self.horizontalRows = horizontalRows
     self.verticalRows = verticalRows
@@ -43,19 +45,49 @@ public struct CoalGridView: View {
     Group {
       ScrollView(layoutType == .horizontal ? .horizontal : .vertical, showsIndicators: false) {
         if layoutType == .horizontal {
-          LazyHGrid(rows: columns, spacing: 16) {
-            ForEach(categories) { category in
-              CoalCategoryView(category: category)
+          if let category = category {
+            LazyHGrid(rows: columns, spacing: 16) {
+              ForEach(category) { category in
+                CoalCategoryView(category: category)
+              }
+            }
+            .padding([.leading, .trailing], 20)
+          } else if let catalog = catalog {
+            if catalog.count == 1 {
+              CoalCatalogView(catalog: catalog[0], isSingleItem: true)
+                .frame(maxWidth: .infinity)
+                .padding([.leading, .trailing], 16)
+            } else {
+              LazyHGrid(rows: columns, spacing: 16) {
+                ForEach(catalog) { catalog in
+                  CoalCatalogView(catalog: catalog, isSingleItem: false)
+                }
+              }
+              .padding([.leading, .trailing], 20)
             }
           }
-          .padding([.leading, .trailing], 20)
         } else {
-          LazyVGrid(columns: columns, spacing: 16) {
-            ForEach(categories) { category in
-              CoalCategoryView(category: category)
+          if let category = category {
+            LazyVGrid(columns: columns, spacing: 16) {
+              ForEach(category) { category in
+                CoalCategoryView(category: category)
+              }
+            }
+            .padding([.leading, .trailing], 20)
+          } else if let catalog = catalog {
+            if catalog.count == 1 {
+              CoalCatalogView(catalog: catalog[0], isSingleItem: true)
+                .frame(maxWidth: .infinity)
+                .padding([.leading, .trailing], 16)
+            } else {
+              LazyVGrid(columns: columns, spacing: 16) {
+                ForEach(catalog) { catalog in
+                  CoalCatalogView(catalog: catalog, isSingleItem: false)
+                }
+              }
+              .padding([.leading, .trailing], 20)
             }
           }
-          .padding([.leading, .trailing], 20)
         }
       }
     }
