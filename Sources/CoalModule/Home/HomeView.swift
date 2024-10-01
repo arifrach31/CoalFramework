@@ -47,7 +47,7 @@ public struct HomeView: View {
       }
     case .category(let items):
       if !items.isEmpty {
-        CoalListView(category: items, layoutType: .vertical, verticalRows: 2)
+        CoalListView(category: items, layoutType: .horizontal, horizontalRows: 1)
       } else {
         Text("Category Section")
       }
