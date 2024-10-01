@@ -31,4 +31,5 @@ public struct CoalString {
   public static let privacyPolicy = localized(forKey: "privacy_policy")
   public static let category = localized(forKey: "category")
   public static let seeAll = localized(forKey: "see_all")
+  public static let productList = localized(forKey: "product_list")
 }

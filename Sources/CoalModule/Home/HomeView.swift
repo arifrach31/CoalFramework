@@ -51,9 +51,13 @@ public struct HomeView: View {
       } else {
         Text("Category Section")
       }
-    case .productList:
-      Text("Product List Section")
-        .padding()
+    case .productList(let items):
+      if !items.isEmpty {
+        CoalListView(catalog: items, layoutType: .vertical, verticalRows: 2)
+      } else {
+        Text("Product List Section")
+          .padding()
+      }
     }
   }
 }
@@ -63,7 +67,7 @@ struct HomeView_Previews: PreviewProvider {
     HomeView(section: [
       .carousel(items: [CarouselModel()]),
       .category(items: [CategoryModel()]),
-      .productList
+      .productList(items: [ProductListModel()])
     ])
   }
 }
