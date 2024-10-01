@@ -1,5 +1,5 @@
 //
-//  CoalCategoryGridView.swift
+//  CoalGridView.swift
 //
 //
 //  Created by M. Rizki Maulana on 30/09/24.
@@ -13,7 +13,7 @@ public enum LayoutDirection {
   case vertical
 }
 
-public struct CoalCategoryGridView: View {
+public struct CoalGridView: View {
   let categories: [CategoryModel]
   var layoutType: LayoutDirection
   var horizontalRows: Int = 0
@@ -36,19 +36,20 @@ public struct CoalCategoryGridView: View {
   }
   
   public var body: some View {
+    scrollView
+  }
+  
+  public var scrollView: some View {
     Group {
-      switch layoutType {
-      case .horizontal:
-        ScrollView(.horizontal, showsIndicators: false) {
+      ScrollView(layoutType == .horizontal ? .horizontal : .vertical, showsIndicators: false) {
+        if layoutType == .horizontal {
           LazyHGrid(rows: columns, spacing: 16) {
             ForEach(categories) { category in
               CoalCategoryView(category: category)
             }
           }
           .padding([.leading, .trailing], 20)
-        }
-      case .vertical:
-        ScrollView(.vertical, showsIndicators: false) {
+        } else {
           LazyVGrid(columns: columns, spacing: 16) {
             ForEach(categories) { category in
               CoalCategoryView(category: category)
