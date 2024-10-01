@@ -37,7 +37,7 @@ public struct CoalListView: View {
       }
       .padding(EdgeInsets(top: 16, leading: 20, bottom: 0, trailing: 20))
       
-      CoalCategoryGridView(categories: category, layoutType: layoutType, horizontalRows: horizontalRows, verticalRows: verticalRows)
+      CoalGridView(categories: category, layoutType: layoutType, horizontalRows: horizontalRows, verticalRows: verticalRows)
     }
     .padding(.vertical, 16)
     .background(Color(.systemGray6))
