@@ -71,3 +71,9 @@ struct HomeView_Previews: PreviewProvider {
     ])
   }
 }
+
+extension HomeView: CoalTabInfoProviding {
+  public func coalTabInfo() -> CoalTabInfo {
+    return CoalTabInfo(title: CoalString.home, icon: UIImage.icHome)
+  }
+}

@@ -32,7 +32,10 @@ let package = Package(
       targets: ["CoalRegister"]),
     .library(
       name: "CoalHome",
-      targets: ["CoalHome"])
+      targets: ["CoalHome"]),
+    .library(
+      name: "CoalAccount",
+      targets: ["CoalAccount"])
   ],
   dependencies: [
     .package(url: "ssh://git@gitlab.playcourt.id:31022/mobileteam/legion-ios.git", branch: "main")
@@ -53,7 +56,7 @@ let package = Package(
     ),
     .target(
       name: "CoalFramework",
-      dependencies: ["CoalCore", "CoalModel", "CoalNetwork", "CoalSplashScreen", "CoalLogin", "CoalHome",  "CoalRegister"],
+      dependencies: ["CoalCore", "CoalModel", "CoalNetwork", "CoalSplashScreen", "CoalLogin", "CoalHome",  "CoalRegister", "CoalAccount"],
       path: "Sources/CoalFramework"
     ),
     .target(
@@ -102,6 +105,11 @@ let package = Package(
       name: "CoalHome",
       dependencies: ["CoalCore", "CoalModel", "CoalView"],
       path: "Sources/CoalModule/Home"
+    ),
+    .target(
+      name: "CoalAccount",
+      dependencies: ["CoalCore", "CoalView"],
+      path: "Sources/CoalModule/Account"
     )
   ]
 )

@@ -14,110 +14,83 @@ import CoalSplashScreen
 import CoalLogin
 import CoalRegister
 import CoalHome
+import CoalAccount
 
 public class CoalNavigator: CoalNavigatorProtocol {
+  
   public static let shared = CoalNavigator()
   
   public var window: UIWindow?
-  private var tabBarController: CoalTabBarController?
+  private var tabManager: CoalTabProtocol?
+  private var rootViewManager: CoalRootViewProtocol?
+  
+  private var config: CoalConfig { CoalConfig.shared }
   private var configLogoName: String?
   
-  private var config: CoalConfig {
-    return CoalConfig.shared
+  public func setTabBarController(_ tabBarController: CoalTabBarController) {
+    self.tabManager = CoalTabManager(tabBarController: tabBarController)
+    addDefaultTabs()
+  }
+  
+  public func setRootViewController(_ viewController: UIViewController, animated: Bool = true) {
+    guard let window = window else { fatalError("Window is not set") }
+    self.rootViewManager = CoalRootView(window: window)
+    rootViewManager?.setRootViewController(viewController, animated: animated)
+    
+    if let tabBarController = viewController as? CoalTabBarController {
+      setTabBarController(tabBarController)
+    }
   }
   
   public func addDefaultTabs() {
-    guard let tabBarController = tabBarController else {
-      print("TabBarController is not initialized")
-      return
-    }
-    
-    let homeView = HomeView(navigator: self, section: config.homeSection)
-    let homeHostingController = UIHostingController(rootView: homeView)
-    
-    tabBarController.addTab(viewController: homeHostingController, atIndex: 0)
-  }
-
-  
-  public func setRootViewController(viewController: UIViewController, animated: Bool = true) {
-    guard let window = window else {
-      fatalError("Window is not set")
-    }
-    
-    if let tabBarController = viewController as? CoalTabBarController {
-      self.tabBarController = tabBarController
-      self.addDefaultTabs()
-    }
-    
-    window.rootViewController = viewController
-    window.makeKeyAndVisible()
-  }
-  
-  public func setSwiftUIView<Content: View>(swiftUIView: Content, backgroundColor: UIColor? = nil) {
-    let hostingController = UIHostingController(rootView: swiftUIView)
-    
-    if let backgroundColor = backgroundColor {
-      hostingController.view.backgroundColor = backgroundColor
-    }
-    
-    setRootViewController(viewController: hostingController, animated: false)
+    let tabItems: [any View] = [
+      HomeView(navigator: self, section: config.homeSection),
+      AccountView(navigator: self)
+    ]
+    tabManager?.addTabs(tabItems)
   }
   
   public func showSplashScreen(backgroundColor: UIColor = .white, configLogoName: String? = nil, completion: (() -> Void)? = nil) {
-    var logoImage: UIImage?
-    
-    if let logoName = configLogoName {
-      logoImage = UIImage(named: logoName)
-      self.configLogoName = logoName
-    } else {
-      logoImage = UIImage.coalLogo
-      self.configLogoName = UIImage.coalLogo?.imageName
-    }
-    
+    self.configLogoName = configLogoName ?? UIImage.coalLogo?.imageName
+    let logoImage = UIImage(named: configLogoName ?? self.configLogoName ?? UIImage.coalLogo?.imageName ?? "")
     let splashscreenVC = SplashscreenFactory.createSplashscreen(backgroundColor: backgroundColor, clientLogoName: logoImage)
-    setRootViewController(viewController: splashscreenVC, animated: false)
     
+    setRootViewController(splashscreenVC, animated: false)
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-      let initialRootVC = self.window?.rootViewController
-      if self.window?.rootViewController === initialRootVC {
-        let isLoggedIn = false
-        self.showInitialPage(isLoggedIn: isLoggedIn, backgroundColor: backgroundColor)
-      }
+      self.showInitialPage(isLoggedIn: false, backgroundColor: backgroundColor)
       completion?()
     }
   }
   
   public func showInitialPage(isLoggedIn: Bool, backgroundColor: UIColor) {
-    if isLoggedIn {
-      showHomePage()
-    } else {
-      showLoginPage(backgroundColor: backgroundColor, clientLogoName: nil)
-    }
+    isLoggedIn ? showHomePage() : showLoginPage(backgroundColor: backgroundColor)
   }
   
   public func showLoginPage(backgroundColor: UIColor = .white, clientLogoName: String? = nil) {
-    let logoToUse = clientLogoName ?? self.configLogoName
     let loginView = LoginView(
       navigator: self,
       config: ConfigModel.currentConfig,
-      clientLogoName: logoToUse,
+      clientLogoName: clientLogoName ?? configLogoName,
       backgroundColor: Color(backgroundColor)
     )
-    
-    setSwiftUIView(swiftUIView: loginView, backgroundColor: backgroundColor)
-  }
-  
-  public func showHomePage() {
-    let tabBarController = CoalTabBarController()
-    self.tabBarController = tabBarController
-    setRootViewController(viewController: tabBarController, animated: true)
+    rootViewManager?.setSwiftUIView(loginView, backgroundColor: backgroundColor)
   }
   
   public func showRegisterPage(backgroundColor: UIColor = .white) {
     let registerView = RegisterView(
       navigator: self,
       config: ConfigModel.currentConfig,
-      backgroundColor: Color(backgroundColor))
-    setSwiftUIView(swiftUIView: registerView, backgroundColor: backgroundColor)
+      backgroundColor: Color(backgroundColor)
+    )
+    rootViewManager?.setSwiftUIView(registerView, backgroundColor: backgroundColor)
+  }
+  
+  public func showHomePage() {
+    let tabBarController = CoalTabBarController()
+    setRootViewController(tabBarController)
+  }
+  
+  public func showAccountPage() {
+    tabManager?.navigateToTab(at: 1)
   }
 }
