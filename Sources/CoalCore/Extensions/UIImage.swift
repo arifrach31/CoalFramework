@@ -32,4 +32,6 @@ public extension UIImage {
   
   static let coalLogo: UIImage? = image(named: "imgLogo", in: .module)
   static let mainBackground: UIImage? = image(named: "imgBackground", in: .module)
+  static let icHome: UIImage? = image(named: "icHome", in: .module)
+  static let icAccount: UIImage? = image(named: "icAccount", in: .module)
 }

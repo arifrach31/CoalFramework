@@ -12,4 +12,5 @@ public protocol CoalNavigatorProtocol {
   func showLoginPage(backgroundColor: UIColor, clientLogoName: String?)
   func showHomePage()
   func showRegisterPage(backgroundColor: UIColor)
+  func showAccountPage()
 }
