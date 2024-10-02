@@ -24,8 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       logo: "garuda",
       homeSection: [
         .carousel(items: homeProvider.getCarouselItems()),
-        .productList,
-        .category
+        .category(items: homeProvider.getCategories()),
+        .productList(items: homeProvider.getProductList())
       ])
   }
 }
