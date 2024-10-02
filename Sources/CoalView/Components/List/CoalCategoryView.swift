@@ -40,8 +40,8 @@ public struct CoalCategoryView: View {
   
   private var icon: some View {
     Group {
-      if category.icon.isValidURL {
-        AsyncImage(url: URL(string: category.icon)) { image in
+      if let url = URL(string: category.icon), category.icon.isValidURL {
+        AsyncImage(url: url) { image in
           image
             .resizable()
             .scaledToFit()

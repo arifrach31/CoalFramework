@@ -27,41 +27,15 @@ public struct CoalListView: View {
   }
   
   public var body: some View {
-    isGridView
-  }
-  
-  public var isGridView: some View {
     Group {
       if let category = category {
-        VStack(alignment: .leading, spacing: 20) {
-          HStack {
-            Text(CoalString.category)
-              .lgnBodyLargeBold()
-            
-            Spacer()
-            
-            Text(CoalString.seeAll)
-              .lgnCaptionLargeSemiBold(color: LGNColor.tertiary500)
-          }
-          .padding(EdgeInsets(top: 16, leading: 20, bottom: 0, trailing: 20))
-          
+        gridView(title: CoalString.category, seeAllText: CoalString.seeAll) {
           CoalGridView(category: category, layoutType: layoutType, horizontalRows: horizontalRows, verticalRows: verticalRows)
         }
         .padding(.vertical, 16)
         .background(Color(.systemGray6))
       } else if let catalog = catalog {
-        VStack(alignment: .leading, spacing: 20) {
-          HStack {
-            Text(CoalString.productList)
-              .lgnBodyLargeBold()
-            
-            Spacer()
-            
-            Text(CoalString.seeAll)
-              .lgnCaptionLargeSemiBold(color: LGNColor.tertiary500)
-          }
-          .padding(EdgeInsets(top: 16, leading: 20, bottom: 0, trailing: 20))
-          
+        gridView(title: CoalString.productList, seeAllText: CoalString.seeAll) {
           CoalGridView(catalog: catalog, layoutType: layoutType, horizontalRows: horizontalRows, verticalRows: verticalRows)
         }
         .padding(.vertical, 16)
@@ -69,6 +43,23 @@ public struct CoalListView: View {
         RoundedRectangle(cornerRadius: 15)
           .foregroundColor(.gray)
       }
+    }
+  }
+  
+  private func gridView<Content: View>(title: String, seeAllText: String, @ViewBuilder content: @escaping () -> Content) -> some View {
+    VStack(alignment: .leading, spacing: 20) {
+      HStack {
+        Text(title)
+          .lgnBodyLargeBold()
+        
+        Spacer()
+        
+        Text(seeAllText)
+          .lgnCaptionLargeSemiBold(color: LGNColor.tertiary500)
+      }
+      .padding(EdgeInsets(top: 16, leading: 20, bottom: 0, trailing: 20))
+      
+      content()
     }
   }
 }
