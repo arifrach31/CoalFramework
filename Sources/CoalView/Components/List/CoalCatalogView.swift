@@ -28,7 +28,7 @@ struct CoalCatalogView: View {
       titleSection
       descriptionSection
     }
-    .padding()
+    .frame(maxWidth: .infinity)
     .background(Color.white)
     .cornerRadius(15)
     .shadow(radius: 4)
@@ -44,28 +44,32 @@ struct CoalCatalogView: View {
       imgThumbnail
       Text(catalog.category)
         .lgnCaptionSmallRegular(color: .white)
-        .padding(4)
+        .padding(8)
         .background(Color.black.opacity(0.7))
         .cornerRadius(4)
-        .padding(8)
+        .padding(.leading, 16) 
+        .padding(.top, 16)
     }
   }
   
   private var titleSection: some View {
     Text(catalog.title)
       .lgnCaptionLargeBold(color: .black)
+      .padding(.horizontal, 8)
   }
   
   private var descriptionSection: some View {
     Text(catalog.description)
       .lgnCaptionSmallRegular(color: LGNColor.tertiary500)
       .lineLimit(2)
+      .padding(.horizontal, 8)
+      .padding(.bottom, 8)
   }
   
   private var imgThumbnail: some View {
     Group {
-      if catalog.image.isValidURL {
-        AsyncImage(url: URL(string: catalog.image)) { image in
+      if let url = URL(string: catalog.image), catalog.image.isValidURL {
+        AsyncImage(url: url) { image in
           image
             .resizable()
             .aspectRatio(contentMode: isSingleItem ? .fill : .fit)
@@ -73,8 +77,7 @@ struct CoalCatalogView: View {
             .clipped()
             .cornerRadius(15)
         } placeholder: {
-          RoundedRectangle(cornerRadius: 15)
-            .foregroundColor(.gray)
+          placeholderThumbnail
         }
       } else if UIImage(named: catalog.image) != nil {
         Image(catalog.image)
@@ -83,6 +86,7 @@ struct CoalCatalogView: View {
           .frame(height: 120)
           .clipped()
           .cornerRadius(15)
+          .padding(8)
       } else {
         placeholderThumbnail
       }
