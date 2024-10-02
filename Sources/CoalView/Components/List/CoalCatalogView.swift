@@ -22,33 +22,44 @@ struct CoalCatalogView: View {
     self.action = action
   }
   
-  var body: some View {
+  public var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      ZStack(alignment: .topLeading) {
-        imgThumbnail
-        
-        Text(catalog.category)
-          .lgnCaptionSmallRegular(color: .white)
-          .padding(4)
-          .background(Color.black.opacity(0.7))
-          .cornerRadius(4)
-          .padding(8)
-      }
-      
-      Text(catalog.title)
-        .lgnCaptionLargeBold(color: .black)
-      
-      Text(catalog.description)
-        .lgnCaptionSmallRegular(color: LGNColor.tertiary500)
-        .lineLimit(2)
+      thumbnailSection
+      titleSection
+      descriptionSection
     }
     .padding()
     .background(Color.white)
     .cornerRadius(15)
     .shadow(radius: 4)
     .onTapGesture {
-      action()
+      if action() != {}() {
+        action()
+      }
     }
+  }
+  
+  private var thumbnailSection: some View {
+    ZStack(alignment: .topLeading) {
+      imgThumbnail
+      Text(catalog.category)
+        .lgnCaptionSmallRegular(color: .white)
+        .padding(4)
+        .background(Color.black.opacity(0.7))
+        .cornerRadius(4)
+        .padding(8)
+    }
+  }
+  
+  private var titleSection: some View {
+    Text(catalog.title)
+      .lgnCaptionLargeBold(color: .black)
+  }
+  
+  private var descriptionSection: some View {
+    Text(catalog.description)
+      .lgnCaptionSmallRegular(color: LGNColor.tertiary500)
+      .lineLimit(2)
   }
   
   private var imgThumbnail: some View {
@@ -73,9 +84,14 @@ struct CoalCatalogView: View {
           .clipped()
           .cornerRadius(15)
       } else {
-        RoundedRectangle(cornerRadius: 15)
-          .foregroundColor(.gray)
+        placeholderThumbnail
       }
     }
+  }
+  
+  private var placeholderThumbnail: some View {
+    RoundedRectangle(cornerRadius: 15)
+      .foregroundColor(.gray)
+      .frame(height: 120)
   }
 }
