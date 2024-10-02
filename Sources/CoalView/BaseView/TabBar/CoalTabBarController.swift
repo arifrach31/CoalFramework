@@ -42,17 +42,15 @@ public class CoalTabBarController: UITabBarController {
     tabBar.barTintColor = .white
   }
   
-  private func createNavController(for viewController: UIViewController) -> UINavigationController {
+  private func createNavController(for viewController: UIViewController, title: String? = "", icon: UIImage?) -> UINavigationController {
     let navController = UINavigationController(rootViewController: viewController)
-    if let tabInfo = (viewController as? CoalTabInfoProviding)?.coalTabInfo() {
-      navController.tabBarItem.title = tabInfo.title
-      navController.tabBarItem.image = tabInfo.icon?.resize(to: CGSize(width: 20, height: 20))
-    }
+    navController.tabBarItem.title = title
+    navController.tabBarItem.image = icon?.resize(to: CGSize(width: 20, height: 20))
     return navController
   }
   
-  public func addTab(viewController: UIViewController, atIndex index: Int? = nil) {
-    let navController = createNavController(for: viewController)
+  public func addTab(viewController: UIViewController, title: String? = "", icon: UIImage? = nil, atIndex index: Int? = nil) {
+    let navController = createNavController(for: viewController, title: title, icon: icon)
     var viewControllers = self.viewControllers ?? []
     
     if let index = index {
