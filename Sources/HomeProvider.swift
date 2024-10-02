@@ -55,14 +55,14 @@ class HomeProvider: HomeSectionProvider {
   
   func getProductList() -> [ProductListModel] {
     return [
-      ProductListModel(image: "img_thumbnail", category: "Business", title: "Minimalis Landing Page", description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"),
-      ProductListModel(image: "img_thumbnail", category: "Business", title: "Start with Legion Design System", description: "Integrated design and code support for modern UI development."),
-      ProductListModel(image: "img_thumbnail", category: "E-Commerce", title: "E-Commerce Template", description: "Full-featured template for online shopping apps."),
-      ProductListModel(image: "img_thumbnail", category: "Health", title: "Fitness Tracking App", description: "Track your fitness activities and goals."),
-      ProductListModel(image: "img_thumbnail", category: "Social Media", title: "Social Media App UI", description: "Connect with friends and share your moments."),
-      ProductListModel(image: "img_thumbnail", category: "Education", title: "Online Education Platform", description: "Learn and grow with professional courses."),
-      ProductListModel(image: "img_thumbnail", category: "Social Media", title: "Social Media App UI", description: "Connect with friends and share your moments."),
-      ProductListModel(image: "img_thumbnail", category: "Education", title: "Online Education Platform", description: "Learn and grow with professional courses.")
+      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Business", title: "Minimalis Landing Page", description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"),
+      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Business", title: "Start with Legion Design System", description: "Integrated design and code support for modern UI development."),
+      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "E-Commerce", title: "E-Commerce Template", description: "Full-featured template for online shopping apps."),
+      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Health", title: "Fitness Tracking App", description: "Track your fitness activities and goals."),
+      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Social Media", title: "Social Media App UI", description: "Connect with friends and share your moments."),
+      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Education", title: "Online Education Platform", description: "Learn and grow with professional courses."),
+      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Social Media", title: "Social Media App UI", description: "Connect with friends and share your moments."),
+      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Education", title: "Online Education Platform", description: "Learn and grow with professional courses.")
     ]
   }
 }
