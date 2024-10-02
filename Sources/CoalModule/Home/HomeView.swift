@@ -13,7 +13,7 @@ import CoalView
 public struct HomeView: View {
   public let section: [HomeSection]
   @StateObject private var viewModel: HomeViewModel
-    public var navigator: CoalNavigatorProtocol?
+  public var navigator: CoalNavigatorProtocol?
   
   public init(navigator: CoalNavigatorProtocol? = nil, section: [HomeSection] = []) {
     _viewModel = StateObject(wrappedValue: HomeViewModel())
@@ -22,10 +22,17 @@ public struct HomeView: View {
   }
   
   public var body: some View {
-    ScrollView {
-      VStack(alignment: .center) {
-        ForEach(section, id: \.id) { section in
-          sectionView(for: section)
+    CoalBaseView(
+      pageType: .home,
+      rightAction: {
+        self.navigator?.showInitialPage(isLoggedIn: false, backgroundColor: .white)
+      }
+    ) {
+      ScrollView {
+        VStack(alignment: .center) {
+          ForEach(section, id: \.id) { section in
+            sectionView(for: section)
+          }
         }
       }
     }
@@ -43,7 +50,7 @@ public struct HomeView: View {
         .frame(minHeight: 150, maxHeight: 190)
         .padding(.vertical, 50)
       } else {
-        Text("No Carousel")
+        Text("Carousel Section")
       }
     case .category(let items):
       if !items.isEmpty {

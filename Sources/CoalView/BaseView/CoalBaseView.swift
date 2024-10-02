@@ -8,11 +8,24 @@
 import SwiftUI
 
 public struct CoalBaseView<Content: View>: View {
+  private let pageType: PageType?
+  private let leftAction: (() -> Void)?
+  private let rightAction: (() -> Void)?
   private let backgroundImage: Image?
   private let backgroundColor: Color
   private let content: Content
   
-  public init(backgroundImage: Image? = nil, backgroundColor: Color = .white, @ViewBuilder content: () -> Content) {
+  public init(
+    pageType: PageType? = nil,
+    leftAction: (() -> Void)? = nil,
+    rightAction: (() -> Void)? = nil,
+    backgroundImage: Image? = nil,
+    backgroundColor: Color = .white,
+    @ViewBuilder content: @escaping () -> Content
+  ) {
+    self.pageType = pageType
+    self.leftAction = leftAction
+    self.rightAction = rightAction
     self.backgroundImage = backgroundImage
     self.backgroundColor = backgroundColor
     self.content = content()
@@ -29,7 +42,17 @@ public struct CoalBaseView<Content: View>: View {
         backgroundColor.edgesIgnoringSafeArea(.all)
       }
       
-      content
+      VStack {
+        if let pageType = pageType {
+          CoalNavBar(
+            pageType: pageType,
+            leadingAction: leftAction,
+            trailingAction: rightAction
+          )
+        }
+        content
+      }
     }
+    .navigationBarHidden(true)
   }
 }
