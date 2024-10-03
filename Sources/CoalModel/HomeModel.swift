@@ -9,6 +9,8 @@ import SwiftUI
 
 public protocol HomeSectionProvider {
   func getCarouselItems() -> [CarouselModel]
+  func getCategories() -> [CategoryModel]
+  func getProductList() -> [ProductListModel]
 }
 
 public enum HomeSection: Identifiable {
