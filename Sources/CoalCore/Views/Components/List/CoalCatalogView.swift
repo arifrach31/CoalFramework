@@ -11,12 +11,12 @@ import ThemeLGN
 
 struct CoalCatalogView: View {
   let catalog: ProductListModel
-  var isSingleItem: Bool
+  var layout: LayoutDirection
   var action: () -> Void
   
-  public init(catalog: ProductListModel, isSingleItem: Bool, action: @escaping () -> Void = {}) {
+  public init(catalog: ProductListModel, layout: LayoutDirection, action: @escaping () -> Void = {}) {
     self.catalog = catalog
-    self.isSingleItem = isSingleItem
+    self.layout = layout
     self.action = action
   }
   
@@ -26,6 +26,7 @@ struct CoalCatalogView: View {
       titleSection
       descriptionSection
     }
+    .frame(width: layout == .horizontal ? 240 : nil)
     .frame(maxWidth: .infinity)
     .background(Color.white)
     .cornerRadius(15)
@@ -45,7 +46,7 @@ struct CoalCatalogView: View {
         .padding(8)
         .background(Color.black.opacity(0.7))
         .cornerRadius(4)
-        .padding(.leading, 16) 
+        .padding(.leading, 16)
         .padding(.top, 16)
     }
   }
@@ -54,6 +55,7 @@ struct CoalCatalogView: View {
     Text(catalog.title)
       .lgnCaptionLargeBold(color: .black)
       .padding(.horizontal, 8)
+      .lineLimit(1)
   }
   
   private var descriptionSection: some View {
@@ -70,7 +72,7 @@ struct CoalCatalogView: View {
         AsyncImage(url: url) { image in
           image
             .resizable()
-            .aspectRatio(contentMode: isSingleItem ? .fill : .fit)
+            .aspectRatio(contentMode: .fill)
             .frame(height: 120)
             .clipped()
             .cornerRadius(15)
@@ -80,7 +82,7 @@ struct CoalCatalogView: View {
       } else if UIImage(named: catalog.image) != nil {
         Image(catalog.image)
           .resizable()
-          .aspectRatio(contentMode: isSingleItem ? .fill : .fit)
+          .aspectRatio(contentMode: .fill)
           .frame(height: 120)
           .clipped()
           .cornerRadius(15)
