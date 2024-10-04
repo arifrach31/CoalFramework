@@ -7,7 +7,18 @@
 
 import CoalCore
 
-class HomeProvider: HomeSectionProvider {
+class HomeProvider: HomeConfigProvider, HomeSectionProvider {
+  func getConfig() -> HomeConfig {
+    let homeSection: [HomeSection] = [
+      .carousel(items: getCarouselItems()),
+      .category(items: getCategories()),
+      .productList(items: getProductList())
+    ]
+    let homeConfig = HomeConfig(sections: homeSection)
+    
+    return homeConfig
+  }
+  
   func getCarouselItems() -> [CarouselModel] {
     return [
       CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/camera/camera__bo5k5tfk6cmu_large_2x.jpg"),

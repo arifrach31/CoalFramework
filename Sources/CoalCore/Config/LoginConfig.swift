@@ -7,6 +7,10 @@
 
 import Foundation
 
+public protocol LoginConfigProvider {
+  func getConfig() -> LoginConfig
+}
+
 public class LoginConfig {
   
 }
