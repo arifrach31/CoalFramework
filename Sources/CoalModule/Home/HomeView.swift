@@ -11,9 +11,9 @@ import CoalCore
 public struct HomeView: View {
   @StateObject private var viewModel: HomeViewModel
   public var navigator: CoalNavigatorProtocol?
-  public let config: HomeConfig
+  public let config: HomeConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: HomeConfig) {
+  public init(navigator: CoalNavigatorProtocol? = nil, config: HomeConfig?) {
     _viewModel = StateObject(wrappedValue: HomeViewModel())
     self.navigator = navigator
     self.config = config
@@ -28,8 +28,10 @@ public struct HomeView: View {
     ) {
       ScrollView {
         VStack(alignment: .center) {
-          ForEach(config.sections ?? [], id: \.id) { section in
-            sectionView(for: section)
+          if let homeSection = config?.sections {
+            ForEach(homeSection, id: \.id) { section in
+              sectionView(for: section)
+            }
           }
         }
       }
