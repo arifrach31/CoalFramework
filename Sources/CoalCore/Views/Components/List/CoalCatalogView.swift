@@ -67,35 +67,6 @@ struct CoalCatalogView: View {
   }
   
   private var imgThumbnail: some View {
-    Group {
-      if let url = URL(string: catalog.image), catalog.image.isValidURL {
-        AsyncImage(url: url) { image in
-          image
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(height: 120)
-            .clipped()
-            .cornerRadius(15)
-        } placeholder: {
-          placeholderThumbnail
-        }
-      } else if UIImage(named: catalog.image) != nil {
-        Image(catalog.image)
-          .resizable()
-          .aspectRatio(contentMode: .fill)
-          .frame(height: 120)
-          .clipped()
-          .cornerRadius(15)
-          .padding(8)
-      } else {
-        placeholderThumbnail
-      }
-    }
-  }
-  
-  private var placeholderThumbnail: some View {
-    RoundedRectangle(cornerRadius: 15)
-      .foregroundColor(.gray)
-      .frame(height: 120)
+    CoalImageView(imageURL: catalog.image, cornerRadius: 16, width: .infinity, height: 120)
   }
 }
