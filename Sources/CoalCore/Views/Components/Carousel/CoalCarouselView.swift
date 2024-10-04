@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoalModel
 
 public struct CoalCarouselView: View {
   @Binding var currentIndex: Int

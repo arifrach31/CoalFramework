@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Combine
-import CoalModel
+import CoalCore
 
 class LoginViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]

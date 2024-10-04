@@ -10,7 +10,7 @@ import Foundation
 
 public enum PersistentKey: String {
   case generalUser
-  case coalConfig
+  case coalFramework
 }
 
 public struct CoalPersistent {

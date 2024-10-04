@@ -5,22 +5,22 @@
 //  Created by ArifRachman on 22/08/24.
 //
 
-import CoalCore
+import Foundation
 
 public struct ConfigModel: Codable {
   public let project: ConfigProject?
   public let pages: ConfigPages?
   
   public func save() {
-    CoalPersistent.shared.setCodable(key: .coalConfig, value: self)
+    CoalPersistent.shared.setCodable(key: .coalFramework, value: self)
   }
   
   public static func clear() {
-    CoalPersistent.shared.delete(key: .coalConfig)
+    CoalPersistent.shared.delete(key: .coalFramework)
   }
   
   public static var currentConfig: ConfigModel? {
-    return CoalPersistent.shared.getCodable(key: .coalConfig, type: ConfigModel.self)
+    return CoalPersistent.shared.getCodable(key: .coalFramework, type: ConfigModel.self)
   }
 }
 

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CoalCore
-import CoalView
 
 public struct AccountView: View {
   public var navigator: CoalNavigatorProtocol?

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoalCore
 
 public struct CoalTabInfo {
   public let title: String

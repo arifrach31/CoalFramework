@@ -8,7 +8,6 @@
 import SwiftUI
 import UIKit
 import CoalCore
-import CoalView
 
 public class SplashscreenFactory {
   private static let defaultBackgroundColor: UIColor = .white

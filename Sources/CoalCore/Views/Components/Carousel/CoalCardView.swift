@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import CoalModel
-import CoalCore
 
 public struct CoalCardView<Content: View>: View {
   @Binding var currentIndex: Int

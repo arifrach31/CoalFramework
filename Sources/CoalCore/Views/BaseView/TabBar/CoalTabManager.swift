@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoalCore
 
 public class CoalTabManager: CoalTabProtocol {
   private weak var tabBarController: CoalTabBarController?

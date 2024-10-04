@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import CoalModel
-import CoalCore
 import LegionUI
 import ThemeLGN
 

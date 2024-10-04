@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoalModel
 
 public enum LayoutDirection {
   case horizontal
