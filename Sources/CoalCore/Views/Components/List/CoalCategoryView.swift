@@ -37,33 +37,6 @@ public struct CoalCategoryView: View {
   }
   
   private var icon: some View {
-    Group {
-      if let url = URL(string: category.icon), category.icon.isValidURL {
-        AsyncImage(url: url) { image in
-          image
-            .resizable()
-            .scaledToFit()
-            .frame(width: 30, height: 30)
-        } placeholder: {
-          RoundedRectangle(cornerRadius: 15)
-            .foregroundColor(.gray)
-        }
-      } else if UIImage(named: category.icon) != nil {
-        Image(category.icon)
-          .resizable()
-          .scaledToFit()
-          .frame(width: 30, height: 30)
-          .foregroundColor(.white)
-      } else if UIImage(systemName: category.icon) != nil {
-        Image(systemName: category.icon)
-          .resizable()
-          .scaledToFit()
-          .frame(width: 30, height: 30)
-          .foregroundColor(.white)
-      } else {
-        RoundedRectangle(cornerRadius: 15)
-          .foregroundColor(.gray)
-      }
-    }
+    CoalImageView(imageURL: category.icon, cornerRadius: 15, width: 30, height: 30)
   }
 }

@@ -50,28 +50,6 @@ public struct CoalCardView<Content: View>: View {
   }
   
   private var cardBackground: some View {
-    Group {
-      if card.image.isValidURL {
-        AsyncImage(url: URL(string: card.image)) { image in
-          image
-            .resizable()
-            .clipped()
-            .cornerRadius(16)
-        } placeholder: {
-          RoundedRectangle(cornerRadius: 16)
-            .foregroundColor(.gray)
-        }
-      } else if Image.exists(card.image) {
-        Image(card.image)
-          .resizable()
-          .clipped()
-          .cornerRadius(16)
-      } else {
-        RoundedRectangle(cornerRadius: 16)
-          .foregroundColor(.gray)
-      }
-    }
+    CoalImageView(imageURL: card.image, cornerRadius: 16, width: cardWidth, height: cardHeight)
   }
-
 }
-
