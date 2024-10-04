@@ -8,10 +8,6 @@
 import UIKit
 import CoalCore
 
-public protocol CoalConfigDelegate {
-  func initCoalConfig() -> CoalConfig
-}
-
 public class CoalFramework {
   public static let shared = CoalFramework()
   

@@ -1,11 +1,15 @@
 //
 //  CoalConfig.swift
-//  
+//
 //
 //  Created by ArifRachman on 04/10/24.
 //
 
-import Foundation
+import CoalCore
+
+public protocol CoalConfigDelegate {
+  func initCoalConfig() -> CoalConfig
+}
 
 public struct CoalConfig {
   public static let shared = CoalConfig()

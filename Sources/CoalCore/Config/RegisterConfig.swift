@@ -7,6 +7,10 @@
 
 import Foundation
 
+public protocol RegisterConfigProvider {
+  func getConfig() -> RegisterConfig
+}
+
 public class RegisterConfig {
   
 }
