@@ -45,7 +45,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   
   public func addDefaultTabs() {
     let tabItems: [any View] = [
-      HomeView(navigator: self, config: homeConfig ?? HomeConfig()),
+      HomeView(navigator: self, config: homeConfig),
       AccountView(navigator: self)
     ]
     tabManager?.addTabs(tabItems)
