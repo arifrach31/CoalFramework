@@ -22,7 +22,7 @@ public struct CoalGridView: View {
   var columns: [GridItem] {
     switch layoutType {
     case .horizontal:
-      return Array(repeating: GridItem(.fixed(100)), count: horizontalRows)
+      return Array(repeating: GridItem(.flexible(), spacing: 16), count: horizontalRows)
     case .vertical:
       return Array(repeating: GridItem(.flexible(), spacing: 16), count: verticalRows)
     }
@@ -42,16 +42,16 @@ public struct CoalGridView: View {
   
   public var scrollView: some View {
     ScrollView(layoutType == .horizontal ? .horizontal : .vertical, showsIndicators: false) {
-      if layoutType == .horizontal {
+      if case .horizontal = layoutType {
         LazyHGrid(rows: columns, spacing: 16) {
           contentForLayout
         }
-        .padding([.leading, .trailing], 20)
+        .padding(.horizontal, 20)
       } else {
         LazyVGrid(columns: columns, spacing: 16) {
           contentForLayout
         }
-        .padding([.leading, .trailing], 20)
+        .padding(.horizontal, 20)
       }
     }
   }
@@ -63,14 +63,8 @@ public struct CoalGridView: View {
         CoalCategoryView(category: category)
       }
     } else if let catalog = catalog {
-      if catalog.count == 1 {
-        CoalCatalogView(catalog: catalog[0], isSingleItem: true)
-          .frame(maxWidth: .infinity)
-          .padding([.leading, .trailing], 16)
-      } else {
-        ForEach(catalog) { catalog in
-          CoalCatalogView(catalog: catalog, isSingleItem: false)
-        }
+      ForEach(catalog) { catalog in
+        CoalCatalogView(catalog: catalog, layout: layoutType)
       }
     }
   }
