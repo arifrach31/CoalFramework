@@ -7,18 +7,16 @@
 
 import SwiftUI
 import CoalCore
-import CoalModel
-import CoalView
 
 public struct HomeView: View {
-  public let section: [HomeSection]
   @StateObject private var viewModel: HomeViewModel
   public var navigator: CoalNavigatorProtocol?
+  public let config: HomeConfig
   
-  public init(navigator: CoalNavigatorProtocol? = nil, section: [HomeSection] = []) {
+  public init(navigator: CoalNavigatorProtocol? = nil, config: HomeConfig) {
     _viewModel = StateObject(wrappedValue: HomeViewModel())
     self.navigator = navigator
-    self.section = section
+    self.config = config
   }
   
   public var body: some View {
@@ -30,7 +28,7 @@ public struct HomeView: View {
     ) {
       ScrollView {
         VStack(alignment: .center) {
-          ForEach(section, id: \.id) { section in
+          ForEach(config.sections ?? [], id: \.id) { section in
             sectionView(for: section)
           }
         }
@@ -71,11 +69,7 @@ public struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
   static var previews: some View {
-    HomeView(section: [
-      .carousel(items: [CarouselModel()]),
-      .category(items: [CategoryModel()]),
-      .productList(items: [ProductListModel()])
-    ])
+    HomeView(config: HomeConfig())
   }
 }
 

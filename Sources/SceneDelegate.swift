@@ -7,25 +7,30 @@
 
 import UIKit
 import CoalFramework
+import CoalCore
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-  
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
   var window: UIWindow?
-  private let coalConfig = CoalConfig.shared
-  private let homeProvider = HomeProvider()
+  let coalFramework = CoalFramework.shared
+  let homeProvider = HomeProvider()
+  
+  func initCoalConfig() -> CoalConfig {
+    let homeConfig = HomeConfig(sections: [
+      .carousel(items: homeProvider.getCarouselItems()),
+      .category(items: homeProvider.getCategories()),
+      .productList(items: homeProvider.getProductList())
+    ])
+    return CoalConfig(homeConfig: homeConfig)
+  }
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
-    
     window = UIWindow(windowScene: windowScene)
     
-    coalConfig.configure(
+    coalFramework.configure(
       window: window,
       logo: "garuda",
-      homeSection: [
-        .carousel(items: homeProvider.getCarouselItems()),
-        .category(items: homeProvider.getCategories()),
-        .productList(items: homeProvider.getProductList())
-      ])
+      frameworkConfig: initCoalConfig()
+    )
   }
 }

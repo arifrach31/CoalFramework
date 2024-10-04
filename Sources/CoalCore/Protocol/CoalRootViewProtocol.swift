@@ -13,15 +13,17 @@ public protocol CoalRootViewProtocol {
 }
 
 public class CoalRootView: CoalRootViewProtocol {
-  private var window: UIWindow
+  private var windowScene: UIWindowScene
+  private var window: UIWindow?
   
-  public init(window: UIWindow) {
-    self.window = window
+  public init(windowScene: UIWindowScene) {
+    self.windowScene = windowScene
   }
   
   public func setRootViewController(_ viewController: UIViewController, animated: Bool) {
-    window.rootViewController = viewController
-    window.makeKeyAndVisible()
+    window = UIWindow(windowScene: windowScene)
+    window?.rootViewController = viewController
+    window?.makeKeyAndVisible()
   }
   
   public func setSwiftUIView<Content: View>(_ swiftUIView: Content, backgroundColor: UIColor?) {

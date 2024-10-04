@@ -8,8 +8,6 @@
 import UIKit
 import SwiftUI
 import CoalCore
-import CoalModel
-import CoalView
 import CoalSplashScreen
 import CoalLogin
 import CoalRegister
@@ -19,13 +17,16 @@ import CoalAccount
 public class CoalNavigator: CoalNavigatorProtocol {
   
   public static let shared = CoalNavigator()
+  private var config: CoalFramework { CoalFramework.shared }
   
-  public var window: UIWindow?
+  public var windowScene: UIWindowScene?
   private var tabManager: CoalTabProtocol?
   private var rootViewManager: CoalRootViewProtocol?
-  
-  private var config: CoalConfig { CoalConfig.shared }
   private var configLogoName: String?
+  
+  var registerConfig: RegisterConfig?
+  var loginConfig: LoginConfig?
+  var homeConfig: HomeConfig?
   
   public func setTabBarController(_ tabBarController: CoalTabBarController) {
     self.tabManager = CoalTabManager(tabBarController: tabBarController)
@@ -33,8 +34,8 @@ public class CoalNavigator: CoalNavigatorProtocol {
   }
   
   public func setRootViewController(_ viewController: UIViewController, animated: Bool = true) {
-    guard let window = window else { fatalError("Window is not set") }
-    self.rootViewManager = CoalRootView(window: window)
+    guard let windowScene = windowScene else { fatalError("windowScene is not set") }
+    self.rootViewManager = CoalRootView(windowScene: windowScene)
     rootViewManager?.setRootViewController(viewController, animated: animated)
     
     if let tabBarController = viewController as? CoalTabBarController {
@@ -44,7 +45,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   
   public func addDefaultTabs() {
     let tabItems: [any View] = [
-      HomeView(navigator: self, section: config.homeSection),
+      HomeView(navigator: self, config: homeConfig ?? HomeConfig()),
       AccountView(navigator: self)
     ]
     tabManager?.addTabs(tabItems)
