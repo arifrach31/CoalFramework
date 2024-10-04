@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Combine
-import CoalModel
+import CoalCore
 
 class RegisterViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]

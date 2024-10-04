@@ -10,17 +10,8 @@ let package = Package(
       name: "CoalCore",
       targets: ["CoalCore"]),
     .library(
-      name: "CoalModel",
-      targets: ["CoalModel"]),
-    .library(
       name: "CoalFramework",
       targets: ["CoalFramework"]),
-    .library(
-      name: "CoalNetwork",
-      targets: ["CoalNetwork"]),
-    .library(
-      name: "CoalView",
-      targets: ["CoalView"]),
     .library(
       name: "CoalSplashScreen",
       targets: ["CoalSplashScreen"]),
@@ -43,6 +34,10 @@ let package = Package(
   targets: [
     .target(
       name: "CoalCore",
+      dependencies: [
+        .product(name: "LegionUI", package: "legion-ios"),
+        .product(name: "ThemeLGN", package: "legion-ios")
+      ],
       path: "Sources/CoalCore",
       resources: [
         .copy("Resources/Assets.xcassets"),
@@ -50,65 +45,38 @@ let package = Package(
       ]
     ),
     .target(
-      name: "CoalModel",
-      dependencies: ["CoalCore"],
-      path: "Sources/CoalModel"
-    ),
-    .target(
       name: "CoalFramework",
-      dependencies: ["CoalCore", "CoalModel", "CoalNetwork", "CoalSplashScreen", "CoalLogin", "CoalHome",  "CoalRegister", "CoalAccount"],
+      dependencies: ["CoalCore", 
+                     "CoalSplashScreen",
+                     "CoalLogin",
+                     "CoalHome",
+                     "CoalRegister",
+                     "CoalAccount"],
       path: "Sources/CoalFramework"
     ),
     .target(
-      name: "CoalNetwork",
-      dependencies: ["CoalModel"],
-      path: "Sources/CoalNetwork"
-    ),
-    .target(
-      name: "CoalView",
-      dependencies: [
-        "CoalCore",
-        "CoalModel",
-        .product(name: "LegionUI", package: "legion-ios"),
-        .product(name: "ThemeLGN", package: "legion-ios")
-      ],
-      path: "Sources/CoalView"
-    ),
-    .target(
       name: "CoalSplashScreen",
-      dependencies: ["CoalCore", "CoalView"],
+      dependencies: ["CoalCore"],
       path: "Sources/CoalModule/SplashScreen"
     ),
     .target(
       name: "CoalLogin",
-      dependencies: [
-        "CoalView",
-        "CoalCore",
-        "CoalModel",
-        .product(name: "LegionUI", package: "legion-ios"),
-        .product(name: "ThemeLGN", package: "legion-ios")
-      ],
+      dependencies: ["CoalCore"],
       path: "Sources/CoalModule/Login"
     ),
     .target(
       name: "CoalRegister",
-      dependencies: [
-        "CoalView",
-        "CoalCore",
-        "CoalModel",
-        .product(name: "LegionUI", package: "legion-ios"),
-        .product(name: "ThemeLGN", package: "legion-ios")
-      ],
+      dependencies: ["CoalCore"],
       path: "Sources/CoalModule/Register"
     ),
     .target(
       name: "CoalHome",
-      dependencies: ["CoalCore", "CoalModel", "CoalView"],
+      dependencies: ["CoalCore"],
       path: "Sources/CoalModule/Home"
     ),
     .target(
       name: "CoalAccount",
-      dependencies: ["CoalCore", "CoalView"],
+      dependencies: ["CoalCore"],
       path: "Sources/CoalModule/Account"
     )
   ]

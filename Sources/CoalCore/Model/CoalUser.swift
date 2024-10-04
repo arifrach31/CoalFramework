@@ -5,7 +5,7 @@
 //  Created by ArifRachman on 13/08/24.
 //
 
-import CoalCore
+import Foundation
 
 public struct CoalUser: Codable {
   public var accessToken: String?

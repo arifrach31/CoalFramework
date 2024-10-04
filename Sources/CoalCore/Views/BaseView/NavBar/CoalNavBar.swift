@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoalCore
 
 public enum PageType {
   case home

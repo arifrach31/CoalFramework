@@ -5,7 +5,7 @@
 //  Created by ArifRachman on 19/09/24.
 //
 
-import SwiftUI
+import Foundation
 
 public protocol HomeSectionProvider {
   func getCarouselItems() -> [CarouselModel]

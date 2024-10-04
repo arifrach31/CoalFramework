@@ -5,7 +5,7 @@
 //  Created by ArifRachman on 25/09/24.
 //
 
-import CoalModel
+import CoalCore
 
 class HomeProvider: HomeSectionProvider {
   func getCarouselItems() -> [CarouselModel] {

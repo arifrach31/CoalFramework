@@ -8,8 +8,6 @@
 import UIKit
 import SwiftUI
 import CoalCore
-import CoalModel
-import CoalView
 import LegionUI
 import ThemeLGN
 

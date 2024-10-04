@@ -33,20 +33,20 @@ After the framework has been added you can import the module to use it, in the e
 import CoalFramework
 ```
 
-and add `CoalConfig.shared.configure()` to your AppDelegate:
+and add `CoalFramework.shared.configure()` to your AppDelegate:
 
 ```swift
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
-  private let coalConfig = CoalConfig.shared
+  private let coalFramework = CoalFramework.shared
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     
     window = UIWindow(windowScene: windowScene)
     
-    coalConfig.configure(window: window)
+    coalFramework.configure(window: window)
   }
 }
 

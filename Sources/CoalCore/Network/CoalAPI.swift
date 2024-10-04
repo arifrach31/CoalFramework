@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoalModel
 
 public enum CoalAPI {
   case login(username: String, password: String)
