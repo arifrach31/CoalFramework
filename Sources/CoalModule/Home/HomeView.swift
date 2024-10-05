@@ -23,7 +23,7 @@ public struct HomeView: View {
     CoalBaseView(
       pageType: .home,
       rightAction: {
-        self.navigator?.showInitialPage(isLoggedIn: false, backgroundColor: .white)
+        self.navigator?.showInitialPage(isLoggedIn: false)
       }
     ) {
       ScrollView {

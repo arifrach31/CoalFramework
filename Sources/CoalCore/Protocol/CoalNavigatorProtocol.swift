@@ -8,8 +8,8 @@
 import UIKit
 
 public protocol CoalNavigatorProtocol {
-  func showInitialPage(isLoggedIn: Bool, backgroundColor: UIColor)
-  func showLoginPage(backgroundColor: UIColor, clientLogoName: String?)
+  func showInitialPage(isLoggedIn: Bool)
+  func showLoginPage()
   func showHomePage()
   func showRegisterPage(backgroundColor: UIColor)
   func showAccountPage()

@@ -22,7 +22,8 @@ public struct RegisterView: View {
   }
   
   public var body: some View {
-    CoalBaseView(backgroundImage: Image.mainBackground, backgroundColor: backgroundColor) {
+    CoalBaseView(backgroundImage: Image.mainBackground, 
+                 backgroundColor: backgroundColor) {
       VStack(spacing: 40) {
         Spacer()
         bottomSheetView
@@ -130,7 +131,7 @@ private struct RegisterFooterView: View {
         Text(CoalString.alreadyHaveAccount)
           .LGNBodySmall(color: LGNColor.tertiary500)
         AnchorText(title: CoalString.loginTitle, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.showInitialPage(isLoggedIn: false, backgroundColor: .white)
+          navigator?.showInitialPage(isLoggedIn: false)
         }.variant(size: .small)
         Spacer()
       }
