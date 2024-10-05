@@ -17,16 +17,22 @@ import CoalAccount
 public class CoalNavigator: CoalNavigatorProtocol {
   
   public static let shared = CoalNavigator()
-  private var config: CoalFramework { CoalFramework.shared }
   
   public var windowScene: UIWindowScene?
   private var tabManager: CoalTabProtocol?
   private var rootViewManager: CoalRootViewProtocol?
-  private var configLogoName: String?
+  private var config: CoalConfig?
   
-  var registerConfig: RegisterConfig?
-  var loginConfig: LoginConfig?
-  var homeConfig: HomeConfig?
+  public func setViewConfig(_ config: CoalConfig) {
+    self.config = config
+  }
+  
+  private func initRootViewManager() {
+    guard rootViewManager == nil else { return }
+    
+    guard let windowScene = windowScene else { fatalError("windowScene is not set") }
+    self.rootViewManager = CoalRootView(windowScene: windowScene)
+  }
   
   public func setTabBarController(_ tabBarController: CoalTabBarController) {
     self.tabManager = CoalTabManager(tabBarController: tabBarController)
@@ -34,8 +40,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   }
   
   public func setRootViewController(_ viewController: UIViewController, animated: Bool = true) {
-    guard let windowScene = windowScene else { fatalError("windowScene is not set") }
-    self.rootViewManager = CoalRootView(windowScene: windowScene)
+    initRootViewManager()
     rootViewManager?.setRootViewController(viewController, animated: animated)
     
     if let tabBarController = viewController as? CoalTabBarController {
@@ -45,36 +50,33 @@ public class CoalNavigator: CoalNavigatorProtocol {
   
   public func addDefaultTabs() {
     let tabItems: [any View] = [
-      HomeView(navigator: self, config: homeConfig),
+      HomeView(navigator: self, config: config?.homeConfig),
       AccountView(navigator: self)
     ]
     tabManager?.addTabs(tabItems)
   }
   
-  public func showSplashScreen(backgroundColor: UIColor = .white, configLogoName: String? = nil, completion: (() -> Void)? = nil) {
-    self.configLogoName = configLogoName ?? UIImage.coalLogo?.imageName
-    let logoImage = UIImage(named: configLogoName ?? self.configLogoName ?? UIImage.coalLogo?.imageName ?? "")
-    let splashscreenVC = SplashscreenFactory.createSplashscreen(backgroundColor: backgroundColor, clientLogoName: logoImage)
+  public func showSplashScreen() {
+    initRootViewManager()
     
-    setRootViewController(splashscreenVC, animated: false)
+    let splashView = SplashView(config: config?.splashConfig)
+    rootViewManager?.setSwiftUIView(splashView)
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-      self.showInitialPage(isLoggedIn: false, backgroundColor: backgroundColor)
-      completion?()
+      self.showInitialPage(isLoggedIn: false)
     }
   }
   
-  public func showInitialPage(isLoggedIn: Bool, backgroundColor: UIColor) {
-    isLoggedIn ? showHomePage() : showLoginPage(backgroundColor: backgroundColor)
+  public func showInitialPage(isLoggedIn: Bool) {
+    isLoggedIn ? showHomePage() : showLoginPage()
   }
   
-  public func showLoginPage(backgroundColor: UIColor = .white, clientLogoName: String? = nil) {
+  public func showLoginPage() {
     let loginView = LoginView(
       navigator: self,
       config: ConfigModel.currentConfig,
-      clientLogoName: clientLogoName ?? configLogoName,
-      backgroundColor: Color(backgroundColor)
+      backgroundColor: Color(.white)
     )
-    rootViewManager?.setSwiftUIView(loginView, backgroundColor: backgroundColor)
+    rootViewManager?.setSwiftUIView(loginView)
   }
   
   public func showRegisterPage(backgroundColor: UIColor = .white) {
@@ -83,7 +85,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
       config: ConfigModel.currentConfig,
       backgroundColor: Color(backgroundColor)
     )
-    rootViewManager?.setSwiftUIView(registerView, backgroundColor: backgroundColor)
+    rootViewManager?.setSwiftUIView(registerView)
   }
   
   public func showHomePage() {

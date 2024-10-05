@@ -9,7 +9,7 @@ import SwiftUI
 
 public protocol CoalRootViewProtocol {
   func setRootViewController(_ viewController: UIViewController, animated: Bool)
-  func setSwiftUIView<Content: View>(_ swiftUIView: Content, backgroundColor: UIColor?)
+  func setSwiftUIView<Content: View>(_ swiftUIView: Content)
 }
 
 public class CoalRootView: CoalRootViewProtocol {
@@ -26,9 +26,8 @@ public class CoalRootView: CoalRootViewProtocol {
     window?.makeKeyAndVisible()
   }
   
-  public func setSwiftUIView<Content: View>(_ swiftUIView: Content, backgroundColor: UIColor?) {
+  public func setSwiftUIView<Content: View>(_ swiftUIView: Content) {
     let hostingController = UIHostingController(rootView: swiftUIView)
-    hostingController.view.backgroundColor = backgroundColor
     setRootViewController(hostingController, animated: false)
   }
 }

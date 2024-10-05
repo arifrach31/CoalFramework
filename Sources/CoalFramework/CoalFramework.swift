@@ -63,13 +63,11 @@ public class CoalFramework {
   }
   
   private func showInitialScreen(backgroundColor: UIColor?, configLogoName: String?) {
-    coalNavigator.showSplashScreen(backgroundColor: backgroundColor ?? .white, configLogoName: configLogoName)
+    coalNavigator.showSplashScreen()
   }
   
   private func configNavigator(windowScene: UIWindowScene?, from frameworkConfig: CoalConfig) {
     coalNavigator.windowScene = windowScene
-    coalNavigator.homeConfig = frameworkConfig.homeConfig
-    coalNavigator.loginConfig = frameworkConfig.loginConfig
-    coalNavigator.registerConfig = frameworkConfig.registerConfig
+    coalNavigator.setViewConfig(frameworkConfig)
   }
 }
