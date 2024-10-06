@@ -13,8 +13,10 @@ public protocol HomeConfigProvider {
 
 public class HomeConfig {
   public var sections: [HomeSection]?
+  public var isShowNavBar: Bool?
   
-  public init(sections: [HomeSection]? = []) {
+  public init(isShowNavBar: Bool? = false, sections: [HomeSection]? = []) {
+    self.isShowNavBar = isShowNavBar
     self.sections = sections
   }
 }

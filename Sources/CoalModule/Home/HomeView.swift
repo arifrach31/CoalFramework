@@ -24,7 +24,8 @@ public struct HomeView: View {
       pageType: .home,
       rightAction: {
         self.navigator?.showInitialPage(isLoggedIn: false)
-      }
+      },
+      isShowNavBar: config?.isShowNavBar ?? false
     ) {
       ScrollView {
         VStack(alignment: .center) {

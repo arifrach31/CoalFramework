@@ -22,20 +22,19 @@ public class CoalFramework {
   public func configure(
     windowScene: UIWindowScene?,
     backgroundColor: UIColor? = .white,
-    logo: String? = nil,
     frameworkConfig: CoalConfig
   ) {
     configNavigator(windowScene: windowScene, from: frameworkConfig)
-    fetchAndUpdateInitialConfig(backgroundColor: backgroundColor, configLogoName: logo)
+    fetchAndUpdateInitialConfig()
   }
   
-  private func fetchAndUpdateInitialConfig(backgroundColor: UIColor?, configLogoName: String?) {
+  private func fetchAndUpdateInitialConfig() {
     if let config = ConfigModel.currentConfig {
       updateConfig(with: config)
-      showInitialScreen(backgroundColor: backgroundColor, configLogoName: configLogoName)
+      showInitialScreen()
     } else {
       fetchConfig { [weak self] result in
-        self?.handleConfigFetchResult(result, backgroundColor: backgroundColor, configLogoName: configLogoName)
+        self?.handleConfigFetchResult(result)
       }
     }
   }
@@ -44,14 +43,14 @@ public class CoalFramework {
     networkManager.request(endpoint: CoalAPI.getConfig, responseType: ConfigModel.self, completion: completion)
   }
   
-  private func handleConfigFetchResult(_ result: Result<ConfigModel, ApiError>, backgroundColor: UIColor?, configLogoName: String?) {
+  private func handleConfigFetchResult(_ result: Result<ConfigModel, ApiError>) {
     switch result {
     case .success(let config):
       updateConfig(with: config)
     case .failure(let error):
       handleFetchError(error)
     }
-    showInitialScreen(backgroundColor: backgroundColor, configLogoName: configLogoName)
+    showInitialScreen()
   }
   
   private func updateConfig(with config: ConfigModel) {
@@ -62,7 +61,7 @@ public class CoalFramework {
     print("Error fetching config: \(error.localizedDescription)")
   }
   
-  private func showInitialScreen(backgroundColor: UIColor?, configLogoName: String?) {
+  private func showInitialScreen() {
     coalNavigator.showSplashScreen()
   }
   
