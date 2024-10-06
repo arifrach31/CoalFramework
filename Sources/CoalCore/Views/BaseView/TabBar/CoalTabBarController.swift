@@ -87,6 +87,16 @@ public class CoalTabBarController: UITabBarController {
       navController.tabBarItem.image = image.resize(to: CGSize(width: 20, height: 20))
     }
   }
+  
+  public func setTabBar(isShow: Bool) {
+    guard tabBar.isHidden == isShow else { return }
+    
+    let height = tabBar.frame.size.height
+    let offset = isShow ? -height : height
+    
+    tabBar.frame.origin.y += offset
+    tabBar.isHidden = !isShow
+  }
 }
 
 private extension Collection {

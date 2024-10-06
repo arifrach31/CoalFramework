@@ -8,6 +8,7 @@
 import SwiftUI
 
 public protocol CoalTabProtocol {
+  func setShowTabBar(isShowTab: Bool)
   func addTabs(_ views: [any View])
   func addTab<Content: View>(_ view: Content, at index: Int)
   func removeTab(at index: Int)

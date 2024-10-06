@@ -48,4 +48,8 @@ public class CoalTabManager: CoalTabProtocol {
 
     tabBarController.selectedIndex = index
   }
+  
+  public func setShowTabBar(isShowTab: Bool = false) {
+    tabBarController?.setTabBar(isShow: isShowTab)
+  }
 }

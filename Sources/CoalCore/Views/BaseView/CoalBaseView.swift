@@ -14,6 +14,7 @@ public struct CoalBaseView<Content: View>: View {
   private let backgroundImage: Image?
   private let backgroundColor: Color
   private let content: Content
+  private let isShowNavBar: Bool
   
   public init(
     pageType: PageType? = nil,
@@ -21,6 +22,7 @@ public struct CoalBaseView<Content: View>: View {
     rightAction: (() -> Void)? = nil,
     backgroundImage: Image? = nil,
     backgroundColor: Color = .white,
+    isShowNavBar: Bool = true,
     @ViewBuilder content: @escaping () -> Content
   ) {
     self.pageType = pageType
@@ -28,6 +30,7 @@ public struct CoalBaseView<Content: View>: View {
     self.rightAction = rightAction
     self.backgroundImage = backgroundImage
     self.backgroundColor = backgroundColor
+    self.isShowNavBar = isShowNavBar
     self.content = content()
   }
   
@@ -43,7 +46,7 @@ public struct CoalBaseView<Content: View>: View {
       }
       
       VStack {
-        if let pageType = pageType {
+        if isShowNavBar, let pageType = pageType {
           CoalNavBar(
             pageType: pageType,
             leadingAction: leftAction,
