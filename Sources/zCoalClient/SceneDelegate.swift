@@ -10,11 +10,10 @@ import CoalFramework
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
   let coalFramework = CoalFramework.shared
-  let homeProvider = HomeProvider()
+  let appProvider = AppProvider()
   
   func initCoalConfig() -> CoalConfig {
-    let homeConfig = homeProvider.getConfig()
-    return CoalConfig(homeConfig: homeConfig)
+    return appProvider.getConfig()
   }
   
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -22,7 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
     
     coalFramework.configure(
       windowScene: windowScene,
-      logo: "garuda",
       frameworkConfig: initCoalConfig()
     )
   }
