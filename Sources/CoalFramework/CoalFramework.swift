@@ -22,7 +22,7 @@ public class CoalFramework {
   public func configure(
     windowScene: UIWindowScene?,
     backgroundColor: UIColor? = .white,
-    frameworkConfig: CoalConfig
+    frameworkConfig: CoalConfig?
   ) {
     configNavigator(windowScene: windowScene, from: frameworkConfig)
     fetchAndUpdateInitialConfig()
@@ -65,7 +65,7 @@ public class CoalFramework {
     coalNavigator.showSplashScreen()
   }
   
-  private func configNavigator(windowScene: UIWindowScene?, from frameworkConfig: CoalConfig) {
+  private func configNavigator(windowScene: UIWindowScene?, from frameworkConfig: CoalConfig?) {
     coalNavigator.windowScene = windowScene
     coalNavigator.setViewConfig(frameworkConfig)
   }
