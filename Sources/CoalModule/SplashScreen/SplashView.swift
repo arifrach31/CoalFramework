@@ -11,11 +11,13 @@ import CoalCore
 public struct SplashView: View {
   public let config: SplashConfig?
   
-  private var backgroundImage: Image {
+  private var backgroundImage: Image? {
     if let imageName = config?.backgroundImage, Image.exists(imageName) {
       return Image(imageName)
+    } else if config?.backgroundColor == nil {
+      return Image.mainBackground
     }
-    return Image.mainBackground
+    return nil
   }
   
   private var backgroundColor: Color {
