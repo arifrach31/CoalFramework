@@ -14,7 +14,19 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
       .category(items: getCategories()),
       .productList(items: getProductList())
     ]
-    let homeConfig = HomeConfig(sections: homeSection)
+    let categoryComponent = CoalGridCategoryView(
+      categories: getCategories(),
+      layoutType: .horizontal,
+      gridRows: 1,
+      title: "Category"
+    )
+    let catalogComponent = CoalGridCatalogView(
+      catalog: getProductList(),
+      layoutType: .vertical,
+      gridRows: 2,
+      title: "Product List"
+    )
+    let homeConfig = HomeConfig(sections: homeSection, categoryConfig: categoryComponent, catalogConfig: catalogComponent)
     
     return homeConfig
   }

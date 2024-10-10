@@ -11,18 +11,22 @@ import ThemeLGN
 
 public struct CoalCategoryView: View {
   let category: CategoryModel
-  let action: () -> Void
+  let itemClicked: (CategoryModel) -> Void
+  var iconSize: CGFloat
+  var cardSize: CGFloat
   
-  public init(category: CategoryModel, action: @escaping () -> Void = {}) {
+  public init(category: CategoryModel, itemClicked: @escaping (CategoryModel) -> Void = {_ in}, iconSize: CGFloat = 30, cardSize: CGFloat = 60) {
     self.category = category
-    self.action = action
+    self.itemClicked = itemClicked
+    self.iconSize = iconSize
+    self.cardSize = cardSize
   }
   
   public var body: some View {
     VStack(spacing: 8) {
       ZStack {
         Color(hex: category.background)
-          .frame(width: 60, height: 60)
+          .frame(width: cardSize, height: cardSize)
           .cornerRadius(15)
         
         icon
@@ -32,11 +36,13 @@ public struct CoalCategoryView: View {
         .lgnCaptionSmallRegular(color: LGNColor.tertiary500)
     }
     .onTapGesture {
-      action()
+      if itemClicked(category) != {}() {
+        itemClicked(category)
+      }
     }
   }
   
   private var icon: some View {
-    CoalImageView(imageURL: category.icon, cornerRadius: 15, width: 30, height: 30)
+    CoalImageView(imageURL: category.icon, cornerRadius: 15, width: iconSize, height: iconSize)
   }
 }
