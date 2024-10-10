@@ -8,15 +8,15 @@
 import CoalCore
 
 public protocol CoalConfigDelegate {
-  func initCoalConfig() -> CoalConfig
+  func initCoalConfig() -> CoalConfig?
 }
 
 public protocol CoalAppProvider {
-  var homeProvider: HomeConfigProvider { get }
-  var splashProvider: SplashConfigProvider { get }
-  var menuProvider: MenuConfigProvider { get }
+  var splashProvider: SplashConfigProvider? { get }
+  var menuProvider: MenuConfigProvider? { get }
+  var homeProvider: HomeConfigProvider? { get }
   
-  func getConfig() -> CoalConfig
+  func getConfig() -> CoalConfig?
 }
 
 public struct CoalConfig {
@@ -24,19 +24,19 @@ public struct CoalConfig {
   
   public let splashConfig: SplashConfig?
   public let menuConfig: MenuConfig?
-  public let homeConfig: HomeConfig?
   public let loginConfig: LoginConfig?
   public let registerConfig: RegisterConfig?
+  public let homeConfig: HomeConfig?
   
   public init(splashConfig: SplashConfig? = nil,
+              menuConfig: MenuConfig? = nil,
               homeConfig: HomeConfig? = nil,
               loginConfig: LoginConfig? = nil,
-              registerConfig: RegisterConfig? = nil,
-              menuConfig: MenuConfig? = nil) {
-    self.homeConfig = homeConfig
-    self.loginConfig = loginConfig
-    self.registerConfig = registerConfig
+              registerConfig: RegisterConfig? = nil) {
     self.splashConfig = splashConfig
     self.menuConfig = menuConfig
+    self.loginConfig = loginConfig
+    self.registerConfig = registerConfig
+    self.homeConfig = homeConfig
   }
 }

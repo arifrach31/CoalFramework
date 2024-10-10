@@ -23,7 +23,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   private var rootViewManager: CoalRootViewProtocol?
   private var config: CoalConfig?
   
-  public func setViewConfig(_ config: CoalConfig) {
+  public func setViewConfig(_ config: CoalConfig?) {
     self.config = config
   }
   
