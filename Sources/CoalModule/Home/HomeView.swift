@@ -61,25 +61,39 @@ public struct HomeView: View {
         .padding(.vertical, 50)
       }
     case .category(let items):
-      if !items.isEmpty {
-        if let categoryConfig = config?.categoryConfig {
-          CoalGridCategoryView(categories: categoryConfig.categories, layoutType: categoryConfig.layoutType, gridRows: categoryConfig.gridRows, title: categoryConfig.title, actionTitle: categoryConfig.actionTitle, iconSize: categoryConfig.iconSize, cardSize: categoryConfig.cardSize, actionClicked: categoryConfig.actionClicked, itemClicked: categoryConfig.itemClicked)
-        } else {
-          CoalGridCategoryView(categories: items, layoutType: .horizontal, gridRows: 1, title: "Category")
-        }
-      } else {
+      if items.isEmpty {
         Text("Category Section")
+      } else {
+        let categoryConfig = config?.categoryConfig
+        CoalGridCategoryView(
+          categories: categoryConfig?.categories ?? items,
+          layoutType: categoryConfig?.layoutType ?? .horizontal,
+          gridRows: categoryConfig?.gridRows ?? 1,
+          title: categoryConfig?.title ?? CoalString.category,
+          actionTitle: categoryConfig?.actionTitle ?? CoalString.seeAll,
+          iconSize: categoryConfig?.iconSize ?? 30,
+          cardSize: categoryConfig?.cardSize ?? 60,
+          didSelectSeeAll: categoryConfig?.didSelectSeeAll ?? {},
+          didSelectItem: categoryConfig?.didSelectItem ?? {_ in}
+        )
       }
     case .productList(let items):
-      if !items.isEmpty {
-        if let catalogConfig = config?.catalogConfig {
-          CoalGridCatalogView(catalog: catalogConfig.catalog, layoutType: catalogConfig.layoutType, gridRows: catalogConfig.gridRows, imgSize: catalogConfig.imgSize, cardSize: catalogConfig.cardSize, title: catalogConfig.title, actionTitle: catalogConfig.actionTitle, actionClicked: catalogConfig.actionClicked, itemClicked: catalogConfig.itemClicked)
-        } else {
-          CoalGridCatalogView(catalog: items, layoutType: .vertical, gridRows: 2, title: "Product List")
-        }
-      } else {
+      if items.isEmpty {
         Text("Product List Section")
           .padding()
+      } else {
+        let catalogConfig = config?.catalogConfig
+        CoalGridCatalogView(
+          catalog: catalogConfig?.catalog ?? items,
+          layoutType: catalogConfig?.layoutType ?? .vertical,
+          gridRows: catalogConfig?.gridRows ?? 2,
+          imgSize: catalogConfig?.imgSize ?? 120,
+          cardSize: catalogConfig?.cardSize ?? 240,
+          title: catalogConfig?.title ?? CoalString.productList,
+          actionTitle: catalogConfig?.actionTitle ?? CoalString.seeAll,
+          didSelectSeeAll: catalogConfig?.didSelectSeeAll ?? {},
+          didSelectItem: catalogConfig?.didSelectItem ?? {_ in}
+        )
       }
     }
   }
