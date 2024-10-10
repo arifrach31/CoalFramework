@@ -17,19 +17,19 @@ public struct CoalGridCategoryView: View {
   public var cardSize: CGFloat
   public var title: String
   public var actionTitle: String
-  public var actionClicked: () -> Void
-  public var itemClicked: (CategoryModel) -> Void
+  public var didSelectSeeAll: () -> Void
+  public var didSelectItem: (CategoryModel) -> Void
   
   public init(
     categories: [CategoryModel],
     layoutType: LayoutDirection,
     gridRows: Int,
     title: String,
-    actionTitle: String = "See All",
+    actionTitle: String = CoalString.seeAll,
     iconSize: CGFloat = 30,
     cardSize: CGFloat = 60,
-    actionClicked: @escaping () -> Void = {},
-    itemClicked: @escaping (CategoryModel) -> Void = { _ in }
+    didSelectSeeAll: @escaping () -> Void = {},
+    didSelectItem: @escaping (CategoryModel) -> Void = { _ in }
   ) {
     self.categories = categories
     self.layoutType = layoutType
@@ -38,8 +38,8 @@ public struct CoalGridCategoryView: View {
     self.actionTitle = actionTitle
     self.iconSize = iconSize
     self.cardSize = cardSize
-    self.actionClicked = actionClicked
-    self.itemClicked = itemClicked
+    self.didSelectSeeAll = didSelectSeeAll
+    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
@@ -61,8 +61,8 @@ public struct CoalGridCategoryView: View {
       Spacer()
       
       AnchorText(title: actionTitle, tintColor: Color.LGNTheme.tertiary500) {
-        if actionClicked() != {}() {
-          actionClicked()
+        if didSelectSeeAll() != {}() {
+          didSelectSeeAll()
         }
       }.variant(size: .small)
     }
@@ -75,7 +75,7 @@ public struct CoalGridCategoryView: View {
       ForEach(categories) { category in
         CoalCategoryView(
           category: category,
-          itemClicked: itemClicked,
+          didSelectItem: didSelectItem,
           iconSize: iconSize,
           cardSize: cardSize
         )

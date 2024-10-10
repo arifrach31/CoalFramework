@@ -12,14 +12,20 @@ import ThemeLGN
 struct CoalCatalogView: View {
   let catalog: ProductListModel
   var layout: LayoutDirection
-  var itemClicked: (ProductListModel) -> Void
+  var didSelectItem: (ProductListModel) -> Void
   var imgSize: CGFloat
   var cardSize: CGFloat
   
-  public init(catalog: ProductListModel, layout: LayoutDirection, itemClicked: @escaping (ProductListModel) -> Void = {_ in}, imgSize: CGFloat = 120, cardSize: CGFloat = 240) {
+  public init(
+    catalog: ProductListModel,
+    layout: LayoutDirection,
+    didSelectItem: @escaping (ProductListModel) -> Void = {_ in},
+    imgSize: CGFloat = 120,
+    cardSize: CGFloat = 240
+  ) {
     self.catalog = catalog
     self.layout = layout
-    self.itemClicked = itemClicked
+    self.didSelectItem = didSelectItem
     self.imgSize = imgSize
     self.cardSize = cardSize
   }
@@ -36,8 +42,8 @@ struct CoalCatalogView: View {
     .cornerRadius(15)
     .shadow(radius: 4)
     .onTapGesture {
-      if itemClicked(catalog) != {}() {
-        itemClicked(catalog)
+      if didSelectItem(catalog) != {}() {
+        didSelectItem(catalog)
       }
     }
   }

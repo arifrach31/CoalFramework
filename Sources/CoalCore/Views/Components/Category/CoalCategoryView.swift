@@ -11,13 +11,18 @@ import ThemeLGN
 
 public struct CoalCategoryView: View {
   let category: CategoryModel
-  let itemClicked: (CategoryModel) -> Void
+  let didSelectItem: (CategoryModel) -> Void
   var iconSize: CGFloat
   var cardSize: CGFloat
   
-  public init(category: CategoryModel, itemClicked: @escaping (CategoryModel) -> Void = {_ in}, iconSize: CGFloat = 30, cardSize: CGFloat = 60) {
+  public init(
+    category: CategoryModel,
+    didSelectItem: @escaping (CategoryModel) -> Void = {_ in},
+    iconSize: CGFloat = 30,
+    cardSize: CGFloat = 60
+  ) {
     self.category = category
-    self.itemClicked = itemClicked
+    self.didSelectItem = didSelectItem
     self.iconSize = iconSize
     self.cardSize = cardSize
   }
@@ -36,8 +41,8 @@ public struct CoalCategoryView: View {
         .lgnCaptionSmallRegular(color: LGNColor.tertiary500)
     }
     .onTapGesture {
-      if itemClicked(category) != {}() {
-        itemClicked(category)
+      if didSelectItem(category) != {}() {
+        didSelectItem(category)
       }
     }
   }

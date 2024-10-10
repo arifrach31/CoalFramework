@@ -17,8 +17,8 @@ public struct CoalGridCatalogView: View {
   public var cardSize: CGFloat
   public var title: String
   public var actionTitle: String
-  public var actionClicked: () -> Void
-  public var itemClicked: (ProductListModel) -> Void
+  public var didSelectSeeAll: () -> Void
+  public var didSelectItem: (ProductListModel) -> Void
   
   public init(
     catalog: [ProductListModel],
@@ -27,9 +27,9 @@ public struct CoalGridCatalogView: View {
     imgSize: CGFloat = 120,
     cardSize: CGFloat = 240,
     title: String,
-    actionTitle: String = "See All",
-    actionClicked: @escaping () -> Void = {},
-    itemClicked: @escaping (ProductListModel) -> Void = { _ in }
+    actionTitle: String = CoalString.seeAll,
+    didSelectSeeAll: @escaping () -> Void = {},
+    didSelectItem: @escaping (ProductListModel) -> Void = { _ in }
   ) {
     self.catalog = catalog
     self.layoutType = layoutType
@@ -38,8 +38,8 @@ public struct CoalGridCatalogView: View {
     self.cardSize = cardSize
     self.title = title
     self.actionTitle = actionTitle
-    self.actionClicked = actionClicked
-    self.itemClicked = itemClicked
+    self.didSelectSeeAll = didSelectSeeAll
+    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
@@ -60,8 +60,8 @@ public struct CoalGridCatalogView: View {
       Spacer()
       
       AnchorText(title: actionTitle, tintColor: Color.LGNTheme.tertiary500) {
-        if actionClicked() != {}() {
-          actionClicked()
+        if didSelectSeeAll() != {}() {
+          didSelectSeeAll()
         }
       }.variant(size: .small)
     }
@@ -74,7 +74,7 @@ public struct CoalGridCatalogView: View {
         CoalCatalogView(
           catalog: catalog,
           layout: layoutType,
-          itemClicked: itemClicked,
+          didSelectItem: didSelectItem,
           imgSize: imgSize,
           cardSize: cardSize
         )

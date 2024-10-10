@@ -18,7 +18,13 @@ public class HomeConfig {
   public var categoryConfig: CoalGridCategoryView?
   public var catalogConfig: CoalGridCatalogView?
   
-  public init(isShowNavBar: Bool? = false, sections: [HomeSection]? = [], carouselConfig: CoalCarouselView? = nil, categoryConfig: CoalGridCategoryView? = nil, catalogConfig: CoalGridCatalogView? = nil) {
+  public init(
+    isShowNavBar: Bool? = false,
+    sections: [HomeSection]? = [],
+    carouselConfig: CoalCarouselView? = nil,
+    categoryConfig: CoalGridCategoryView? = nil,
+    catalogConfig: CoalGridCatalogView? = nil
+  ) {
     self.isShowNavBar = isShowNavBar
     self.sections = sections
     self.carouselConfig = carouselConfig
