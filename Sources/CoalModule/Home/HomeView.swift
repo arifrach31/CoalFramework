@@ -55,13 +55,21 @@ public struct HomeView: View {
       }
     case .category(let items):
       if !items.isEmpty {
-        CoalListView(category: items, layoutType: .horizontal, horizontalRows: 1)
+        if let categoryConfig = config?.categoryConfig {
+          CoalGridCategoryView(categories: items, layoutType: categoryConfig.layoutType, gridRows: categoryConfig.gridRows, title: categoryConfig.title)
+        } else {
+          CoalGridCategoryView(categories: items, layoutType: .horizontal, gridRows: 1, title: "Category")
+        }
       } else {
         Text("Category Section")
       }
     case .productList(let items):
       if !items.isEmpty {
-        CoalListView(catalog: items, layoutType: .vertical, verticalRows: 2)
+        if let catalogConfig = config?.catalogConfig {
+          CoalGridCatalogView(catalog: items, layoutType: catalogConfig.layoutType, gridRows: catalogConfig.gridRows, title: catalogConfig.title)
+        } else {
+          CoalGridCatalogView(catalog: items, layoutType: .vertical, gridRows: 2, title: "Product List")
+        }
       } else {
         Text("Product List Section")
           .padding()
@@ -70,11 +78,11 @@ public struct HomeView: View {
   }
 }
 
-struct HomeView_Previews: PreviewProvider {
-  static var previews: some View {
-    HomeView(config: HomeConfig())
-  }
-}
+//struct HomeView_Previews: PreviewProvider {
+//  static var previews: some View {
+//    HomeView(config: HomeConfig())
+//  }
+//}
 
 extension HomeView: CoalTabInfoProviding {
   public func coalTabInfo() -> CoalTabInfo {

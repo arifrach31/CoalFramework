@@ -12,12 +12,16 @@ import ThemeLGN
 struct CoalCatalogView: View {
   let catalog: ProductListModel
   var layout: LayoutDirection
-  var action: () -> Void
+  var itemClicked: (ProductListModel) -> Void
+  var imgSize: CGFloat
+  var cardSize: CGFloat
   
-  public init(catalog: ProductListModel, layout: LayoutDirection, action: @escaping () -> Void = {}) {
+  public init(catalog: ProductListModel, layout: LayoutDirection, itemClicked: @escaping (ProductListModel) -> Void = {_ in}, imgSize: CGFloat = 120, cardSize: CGFloat = 240) {
     self.catalog = catalog
     self.layout = layout
-    self.action = action
+    self.itemClicked = itemClicked
+    self.imgSize = imgSize
+    self.cardSize = cardSize
   }
   
   public var body: some View {
@@ -26,14 +30,14 @@ struct CoalCatalogView: View {
       titleSection
       descriptionSection
     }
-    .frame(width: layout == .horizontal ? 240 : nil)
+    .frame(width: layout == .horizontal ? cardSize : nil)
     .frame(maxWidth: .infinity)
     .background(Color.white)
     .cornerRadius(15)
     .shadow(radius: 4)
     .onTapGesture {
-      if action() != {}() {
-        action()
+      if itemClicked(catalog) != {}() {
+        itemClicked(catalog)
       }
     }
   }
@@ -67,6 +71,6 @@ struct CoalCatalogView: View {
   }
   
   private var imgThumbnail: some View {
-    CoalImageView(imageURL: catalog.image, cornerRadius: 16, width: .infinity, height: 120)
+    CoalImageView(imageURL: catalog.image, cornerRadius: 16, height: imgSize)
   }
 }
