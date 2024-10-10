@@ -14,6 +14,10 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
       .category(items: getCategories()),
       .productList(items: getProductList())
     ]
+    let carouselComponent = CoalCarouselView(
+      currentIndex: .constant(0),
+      cards: getCarouselItems()
+    )
     let categoryComponent = CoalGridCategoryView(
       categories: getCategories(),
       layoutType: .horizontal,
@@ -26,7 +30,12 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
       gridRows: 2,
       title: "Product List"
     )
-    let homeConfig = HomeConfig(sections: homeSection, categoryConfig: categoryComponent, catalogConfig: catalogComponent)
+    let homeConfig = HomeConfig(
+      sections: homeSection,
+      carouselComponent: carouselComponent,
+      categoryConfig: categoryComponent,
+      catalogConfig: catalogComponent
+    )
     
     return homeConfig
   }

@@ -43,20 +43,27 @@ public struct HomeView: View {
   private func sectionView(for section: HomeSection) -> some View {
     switch section {
     case .carousel(let items):
-      if !items.isEmpty {
+      if items.isEmpty {
+        Text("Carousel Section")
+      } else {
+        let carouselConfig = config?.carouselConfig
         GeometryReader { geometry in
-          CoalCarouselView(currentIndex: $viewModel.currentIndex, cards: items, geometry: geometry)
+          CoalCarouselView(
+            currentIndex: carouselConfig?.$currentIndex ?? $viewModel.currentIndex,
+            cards: carouselConfig?.cards ?? items,
+            geometry: carouselConfig?.geometry ?? geometry,
+            cardHeight: carouselConfig?.cardHeight ?? 188,
+            action: carouselConfig?.action ?? {}
+          )
         }
         .padding(.horizontal, 16)
         .frame(minHeight: 150, maxHeight: 190)
         .padding(.vertical, 50)
-      } else {
-        Text("Carousel Section")
       }
     case .category(let items):
       if !items.isEmpty {
         if let categoryConfig = config?.categoryConfig {
-          CoalGridCategoryView(categories: items, layoutType: categoryConfig.layoutType, gridRows: categoryConfig.gridRows, title: categoryConfig.title)
+          CoalGridCategoryView(categories: categoryConfig.categories, layoutType: categoryConfig.layoutType, gridRows: categoryConfig.gridRows, title: categoryConfig.title, actionTitle: categoryConfig.actionTitle, iconSize: categoryConfig.iconSize, cardSize: categoryConfig.cardSize, actionClicked: categoryConfig.actionClicked, itemClicked: categoryConfig.itemClicked)
         } else {
           CoalGridCategoryView(categories: items, layoutType: .horizontal, gridRows: 1, title: "Category")
         }
@@ -66,7 +73,7 @@ public struct HomeView: View {
     case .productList(let items):
       if !items.isEmpty {
         if let catalogConfig = config?.catalogConfig {
-          CoalGridCatalogView(catalog: items, layoutType: catalogConfig.layoutType, gridRows: catalogConfig.gridRows, title: catalogConfig.title)
+          CoalGridCatalogView(catalog: catalogConfig.catalog, layoutType: catalogConfig.layoutType, gridRows: catalogConfig.gridRows, imgSize: catalogConfig.imgSize, cardSize: catalogConfig.cardSize, title: catalogConfig.title, actionTitle: catalogConfig.actionTitle, actionClicked: catalogConfig.actionClicked, itemClicked: catalogConfig.itemClicked)
         } else {
           CoalGridCatalogView(catalog: items, layoutType: .vertical, gridRows: 2, title: "Product List")
         }
@@ -78,11 +85,11 @@ public struct HomeView: View {
   }
 }
 
-//struct HomeView_Previews: PreviewProvider {
-//  static var previews: some View {
-//    HomeView(config: HomeConfig())
-//  }
-//}
+struct HomeView_Previews: PreviewProvider {
+  static var previews: some View {
+    HomeView(config: HomeConfig())
+  }
+}
 
 extension HomeView: CoalTabInfoProviding {
   public func coalTabInfo() -> CoalTabInfo {
