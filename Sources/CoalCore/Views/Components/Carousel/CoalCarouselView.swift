@@ -8,34 +8,41 @@
 import SwiftUI
 
 public struct CoalCarouselView: View {
-  @Binding var currentIndex: Int
-  let cards: [CarouselModel]
-  let geometry: GeometryProxy
+  @Binding public var currentIndex: Int
+  public let cards: [CarouselModel]
+  public let geometry: GeometryProxy?
+  public let cardHeight: CGFloat
+  public let action: () -> Void
   
-  public init(currentIndex: Binding<Int>, cards: [CarouselModel], geometry: GeometryProxy) {
+  public init(currentIndex: Binding<Int>, cards: [CarouselModel], geometry: GeometryProxy? = nil, cardHeight: CGFloat = 188, action: @escaping () -> Void = {}) {
     self._currentIndex = currentIndex
     self.cards = cards
     self.geometry = geometry
+    self.cardHeight = cardHeight
+    self.action = action
   }
   
   public var body: some View {
-    VStack {
-      ZStack {
-        ForEach(Array(cards.enumerated()), id: \.offset) { index, card in
-          CoalCardView(card: card, currentIndex: $currentIndex, geometry: geometry, index: index) {
+    GeometryReader { proxy in
+      let actualGeometry = geometry ?? proxy
+      VStack {
+        ZStack {
+          ForEach(Array(cards.enumerated()), id: \.offset) { index, card in
+            CoalCardView(card: card, currentIndex: $currentIndex, geometry: actualGeometry, cardHeight: cardHeight, index: index, action: action) {
+            }
+            .offset(x: CGFloat(index - currentIndex) * (actualGeometry.size.width * 0.72))
           }
-          .offset(x: CGFloat(index - currentIndex) * (geometry.size.width * 0.72))
         }
+        .gesture(
+          DragGesture()
+            .onEnded { value in
+              handleDragGesture(value: value, geometry: actualGeometry)
+            }
+        )
+        PageControl(index: $currentIndex, maxIndex: cards.count > 1 ? (cards.count - 1) : 0)
+          .padding(.top, -35)
+        
       }
-      .gesture(
-        DragGesture()
-          .onEnded { value in
-            handleDragGesture(value: value, geometry: geometry)
-          }
-      )
-      PageControl(index: $currentIndex, maxIndex: cards.count > 1 ? (cards.count - 1) : 0)
-        .padding(.top, -35)
-      
     }
   }
   
