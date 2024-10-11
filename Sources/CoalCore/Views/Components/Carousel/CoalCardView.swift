@@ -26,7 +26,13 @@ public struct CoalCardView<Content: View>: View {
     return CGFloat(index - currentIndex) * baseOffset
   }
   
-  public init(card: CarouselModel, currentIndex: Binding<Int>, geometry: GeometryProxy, cardHeight: CGFloat = 188, index: Int, action: @escaping () -> Void = {}, @ViewBuilder content: () -> Content) {
+  public init(card: CarouselModel, 
+              currentIndex: Binding<Int>,
+              geometry: GeometryProxy,
+              cardHeight: CGFloat = 188,
+              index: Int,
+              action: @escaping () -> Void = {},
+              @ViewBuilder content: () -> Content) {
     self.card = card
     self._currentIndex = currentIndex
     self.geometry = geometry

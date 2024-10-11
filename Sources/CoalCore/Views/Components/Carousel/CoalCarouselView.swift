@@ -14,7 +14,11 @@ public struct CoalCarouselView: View {
   public let cardHeight: CGFloat
   public let action: () -> Void
   
-  public init(currentIndex: Binding<Int>, cards: [CarouselModel], geometry: GeometryProxy? = nil, cardHeight: CGFloat = 188, action: @escaping () -> Void = {}) {
+  public init(currentIndex: Binding<Int> = .constant(0), 
+              cards: [CarouselModel],
+              geometry: GeometryProxy? = nil,
+              cardHeight: CGFloat = 188,
+              action: @escaping () -> Void = {}) {
     self._currentIndex = currentIndex
     self.cards = cards
     self.geometry = geometry

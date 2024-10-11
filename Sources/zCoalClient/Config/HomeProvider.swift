@@ -8,36 +8,30 @@
 import CoalCore
 
 class HomeProvider: HomeConfigProvider, HomeSectionProvider {
+  
   func getConfig() -> HomeConfig {
-    let homeSection: [HomeSection] = [
-      .carousel(items: getCarouselItems()),
-      .category(items: getCategories()),
-      .productList(items: getProductList())
-    ]
-    let carouselComponent = CoalCarouselView(
-      currentIndex: .constant(0),
-      cards: getCarouselItems()
-    )
-    let categoryComponent = CoalGridCategoryView(
-      categories: getCategories(),
-      layoutType: .horizontal,
-      gridRows: 1,
-      title: "Category"
-    )
-    let catalogComponent = CoalGridCatalogView(
-      catalog: getProductList(),
-      layoutType: .vertical,
-      gridRows: 2,
-      title: "Product List"
-    )
     let homeConfig = HomeConfig(
-      sections: homeSection,
-      carouselComponent: carouselComponent,
-      categoryConfig: categoryComponent,
-      catalogConfig: catalogComponent
+      isShowNavBar: true,
+      sections: getHomeSections(),
+      carouselConfig: CoalCarouselView(cards: getCarouselItems()),
+      categoryConfig: CoalGridCategoryView(
+        categories: getCategories(),
+        layoutType: .horizontal,
+        gridRows: 1,
+        title: "Category"
+      ),
+      catalogConfig: CoalGridCatalogView(
+        catalog: getProductList(),
+        layoutType: .vertical,
+        gridRows: 2,
+        title: "Product List"
+      )
     )
-    
     return homeConfig
+  }
+  
+  private func getHomeSections() -> [HomeSection] {
+    return [.carousel, .category, .productList]
   }
   
   func getCarouselItems() -> [CarouselModel] {
@@ -51,50 +45,36 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
   }
   
   func getCategories() -> [CategoryModel] {
-    return [
-      CategoryModel(
-        background: "#E42313", icon: "gearshape.fill", title: "Landing"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "briefcase.fill", title: "Business"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "paintbrush.fill", title: "Mobile"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "iphone", title: "Creative"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "externaldrive.fill", title: "Unicorn"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "gearshape.fill", title: "Landing"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "briefcase.fill", title: "Business"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "paintbrush.fill", title: "Mobile"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "iphone", title: "Creative"
-      ),
-      CategoryModel(
-        background: "#E42313", icon: "externaldrive.fill", title: "Unicorn"
-      )
+    let categoryData: [(icon: String, title: String)] = [
+      ("gearshape.fill", "Landing"),
+      ("briefcase.fill", "Business"),
+      ("paintbrush.fill", "Mobile"),
+      ("iphone", "Creative"),
+      ("externaldrive.fill", "Unicorn")
     ]
+    
+    return categoryData.map { category in
+      CategoryModel(background: "#E42313", icon: category.icon, title: category.title)
+    }
   }
   
   func getProductList() -> [ProductListModel] {
-    return [
-      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Business", title: "Minimalis Landing Page", description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"),
-      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Business", title: "Start with Legion Design System", description: "Integrated design and code support for modern UI development."),
-      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "E-Commerce", title: "E-Commerce Template", description: "Full-featured template for online shopping apps."),
-      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Health", title: "Fitness Tracking App", description: "Track your fitness activities and goals."),
-      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Social Media", title: "Social Media App UI", description: "Connect with friends and share your moments."),
-      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Education", title: "Online Education Platform", description: "Learn and grow with professional courses."),
-      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Social Media", title: "Social Media App UI", description: "Connect with friends and share your moments."),
-      ProductListModel(image: "https://i.ibb.co.com/QYtbVc0/Image.png", category: "Education", title: "Online Education Platform", description: "Learn and grow with professional courses.")
+    let productData: [(category: String, title: String, description: String)] = [
+      ("Business", "Minimalis Landing Page", "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia"),
+      ("Business", "Start with Legion Design System", "Integrated design and code support for modern UI development."),
+      ("E-Commerce", "E-Commerce Template", "Full-featured template for online shopping apps."),
+      ("Health", "Fitness Tracking App", "Track your fitness activities and goals."),
+      ("Social Media", "Social Media App UI", "Connect with friends and share your moments."),
+      ("Education", "Online Education Platform", "Learn and grow with professional courses.")
     ]
+    
+    return productData.map { product in
+      ProductListModel(
+        image: "https://i.ibb.co.com/QYtbVc0/Image.png",
+        category: product.category,
+        title: product.title,
+        description: product.description
+      )
+    }
   }
 }
