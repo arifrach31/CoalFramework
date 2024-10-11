@@ -12,12 +12,12 @@ public protocol SplashConfigProvider {
 }
 
 public class SplashConfig {
-  public var backgroundImage: String?
+  public var backgroundImageName: String?
   public var backgroundColor: String?
   public var logoImage: String?
   
-  public init(backgroundImage: String? = nil, backgroundColor: String? = nil, logoImage: String? = nil) {
-    self.backgroundImage = backgroundImage
+  public init(backgroundImageName: String? = nil, backgroundColor: String? = nil, logoImage: String? = nil) {
+    self.backgroundImageName = backgroundImageName
     self.backgroundColor = backgroundColor
     self.logoImage = logoImage
   }

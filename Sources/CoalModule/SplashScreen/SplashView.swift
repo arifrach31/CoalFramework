@@ -12,7 +12,7 @@ public struct SplashView: View {
   public let config: SplashConfig?
   
   private var backgroundImage: Image? {
-    if let imageName = config?.backgroundImage, Image.exists(imageName) {
+    if let imageName = config?.backgroundImageName, Image.exists(imageName) {
       return Image(imageName)
     } else if config?.backgroundColor == nil {
       return Image.mainBackground
