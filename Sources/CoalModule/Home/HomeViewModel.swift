@@ -9,5 +9,5 @@ import SwiftUI
 import Combine
 
 class HomeViewModel: ObservableObject {
-  @Published var currentIndex: Int = 0
+  @Published var currentIndexCarousel: Int = 0
 }

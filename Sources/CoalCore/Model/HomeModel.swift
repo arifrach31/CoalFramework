@@ -12,11 +12,10 @@ public protocol HomeSectionProvider {
   func getCategories() -> [CategoryModel]
   func getProductList() -> [ProductListModel]
 }
-
 public enum HomeSection: Identifiable {
-  case carousel(items: [CarouselModel])
-  case category(items: [CategoryModel])
-  case productList(items: [ProductListModel])
+  case carousel
+  case category
+  case productList
   
   public var id: String {
     switch self {

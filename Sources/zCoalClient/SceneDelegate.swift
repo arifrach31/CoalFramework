@@ -10,9 +10,12 @@ import CoalFramework
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
   let coalFramework = CoalFramework.shared
-  let appProvider = AppProvider()
+  let appProvider = AppProvider(
+    splashProvider: SplashProvider(),
+    menuProvider: MenuProvider(),
+    homeProvider: HomeProvider())
   
-  func initCoalConfig() -> CoalConfig {
+  func initCoalConfig() -> CoalConfig? {
     return appProvider.getConfig()
   }
   
