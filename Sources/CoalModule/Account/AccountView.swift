@@ -30,6 +30,6 @@ struct AccountView_Previews: PreviewProvider {
 
 extension AccountView: CoalTabInfoProviding {
   public func coalTabInfo() -> CoalTabInfo {
-    return CoalTabInfo(title: CoalString.account, icon: UIImage.icAccount)
+    return CoalTabInfo(title: CoalString.account, icon: UIImage.icAccount?.imageName)
   }
 }

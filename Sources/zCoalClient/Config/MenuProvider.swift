@@ -9,8 +9,15 @@ import CoalCore
 
 class MenuProvider: MenuConfigProvider {
   let isShowTabBar: Bool? = true
+  let customTabItems = [
+    MenuTabItem(
+      title: "About",
+      icon: "profile",
+      screen: .uiKitViewController(AboutViewController()) // client class vc
+    )
+  ]
   
   func getConfig() -> MenuConfig {
-    return MenuConfig(isShowTabBar: isShowTabBar)
+    return MenuConfig(isShowTabBar: isShowTabBar, addTabItems: customTabItems)
   }
 }

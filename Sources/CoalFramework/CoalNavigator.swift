@@ -39,7 +39,12 @@ public class CoalNavigator: CoalNavigatorProtocol {
     if let isShowTabBar = config?.menuConfig?.isShowTabBar {
       tabManager?.setShowTabBar(isShowTab: isShowTabBar)
     }
+    
     addDefaultTabs()
+    
+    if let tabItems = config?.menuConfig?.addTabItems {
+      tabManager?.addNewTab(tabItems)
+    }
   }
   
   public func setRootViewController(_ viewController: UIViewController, animated: Bool = true) {
@@ -52,13 +57,26 @@ public class CoalNavigator: CoalNavigatorProtocol {
   }
   
   public func addDefaultTabs() {
-    let tabItems: [any View] = [
-      HomeView(navigator: self, config: config?.homeConfig),
-      AccountView(navigator: self)
+    let homeView = HomeView(navigator: self, config: config?.homeConfig)
+    let accountView = AccountView(navigator: self)
+    
+    let tabItems: [MenuTabItem] = [
+      MenuTabItem(
+        title: homeView.coalTabInfo().title,
+        icon: homeView.coalTabInfo().icon,
+        screen: .swiftUIView(AnyView(homeView))
+      ),
+      MenuTabItem(
+        title: accountView.coalTabInfo().title,
+        icon: accountView.coalTabInfo().icon,
+        screen: .swiftUIView(AnyView(accountView))
+      )
     ]
+    
     tabManager?.addTabs(tabItems)
   }
-  
+
+
   public func showSplashScreen() {
     initRootViewManager()
     

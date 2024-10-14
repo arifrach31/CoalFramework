@@ -9,8 +9,9 @@ import SwiftUI
 
 public protocol CoalTabProtocol {
   func setShowTabBar(isShowTab: Bool)
-  func addTabs(_ views: [any View])
-  func addTab<Content: View>(_ view: Content, at index: Int)
+  func addNewTab(_ item: [MenuTabItem])
+  func addTabs(_ items: [MenuTabItem])
+  func addTab(_ item: MenuTabItem, at index: Int)
   func removeTab(at index: Int)
   func updateTab(at index: Int, title: String?, icon: UIImage?)
   func navigateToTab(at index: Int)
