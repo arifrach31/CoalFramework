@@ -13,8 +13,11 @@ public protocol MenuConfigProvider {
 
 public class MenuConfig {
   public var isShowTabBar: Bool?
+  public var addTabItems: [MenuTabItem]?
   
-  public init(isShowTabBar: Bool? = false) {
+  
+  public init(isShowTabBar: Bool? = false, addTabItems: [MenuTabItem]? = nil) {
     self.isShowTabBar = isShowTabBar
+    self.addTabItems = addTabItems
   }
 }

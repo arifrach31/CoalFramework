@@ -5,6 +5,7 @@
 //  Created by ArifRachman on 02/10/24.
 //
 
+import UIKit
 import SwiftUI
 
 public class CoalTabManager: CoalTabProtocol {
@@ -14,16 +15,26 @@ public class CoalTabManager: CoalTabProtocol {
     self.tabBarController = tabBarController
   }
   
-  public func addTabs(_ views: [any View]) {
-    views.enumerated().forEach { index, view in
-      addTab(view, at: index)
+  public func addNewTab(_ items: [MenuTabItem]) {
+    let startIndex = tabBarController?.viewControllers?.count ?? 0
+    items.enumerated().forEach { index, item in
+      addTab(item, at: startIndex + index)
     }
   }
   
-  public func addTab<Content: View>(_ view: Content, at index: Int) {
-    let hostingController = UIHostingController(rootView: view)
-    if let tabInfo = (view as? CoalTabInfoProviding)?.coalTabInfo() {
-      tabBarController?.addTab(viewController: hostingController, title: tabInfo.title, icon: tabInfo.icon, atIndex: index)
+  public func addTabs(_ items: [MenuTabItem]) {
+    items.enumerated().forEach { index, item in
+      addTab(item, at: index)
+    }
+  }
+  
+  public func addTab(_ item: MenuTabItem, at index: Int) {
+    switch item.screen {
+    case .swiftUIView(let swiftUIView):
+      let hostingController = UIHostingController(rootView: swiftUIView)
+      tabBarController?.addTab(viewController: hostingController, title: item.title, icon: UIImage(named: item.icon ?? "", in: .module, with: nil), atIndex: index)
+    case .uiKitViewController(let viewController):
+      tabBarController?.addTab(viewController: viewController, title: item.title, icon: UIImage(named: item.icon ?? "", in: .module, with: nil), atIndex: index)
     }
   }
   
@@ -45,7 +56,7 @@ public class CoalTabManager: CoalTabProtocol {
       print("Index is out of bounds.")
       return
     }
-
+    
     tabBarController.selectedIndex = index
   }
   
