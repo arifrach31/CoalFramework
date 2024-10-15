@@ -8,7 +8,7 @@
 import SwiftUI
 
 public protocol CoalRootViewProtocol {
-  func setRootViewController(_ viewController: UIViewController, animated: Bool)
+  func setRootViewController(_ viewController: UIViewController)
   func setSwiftUIView<Content: View>(_ swiftUIView: Content)
 }
 
@@ -20,7 +20,7 @@ public class CoalRootView: CoalRootViewProtocol {
     self.windowScene = windowScene
   }
   
-  public func setRootViewController(_ viewController: UIViewController, animated: Bool) {
+  public func setRootViewController(_ viewController: UIViewController) {
     window = UIWindow(windowScene: windowScene)
     window?.rootViewController = viewController
     window?.makeKeyAndVisible()
@@ -28,6 +28,6 @@ public class CoalRootView: CoalRootViewProtocol {
   
   public func setSwiftUIView<Content: View>(_ swiftUIView: Content) {
     let hostingController = UIHostingController(rootView: swiftUIView)
-    setRootViewController(hostingController, animated: false)
+    setRootViewController(hostingController)
   }
 }
