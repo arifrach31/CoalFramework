@@ -47,9 +47,9 @@ public class CoalNavigator: CoalNavigatorProtocol {
     }
   }
   
-  public func setRootViewController(_ viewController: UIViewController, animated: Bool = true) {
+  public func setRootViewController(_ viewController: UIViewController) {
     initRootViewManager()
-    rootViewManager?.setRootViewController(viewController, animated: animated)
+    rootViewManager?.setRootViewController(viewController)
     
     if let tabBarController = viewController as? CoalTabBarController {
       setTabBarController(tabBarController)
