@@ -23,10 +23,11 @@ public struct LoginView: View {
   }
   
   public var body: some View {
-    CoalBaseView(backgroundImage: Image.mainBackground) {
+    let (backgroundImage, backgroundColor) = getBackground()
+    
+    CoalBaseView(backgroundImage: backgroundImage, backgroundColor: backgroundColor) {
       VStack(spacing: 40) {
-        CoalImageLoader.loadImage(from: config?.loginHeader?.image ?? "")
-          .resizable()
+        CoalImageView(imageURL: config?.loginHeader?.image ?? "")
           .scaledToFill()
           .frame(width: 125, height: 125)
           .padding(.top, 60)
@@ -34,6 +35,16 @@ public struct LoginView: View {
         bottomSheetView
       }
     }
+  }
+  
+  private func getBackground() -> (Image?, Color?) {
+    let backgroundImageName = config?.backgroundImageName ?? ""
+    let backgroundColorHex = config?.backgroundColor ?? ""
+    
+    let backgroundImage: Image? = backgroundImageName.isEmpty ? nil : Image(backgroundImageName)
+    let backgroundColor: Color? = backgroundColorHex.isEmpty ? nil : Color(hex: backgroundColorHex)
+    
+    return (backgroundImage, backgroundColor)
   }
   
   private var bottomSheetView: some View {

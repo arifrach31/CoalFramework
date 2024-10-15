@@ -12,7 +12,7 @@ public struct CoalBaseView<Content: View>: View {
   private let leftAction: (() -> Void)?
   private let rightAction: (() -> Void)?
   private let backgroundImage: Image?
-  private let backgroundColor: Color
+  private let backgroundColor: Color?
   private let content: Content
   private let isShowNavBar: Bool
   
@@ -21,7 +21,7 @@ public struct CoalBaseView<Content: View>: View {
     leftAction: (() -> Void)? = nil,
     rightAction: (() -> Void)? = nil,
     backgroundImage: Image? = nil,
-    backgroundColor: Color = .white,
+    backgroundColor: Color? = .white,
     isShowNavBar: Bool = true,
     @ViewBuilder content: @escaping () -> Content
   ) {
@@ -39,10 +39,15 @@ public struct CoalBaseView<Content: View>: View {
       if let image = backgroundImage {
         image
           .resizable()
-          .scaledToFill()
           .edgesIgnoringSafeArea(.all)
       } else {
-        backgroundColor.edgesIgnoringSafeArea(.all)
+        if backgroundColor == nil {
+          Image.mainBackground
+            .resizable()
+            .edgesIgnoringSafeArea(.all)
+        } else {
+          backgroundColor.edgesIgnoringSafeArea(.all)
+        }
       }
       
       VStack {
