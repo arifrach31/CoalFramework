@@ -11,14 +11,11 @@ public protocol SplashConfigProvider {
   func getConfig() -> SplashConfig
 }
 
-public class SplashConfig {
-  public var backgroundImageName: String?
-  public var backgroundColor: String?
+public class SplashConfig: BaseConfig {
   public var logoImage: String?
   
   public init(backgroundImageName: String? = nil, backgroundColor: String? = nil, logoImage: String? = nil) {
-    self.backgroundImageName = backgroundImageName
-    self.backgroundColor = backgroundColor
     self.logoImage = logoImage
+    super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
   }
 }
