@@ -21,7 +21,7 @@ public struct HomeView: View {
   
   public var body: some View {
     CoalBaseView(
-      pageType: .home,
+      pageType: .home, 
       rightAction: {
         self.navigator?.showInitialPage(isLoggedIn: false)
       },
