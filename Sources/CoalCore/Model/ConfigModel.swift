@@ -49,6 +49,14 @@ public struct ConfigHeader: Codable {
   public let title: String?
   public let description: String?
   public let image: String?
+  
+  public init(title: String? = nil,
+              description: String? = nil,
+              image: String? = nil) {
+    self.title = title
+    self.description = description
+    self.image = image
+  }
 }
 
 public enum ConfigFieldType: String, Codable {
@@ -67,6 +75,16 @@ public struct ConfigField: Codable, Identifiable {
   public let type: ConfigFieldType
   public let label: String?
   public let placeholder: String?
+  
+  public init(id: Int? = nil,
+              type: ConfigFieldType,
+              label: String? = nil,
+              placeholder: String? = nil) {
+    self.id = id
+    self.type = type
+    self.label = label
+    self.placeholder = placeholder
+  }
 }
 
 public struct ConfigMenuItem: Codable {

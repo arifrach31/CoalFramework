@@ -13,17 +13,10 @@ class LoginViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
   @Published var config: ConfigModel?
+  @Published var formFields: [ConfigField]
   
-  var configHeader: ConfigHeader? {
-    config?.pages?.login?.header
-  }
-  
-  var formFields: [ConfigField]? {
-    config?.pages?.login?.fields
-  }
-  
-  init(config: ConfigModel? = nil) {
-    self.config = config
+  init(config: LoginConfig?) {
+    self.formFields = config?.loginFields ?? []
   }
   
   func binding(for field: ConfigField) -> Binding<String> {

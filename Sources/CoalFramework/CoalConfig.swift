@@ -13,6 +13,7 @@ public protocol CoalConfigDelegate {
 
 public protocol CoalAppProvider {
   var splashProvider: SplashConfigProvider? { get }
+  var loginProvider: LoginConfigProvider? { get }
   var menuProvider: MenuConfigProvider? { get }
   var homeProvider: HomeConfigProvider? { get }
   
@@ -23,19 +24,19 @@ public struct CoalConfig {
   public static let shared = CoalConfig()
   
   public let splashConfig: SplashConfig?
-  public let menuConfig: MenuConfig?
   public let loginConfig: LoginConfig?
+  public let menuConfig: MenuConfig?
   public let registerConfig: RegisterConfig?
   public let homeConfig: HomeConfig?
   
   public init(splashConfig: SplashConfig? = nil,
+              loginConfig: LoginConfig? = nil,
               menuConfig: MenuConfig? = nil,
               homeConfig: HomeConfig? = nil,
-              loginConfig: LoginConfig? = nil,
               registerConfig: RegisterConfig? = nil) {
     self.splashConfig = splashConfig
-    self.menuConfig = menuConfig
     self.loginConfig = loginConfig
+    self.menuConfig = menuConfig
     self.registerConfig = registerConfig
     self.homeConfig = homeConfig
   }

@@ -13,39 +13,37 @@ import ThemeLGN
 
 public struct LoginView: View {
   @StateObject private var viewModel: LoginViewModel
-  private let clientLogoName: String?
-  private let backgroundColor: Color
   public var navigator: CoalNavigatorProtocol?
+  public var config: LoginConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: ConfigModel? = nil, clientLogoName: String? = nil, backgroundColor: Color = .white) {
+  public init(navigator: CoalNavigatorProtocol? = nil, config: LoginConfig? = nil) {
     _viewModel = StateObject(wrappedValue: LoginViewModel(config: config))
-    self.clientLogoName = clientLogoName
-    self.backgroundColor = backgroundColor
     self.navigator = navigator
+    self.config = config
   }
   
   public var body: some View {
-    CoalBaseView(backgroundImage: Image.mainBackground, backgroundColor: backgroundColor) {
+    CoalBaseView(backgroundImage: Image.mainBackground) {
       VStack(spacing: 40) {
-        headerView
+        CoalImageLoader.loadImage(from: config?.loginHeader?.image ?? "")
+          .resizable()
+          .scaledToFill()
+          .frame(width: 125, height: 125)
+          .padding(.top, 60)
         Spacer()
         bottomSheetView
       }
     }
   }
   
-  private var headerView: some View {
-    HeaderImageView(clientImageName: clientLogoName, remoteImageURL: viewModel.configHeader?.image)
-      .frame(width: 125, height: 125)
-      .padding(.top, 60)
-  }
-  
   private var bottomSheetView: some View {
     LGNBottomSheet(isShowing: .constant(true), dragable: false) {
       VStack(alignment: .leading, spacing: 5) {
-        HeaderView(configHeader: viewModel.configHeader)
-        if let form = viewModel.formFields {
-          FormView(form: form, viewModel: viewModel)
+        HeaderView(configHeader: config?.loginHeader)
+        if let form = config?.loginFields {
+          FormView(viewModel: viewModel,
+                   form: form,
+                   forgotButtonConfig: config?.forgotButtonConfig)
           ButtonView(form: form, navigator: navigator)
         }
         Spacer()
@@ -70,42 +68,21 @@ private struct HeaderView: View {
   }
 }
 
-private struct HeaderImageView: View {
-  let clientImageName: String?
-  let remoteImageURL: String?
-  
-  var body: some View {
-    Group {
-      if let urlString = remoteImageURL, let url = URL(string: urlString) {
-        AsyncImage(url: url) { image in
-          image.resizable().scaledToFit()
-        } placeholder: {
-          ProgressView()
-        }
-      } else if let imageName = clientImageName, let image = UIImage(named: imageName) {
-        Image(uiImage: image)
-          .resizable()
-          .scaledToFit()
-      } else {
-        Image.logo
-          .resizable()
-          .scaledToFit()
-      }
-    }
-  }
-}
-
 private struct FormView: View {
-  let form: [ConfigField]
   @ObservedObject var viewModel: LoginViewModel
+  let form: [ConfigField]
+  var forgotButtonConfig: ForgotButtonConfig?
   
   var body: some View {
     VStack(spacing: 12) {
-      ForEach(form.filter { $0.type != .checkbox && $0.type != .submit }) { field in
+      let filteredFields = form.filter { $0.type != .checkbox && $0.type != .submit }
+      ForEach(filteredFields.indices, id: \.self) { index in
+        let field = filteredFields[index]
         CoalTextFieldView(
           field: field,
           value: viewModel.binding(for: field),
-          isSecure: viewModel.bindingSecure(for: field)
+          isSecure: viewModel.bindingSecure(for: field),
+          forgotButtonConfig: index == filteredFields.count - 1 ? forgotButtonConfig : nil
         )
       }
     }
@@ -119,17 +96,11 @@ private struct ButtonView: View {
   
   var body: some View {
     VStack(spacing: 10) {
-      HStack {
-        Spacer()
-        AnchorText(title: CoalString.forgotUsernameOrPassword, tintColor: Color.LGNTheme.secondary500)
-          .variant(size: .small)
-      }
-      
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonView(field: field) {
           navigator?.showHomePage()
         }
-          .padding(.vertical, 10)
+        .padding(.vertical, 10)
       }
       
       HStack(spacing: 0) {

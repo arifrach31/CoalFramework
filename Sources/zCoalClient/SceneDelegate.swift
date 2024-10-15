@@ -12,6 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
   let coalFramework = CoalFramework.shared
   let appProvider = AppProvider(
     splashProvider: SplashProvider(),
+    loginProvider: LoginProvider(),
     menuProvider: MenuProvider(),
     homeProvider: HomeProvider())
   
