@@ -94,8 +94,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   public func showLoginPage() {
     let loginView = LoginView(
       navigator: self,
-      config: ConfigModel.currentConfig,
-      backgroundColor: Color(.white)
+      config: config?.loginConfig
     )
     rootViewManager?.setSwiftUIView(loginView)
   }
