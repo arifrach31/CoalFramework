@@ -23,7 +23,7 @@ extension BaseConfig {
     let backgroundImageName = backgroundImageName ?? ""
     let backgroundColorHex = backgroundColor ?? ""
     
-    let backgroundImage: Image = backgroundImageName.isEmpty ? Image("") : Image(backgroundImageName)
+    let backgroundImage: Image = backgroundImageName.isEmpty ? Image.mainBackground : Image(backgroundImageName)
     let backgroundColor: Color = backgroundColorHex.isEmpty ? Color.white : Color(hex: backgroundColorHex)
     
     return (backgroundImage, backgroundColor)
