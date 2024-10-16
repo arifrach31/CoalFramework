@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 public struct ConfigModel: Codable {
   public let project: ConfigProject?
@@ -84,6 +85,25 @@ public struct ConfigField: Codable, Identifiable {
     self.type = type
     self.label = label
     self.placeholder = placeholder
+  }
+  
+  public var titleVerification: String {
+    switch type {
+    case .email:
+      return CoalString.localized(forKey: "email_to", maskingAccount(label ?? "", type: .email))
+    case .phone:
+      return CoalString.localized(forKey: "sms_to", maskingAccount(label ?? "", type: .phone))
+    default:
+      return label ?? "-"
+    }
+  }
+  
+  public var iconVerification: Image {
+    switch type {
+    case .email: return .emailIcon
+    case .phone: return .phoneIcon
+    default: return .unknownIcon
+    }
   }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 public protocol CoalNavigatorProtocol {
   func showInitialPage(isLoggedIn: Bool)
@@ -13,4 +14,7 @@ public protocol CoalNavigatorProtocol {
   func showHomePage()
   func showRegisterPage(backgroundColor: UIColor)
   func showAccountPage()
+  func showLoginVerificationMethodPage()
+  func pushToViewController<Content: View>(_ swiftUIView: Content)
+  func popToPreviousView()
 }

@@ -15,7 +15,6 @@ import CoalHome
 import CoalAccount
 
 public class CoalNavigator: CoalNavigatorProtocol {
-  
   public static let shared = CoalNavigator()
   
   public var windowScene: UIWindowScene?
@@ -29,19 +28,15 @@ public class CoalNavigator: CoalNavigatorProtocol {
   
   private func initRootViewManager() {
     guard rootViewManager == nil else { return }
-    
     guard let windowScene = windowScene else { fatalError("windowScene is not set") }
     self.rootViewManager = CoalRootView(windowScene: windowScene)
   }
   
   public func setTabBarController(_ tabBarController: CoalTabBarController) {
     self.tabManager = CoalTabManager(tabBarController: tabBarController)
-    if let isShowTabBar = config?.menuConfig?.isShowTabBar {
-      tabManager?.setShowTabBar(isShowTab: isShowTabBar)
-    }
+    tabManager?.setShowTabBar(isShowTab: config?.menuConfig?.isShowTabBar ?? false)
     
     addDefaultTabs()
-    
     if let tabItems = config?.menuConfig?.addTabItems {
       tabManager?.addNewTab(tabItems)
     }
@@ -75,13 +70,12 @@ public class CoalNavigator: CoalNavigatorProtocol {
     
     tabManager?.addTabs(tabItems)
   }
-
-
+  
   public func showSplashScreen() {
     initRootViewManager()
-    
     let splashView = SplashView(config: config?.splashConfig)
     rootViewManager?.setSwiftUIView(splashView)
+    
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
       self.showInitialPage(isLoggedIn: false)
     }
@@ -92,10 +86,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   }
   
   public func showLoginPage() {
-    let loginView = LoginView(
-      navigator: self,
-      config: config?.loginConfig
-    )
+    let loginView = LoginView(navigator: self, config: config?.loginConfig)
     rootViewManager?.setSwiftUIView(loginView)
   }
   
@@ -115,5 +106,25 @@ public class CoalNavigator: CoalNavigatorProtocol {
   
   public func showAccountPage() {
     tabManager?.navigateToTab(at: 1)
+  }
+  
+  public func showLoginVerificationMethodPage() {
+    let loginVerificationView = LoginVerificationMethodView(
+      navigator: self,
+      config: config?.loginConfig
+    )
+    pushToViewController(loginVerificationView)
+  }
+  
+  public func pushToViewController<Content: View>(_ swiftUIView: Content) {
+    guard let rootViewManager = rootViewManager else {
+      print("RootViewManager is not initialized")
+      return
+    }
+    rootViewManager.pushViewController(swiftUIView)
+  }
+  
+  public func popToPreviousView() {
+    rootViewManager?.popViewController(animated: false)
   }
 }

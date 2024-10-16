@@ -15,6 +15,10 @@ public extension Image {
   static let eyeOff = Image("icEyeOff", bundle: .module)
   static let icInfo = Image(systemName: "info.circle")
   static let mainBackground = Image("imgBackground", bundle: .module)
+  
+  static let emailIcon = Image(systemName: "envelope")
+  static let phoneIcon = Image(systemName: "phone")
+  static let unknownIcon = Image(systemName: "questionmark.circle")
 }
 
 public extension Image {

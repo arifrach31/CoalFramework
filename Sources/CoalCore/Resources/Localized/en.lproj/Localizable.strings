@@ -25,3 +25,5 @@
 "product_list" = "Product List";
 "home" = "Home";
 "account" = "Account";
+"email_to" = "Email to %@";
+"sms_to" = "SMS to %@";

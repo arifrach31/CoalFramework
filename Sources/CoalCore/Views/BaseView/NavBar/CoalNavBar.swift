@@ -10,6 +10,7 @@ import SwiftUI
 public enum PageType {
   case home
   case account
+  case verificationMethod
   case other(String)
   
   var title: String? {
@@ -65,16 +66,20 @@ public struct CoalNavBar: View {
       }
     }
     .frame(height: 60)
-    .background(.white)
+    .background(.clear)
     .shadow(radius: 2)
   }
   
   private func leadingButtonView(action: @escaping () -> Void) -> some View {
     Button(action: action) {
       Image(systemName: "arrow.left")
+        .resizable()
+        .frame(width: 24, height: 20)
         .font(.title)
-        .foregroundColor(.blue)
+        .foregroundColor(.white)
     }
+    .frame(width: 44, height: 44)
+    .padding(.leading, 10)
   }
   
   private func trailingButtonView(action: @escaping () -> Void, icon: Image) -> some View {
