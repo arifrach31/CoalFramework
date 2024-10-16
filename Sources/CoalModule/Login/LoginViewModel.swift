@@ -12,7 +12,6 @@ import CoalCore
 class LoginViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
-  @Published var config: ConfigModel?
   @Published var formFields: [ConfigField]
   
   init(config: LoginConfig?) {

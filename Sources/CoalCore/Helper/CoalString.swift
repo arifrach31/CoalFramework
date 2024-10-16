@@ -34,4 +34,6 @@ public struct CoalString {
   public static let productList = localized(forKey: "product_list")
   public static let home = localized(forKey: "home")
   public static let account = localized(forKey: "account")
+  public static let emailTo = localized(forKey: "email_to")
+  public static let smsTo = localized(forKey: "sms_to")
 }
