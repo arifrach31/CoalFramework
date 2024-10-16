@@ -23,59 +23,39 @@ public struct LoginView: View {
   }
   
   public var body: some View {
-    let (backgroundImage, backgroundColor) = getBackground()
+    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
     
-    CoalBaseView(backgroundImage: backgroundImage, backgroundColor: backgroundColor) {
+    CoalBaseView(
+      backgroundImage: backgroundImage,
+      backgroundColor: backgroundColor
+    ) {
       VStack(spacing: 40) {
-        CoalImageView(imageURL: config?.loginHeader?.image ?? "")
-          .scaledToFill()
-          .frame(width: 125, height: 125)
-          .padding(.top, 60)
+        headerImage
         Spacer()
         bottomSheetView
       }
     }
   }
   
-  private func getBackground() -> (Image?, Color?) {
-    let backgroundImageName = config?.backgroundImageName ?? ""
-    let backgroundColorHex = config?.backgroundColor ?? ""
-    
-    let backgroundImage: Image? = backgroundImageName.isEmpty ? nil : Image(backgroundImageName)
-    let backgroundColor: Color? = backgroundColorHex.isEmpty ? nil : Color(hex: backgroundColorHex)
-    
-    return (backgroundImage, backgroundColor)
+  private var headerImage: some View {
+    CoalImageView(imageURL: config?.loginHeader?.image ?? "")
+      .scaledToFill()
+      .frame(width: 125, height: 125)
+      .padding(.top, 60)
   }
   
   private var bottomSheetView: some View {
-    LGNBottomSheet(isShowing: .constant(true), dragable: false) {
-      VStack(alignment: .leading, spacing: 5) {
-        HeaderView(configHeader: config?.loginHeader)
-        if let form = config?.loginFields {
-          FormView(viewModel: viewModel,
-                   form: form,
-                   forgotButtonConfig: config?.forgotButtonConfig)
-          ButtonView(form: form, navigator: navigator)
-        }
-        Spacer()
-        FooterView()
+    BottomSheetView {
+      LoginHeaderView(configHeader: config?.loginHeader)
+      if let form = config?.loginFields {
+        FormView(viewModel: viewModel,
+                 form: form,
+                 forgotButtonConfig: config?.forgotButtonConfig)
+        ButtonView(form: form, navigator: navigator)
       }
-      .padding(.horizontal, 20)
+      Spacer()
+      FooterView()
     }
-  }
-}
-
-private struct HeaderView: View {
-  let configHeader: ConfigHeader?
-  
-  var body: some View {
-    VStack(alignment: .leading, spacing: 8) {
-      Text(configHeader?.title ?? CoalString.loginTitle)
-        .lgnHeading5()
-      Text(configHeader?.description ?? CoalString.loginDescription)
-        .lgnBodySmallRegular()
-    }
-    .padding(.top, 20)
   }
 }
 
@@ -109,7 +89,7 @@ private struct ButtonView: View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonView(field: field) {
-          navigator?.showHomePage()
+          navigator?.showLoginVerificationMethodPage()
         }
         .padding(.vertical, 10)
       }
@@ -145,8 +125,6 @@ private struct FooterView: View {
   }
 }
 
-struct LoginView_Previews: PreviewProvider {
-  static var previews: some View {
-    LoginView()
-  }
+#Preview {
+  LoginView()
 }

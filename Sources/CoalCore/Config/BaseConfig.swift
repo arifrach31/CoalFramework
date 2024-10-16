@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 public class BaseConfig {
   public var backgroundImageName: String?
@@ -14,5 +15,17 @@ public class BaseConfig {
   public init(backgroundImageName: String? = nil, backgroundColor: String? = nil) {
     self.backgroundImageName = backgroundImageName
     self.backgroundColor = backgroundColor
+  }
+}
+
+extension BaseConfig {
+  public func getBackground() -> (Image, Color) {
+    let backgroundImageName = backgroundImageName ?? ""
+    let backgroundColorHex = backgroundColor ?? ""
+    
+    let backgroundImage: Image = backgroundImageName.isEmpty ? Image("") : Image(backgroundImageName)
+    let backgroundColor: Color = backgroundColorHex.isEmpty ? Color.white : Color(hex: backgroundColorHex)
+    
+    return (backgroundImage, backgroundColor)
   }
 }
