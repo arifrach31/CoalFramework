@@ -15,7 +15,7 @@ public protocol LoginConfigProvider {
 public class LoginConfig: BaseConfig {
   public var loginHeader: ConfigHeader?
   public var loginFields: [ConfigField]?
-  public var forgotButtonConfig: ForgotButtonConfig?
+  public var additionalButtonConfig: AdditionalButtonConfig?
   public var verificationMethods: [ConfigField]?
   public var verificationMethodHeader: ConfigHeader?
   
@@ -27,13 +27,13 @@ public class LoginConfig: BaseConfig {
               backgroundColor: String? = nil,
               loginHeader: ConfigHeader? = nil,
               loginFields: [ConfigField]? = nil,
-              forgotButtonConfig: ForgotButtonConfig? = nil,
+              additionalButtonConfig: AdditionalButtonConfig? = nil,
               verificationMethods: [ConfigField]? = nil,
               verificationMethodHeader: ConfigHeader? = nil) {
     super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
     self.loginHeader = loginHeader ?? loginConfig?.header
     self.loginFields = loginFields ?? loginConfig?.fields
-    self.forgotButtonConfig = forgotButtonConfig
+    self.additionalButtonConfig = additionalButtonConfig
     self.verificationMethods = verificationMethods
     self.verificationMethodHeader = verificationMethodHeader
   }

@@ -14,7 +14,7 @@ public enum LoginType: String, Codable {
 
 public struct LoginModel {}
 
-public struct ForgotButtonConfig {
+public struct AdditionalButtonConfig {
   public var isVisible: Bool?
   public var text: String?
   

@@ -50,7 +50,7 @@ public struct LoginView: View {
       if let form = config?.loginFields {
         FormView(viewModel: viewModel,
                  form: form,
-                 forgotButtonConfig: config?.forgotButtonConfig)
+                 additionalButtonConfig: config?.additionalButtonConfig)
         ButtonView(form: form, navigator: navigator)
       }
       Spacer()
@@ -62,7 +62,7 @@ public struct LoginView: View {
 private struct FormView: View {
   @ObservedObject var viewModel: LoginViewModel
   let form: [ConfigField]
-  var forgotButtonConfig: ForgotButtonConfig?
+  var additionalButtonConfig: AdditionalButtonConfig?
   
   var body: some View {
     VStack(spacing: 12) {
@@ -73,7 +73,7 @@ private struct FormView: View {
           field: field,
           value: viewModel.binding(for: field),
           isSecure: viewModel.bindingSecure(for: field),
-          forgotButtonConfig: index == formFields.count - 1 ? forgotButtonConfig : nil
+          additionalButtonConfig: index == formFields.count - 1 ? additionalButtonConfig : nil
         )
       }
     }
