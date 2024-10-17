@@ -14,7 +14,7 @@ class LoginProvider: LoginConfigProvider {
                                                  description: "Login Description",
                                                  image: "garuda"),
                        loginFields: getLoginFields(for: .email),
-                       forgotButtonConfig: ForgotButtonConfig(isVisible: true, text: "Forgot Username & Password?"))
+                       additionalButtonConfig: AdditionalButtonConfig(isVisible: true, text: "Forgot Username & Password?"))
   }
   
   func getLoginFields(for type: LoginType) -> [ConfigField] {

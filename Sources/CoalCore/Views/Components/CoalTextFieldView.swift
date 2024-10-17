@@ -13,16 +13,16 @@ public struct CoalTextFieldView: View {
   public let field: ConfigField
   @Binding public var value: String
   @Binding public var isSecure: Bool
-  public var forgotButtonConfig: ForgotButtonConfig?
+  public var additionalButtonConfig: AdditionalButtonConfig?
   
   public init(field: ConfigField, 
               value: Binding<String>,
               isSecure: Binding<Bool>,
-              forgotButtonConfig: ForgotButtonConfig? = nil) {
+              additionalButtonConfig: AdditionalButtonConfig? = nil) {
     self.field = field
     self._value = value
     self._isSecure = isSecure
-    self.forgotButtonConfig = forgotButtonConfig
+    self.additionalButtonConfig = additionalButtonConfig
   }
   
   private var isPasswordField: Bool {
@@ -57,10 +57,10 @@ public struct CoalTextFieldView: View {
       .setRightView(isPasswordField ? secureButton : nil)
       .padding(.top, 10)
       
-      if forgotButtonConfig?.isVisible == true {
-        if let forgotText = forgotButtonConfig?.text {
+      if additionalButtonConfig?.isVisible == true {
+        if let additionalText = additionalButtonConfig?.text {
           HStack {
-            AnchorText(title: forgotText, tintColor: Color.LGNTheme.secondary500)
+            AnchorText(title: additionalText, tintColor: Color.LGNTheme.secondary500)
               .variant(size: .small)
             Spacer()
           }
