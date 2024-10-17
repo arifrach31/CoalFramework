@@ -66,14 +66,14 @@ private struct FormView: View {
   
   var body: some View {
     VStack(spacing: 12) {
-      let filteredFields = form.filter { $0.type != .checkbox && $0.type != .submit }
-      ForEach(filteredFields.indices, id: \.self) { index in
-        let field = filteredFields[index]
+      let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
+      ForEach(formFields.indices, id: \.self) { index in
+        let field = formFields[index]
         CoalTextFieldView(
           field: field,
           value: viewModel.binding(for: field),
           isSecure: viewModel.bindingSecure(for: field),
-          forgotButtonConfig: index == filteredFields.count - 1 ? forgotButtonConfig : nil
+          forgotButtonConfig: index == formFields.count - 1 ? forgotButtonConfig : nil
         )
       }
     }
