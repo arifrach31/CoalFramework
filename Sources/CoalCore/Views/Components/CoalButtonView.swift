@@ -21,7 +21,7 @@ public struct CoalButtonView: View {
   }
   
   public var body: some View {
-    LGNSolidButton(title: field.label ?? "BUTTON", defaultBtnColor: Color.redButton) {
+    LGNSolidButton(title: field.label ?? "BUTTON", tintBtnColor: field.labelColor ?? .white, defaultBtnColor: field.backgroundColor ?? Color.redButton, cornerRadius: 24) {
       action()
     }
     .disableInteraction(isDisabled == true)
