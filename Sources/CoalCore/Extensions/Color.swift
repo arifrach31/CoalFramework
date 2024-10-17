@@ -8,11 +8,25 @@
 import SwiftUI
 
 public extension Color {
-  static let mainBackground = Color(hex: "#0D0D1B")
-  static let redButton      = Color(hex: "#E42313")
+  static let mainBackground       = Color(hex: "#0D0D1B")
+  static let secondaryBackground  = Color(hex: "#F9FAFB")
+  static let redButton            = Color(hex: "#E42313")
+  static let blackText            = Color(hex: "#212121")
+  static let grayBorder           = Color(hex: "#D0D5DD")
+  static let redBorder            = Color(hex: "#F04438")
 }
 
 public extension Color {
+  func toHex() -> String? {
+    if let components = UIColor(self).cgColor.components {
+      let r = components[0]
+      let g = components[1]
+      let b = components[2]
+      return String(format: "#%02lX%02lX%02lX", lround(Double(r * 255)), lround(Double(g * 255)), lround(Double(b * 255)))
+    }
+    return nil
+  }
+  
   init(hex: String) {
     var hex = hex.trimmingCharacters(in: .whitespacesAndNewlines)
     hex = hex.hasPrefix("#") ? String(hex.dropFirst()) : hex

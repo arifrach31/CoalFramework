@@ -76,15 +76,80 @@ public struct ConfigField: Codable, Identifiable {
   public let type: ConfigFieldType
   public let label: String?
   public let placeholder: String?
+  public var isShowError: Bool
+  public let errorMessage: String?
+  public let labelColor: Color?
+  public let backgroundColor: Color?
   
-  public init(id: Int? = nil,
-              type: ConfigFieldType,
-              label: String? = nil,
-              placeholder: String? = nil) {
+  public init(
+    id: Int? = nil,
+    type: ConfigFieldType,
+    label: String? = nil,
+    placeholder: String? = nil,
+    errorMessage: String? = nil,
+    isShowError: Bool = false,
+    labelColor: Color? = nil,
+    backgroundColor: Color? = nil
+  ) {
     self.id = id
     self.type = type
     self.label = label
     self.placeholder = placeholder
+    self.isShowError = isShowError
+    self.errorMessage = errorMessage
+    self.labelColor = labelColor
+    self.backgroundColor = backgroundColor
+  }
+  
+  enum CodingKeys: String, CodingKey {
+    case id
+    case type
+    case label
+    case placeholder
+    case isShowError
+    case errorMessage
+    case labelColor
+    case backgroundColor
+  }
+  
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(id, forKey: .id)
+    try container.encode(type, forKey: .type)
+    try container.encode(label, forKey: .label)
+    try container.encode(placeholder, forKey: .placeholder)
+    try container.encode(isShowError, forKey: .isShowError)
+    try container.encodeIfPresent(errorMessage, forKey: .errorMessage)
+    
+    
+    if let labelColor = labelColor {
+      try container.encode(labelColor.toHex(), forKey: .labelColor)
+    }
+    if let backgroundColor = backgroundColor {
+      try container.encode(backgroundColor.toHex(), forKey: .backgroundColor)
+    }
+  }
+  
+  public init(from decoder: Decoder) throws {
+    var container = try decoder.container(keyedBy: CodingKeys.self)
+    id = try container.decodeIfPresent(Int.self, forKey: .id)
+    type = try container.decode(ConfigFieldType.self, forKey: .type)
+    label = try container.decodeIfPresent(String.self, forKey: .label)
+    placeholder = try container.decodeIfPresent(String.self, forKey: .placeholder)
+    isShowError = try container.decodeIfPresent(Bool.self, forKey: .isShowError) ?? false
+    errorMessage = try container.decodeIfPresent(String.self, forKey: .errorMessage)
+    
+    if let labelColorHex = try container.decodeIfPresent(String.self, forKey: .labelColor) {
+      labelColor = Color(hex: labelColorHex)
+    } else {
+      labelColor = nil
+    }
+    
+    if let backgroundColorHex = try container.decodeIfPresent(String.self, forKey: .backgroundColor) {
+      backgroundColor = Color(hex: backgroundColorHex)
+    } else {
+      backgroundColor = nil
+    }
   }
   
   public var titleVerification: String {

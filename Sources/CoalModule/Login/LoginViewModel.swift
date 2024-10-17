@@ -18,6 +18,19 @@ public class LoginViewModel: ObservableObject {
     self.formFields = config?.loginFields ?? []
   }
   
+  var isFormValid: Bool {
+    let emailField = formFields.first(where: { $0.type == .email })
+    let passwordField = formFields.first(where: { $0.type == .password })
+    
+    let email = formValues[emailField?.label ?? ""] ?? ""
+    let password = formValues[passwordField?.label ?? ""] ?? ""
+    
+    let isEmailValid = Validator(email, type: .email)
+    let isPasswordValid = Validator(password, type: .password)
+    
+    return isEmailValid && isPasswordValid
+  }
+  
   func binding(for field: ConfigField) -> Binding<String> {
     Binding<String>(
       get: { self.formValues[field.label ?? ""] ?? "" },

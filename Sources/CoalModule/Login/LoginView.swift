@@ -48,10 +48,17 @@ public struct LoginView: View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config?.loginHeader)
       if let form = config?.loginFields {
-        FormView(viewModel: viewModel,
-                 form: form,
-                 additionalButtonConfig: config?.additionalButtonConfig)
-        ButtonView(form: form, navigator: navigator)
+        FormView(
+          viewModel: viewModel,
+          form: form,
+          additionalButtonConfig: config?.additionalButtonConfig
+        )
+        ButtonView(
+          viewModel: viewModel,
+          form: form,
+          navigator: navigator,
+          config: config
+        )
       }
       Spacer()
       FooterView()
@@ -82,14 +89,20 @@ private struct FormView: View {
 }
 
 private struct ButtonView: View {
+  @ObservedObject var viewModel: LoginViewModel
   let form: [ConfigField]
   var navigator: CoalNavigatorProtocol?
+  var config: LoginConfig?
   
   var body: some View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonView(field: field) {
-          navigator?.showVerificationMethodPage()
+        CoalButtonView(field: field, isDisabled: !viewModel.isFormValid) {
+          if config?.showVerificationMethod == true {
+            navigator?.showVerificationMethodPage()
+          } else if config?.showHome == true {
+            navigator?.showHomePage()
+          }
         }
         .padding(.vertical, 10)
       }
@@ -98,7 +111,9 @@ private struct ButtonView: View {
         Text(CoalString.doNotHaveAccount)
           .LGNBodySmall(color: LGNColor.tertiary500)
         AnchorText(title: CoalString.register, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.showRegisterPage(backgroundColor: .white)
+          if config?.showRegister == true {
+            navigator?.showRegisterPage(backgroundColor: .white)
+          }
         }.variant(size: .small)
       }
       .padding(.vertical, 10)

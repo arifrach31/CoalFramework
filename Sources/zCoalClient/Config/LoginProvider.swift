@@ -10,14 +10,19 @@ import CoalCore
 class LoginProvider: LoginConfigProvider {
   func getConfig() -> LoginConfig {
     return LoginConfig(
-      loginHeader: ConfigHeader(title: "Login",
-                                description: "Login Description",
-                                image: "garuda"),
+      loginHeader: ConfigHeader(
+        title: "Login",
+        description: "Login Description",
+        image: "telkom"
+      ),
       loginFields: getLoginFields(for: .email),
       additionalButtonConfig: AdditionalButtonConfig(isVisible: true, text: "Forgot Username & Password?"),
       verificationMethods: getVerificationMethods(),
-      verificationMethodHeader: ConfigHeader(title: "Select Verification Methods",
-                                             description: "Choose one of the methods below to get a verification code."))
+      verificationMethodHeader: ConfigHeader(
+        title: "Select Verification Methods",
+        description: "Choose one of the methods below to get a verification code."),
+      showHome: false
+    )
   }
   
   func getLoginFields(for type: LoginType) -> [ConfigField] {
