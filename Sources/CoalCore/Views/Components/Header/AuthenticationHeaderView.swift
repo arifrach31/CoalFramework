@@ -1,16 +1,15 @@
 //
-//  LoginHeaderView.swift
+//  AuthenticationHeaderView.swift
 //
 //
 //  Created by ArifRachman on 16/10/24.
 //
 
 import SwiftUI
-import CoalCore
 import LegionUI
 import ThemeLGN
 
-public struct LoginHeaderView: View {
+public struct AuthenticationHeaderView: View {
   let configHeader: ConfigHeader?
   
   public init(configHeader: ConfigHeader?) {

@@ -46,7 +46,7 @@ public struct LoginView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      LoginHeaderView(configHeader: config?.loginHeader)
+      AuthenticationHeaderView(configHeader: config?.loginHeader)
       if let form = config?.loginFields {
         FormView(viewModel: viewModel,
                  form: form,
