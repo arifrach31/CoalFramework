@@ -13,18 +13,15 @@ public struct CoalTextFieldView: View {
   public let field: ConfigField
   @Binding public var value: String
   @Binding public var isSecure: Bool
-  public var additionalText: String?
   public var forgotButtonConfig: ForgotButtonConfig?
   
   public init(field: ConfigField, 
               value: Binding<String>,
               isSecure: Binding<Bool>,
-              additionalText: String? = nil,
               forgotButtonConfig: ForgotButtonConfig? = nil) {
     self.field = field
     self._value = value
     self._isSecure = isSecure
-    self.additionalText = additionalText
     self.forgotButtonConfig = forgotButtonConfig
   }
   

@@ -85,7 +85,7 @@ let package = Package(
     ),
     .target(
       name: "CoalVerificationMethod",
-      dependencies: ["CoalCore", "CoalLogin"],
+      dependencies: ["CoalCore"],
       path: "Sources/CoalModule/VerificationMethod"
     )
   ]
