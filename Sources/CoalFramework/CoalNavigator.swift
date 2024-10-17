@@ -13,6 +13,7 @@ import CoalLogin
 import CoalRegister
 import CoalHome
 import CoalAccount
+import CoalVerificationMethod
 
 public class CoalNavigator: CoalNavigatorProtocol {
   public static let shared = CoalNavigator()
@@ -109,7 +110,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   }
   
   public func showLoginVerificationMethodPage() {
-    let loginVerificationView = LoginVerificationMethodView(
+    let loginVerificationView = VerificationMethodView(
       navigator: self,
       config: config?.loginConfig
     )

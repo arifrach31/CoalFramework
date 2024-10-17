@@ -9,12 +9,12 @@ import SwiftUI
 import Combine
 import CoalCore
 
-class LoginViewModel: ObservableObject {
+public class LoginViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
   @Published var formFields: [ConfigField]
   
-  init(config: LoginConfig?) {
+  public init(config: LoginConfig?) {
     self.formFields = config?.loginFields ?? []
   }
   

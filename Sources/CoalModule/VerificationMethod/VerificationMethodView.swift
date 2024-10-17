@@ -1,5 +1,5 @@
 //
-//  LoginVerificationMethodView.swift
+//  VerificationMethodView.swift
 //
 //
 //  Created by ArifRachman on 15/10/24.
@@ -7,10 +7,11 @@
 
 import SwiftUI
 import CoalCore
+import CoalLogin
 import LegionUI
 import ThemeLGN
 
-public struct LoginVerificationMethodView: View {
+public struct VerificationMethodView: View {
   @StateObject private var viewModel: LoginViewModel
   private let navigator: CoalNavigatorProtocol?
   private let config: LoginConfig?
@@ -47,7 +48,7 @@ public struct LoginVerificationMethodView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      LoginHeaderView(configHeader: config?.verificationMethodHeader)
+      AuthenticationHeaderView(configHeader: config?.verificationMethodHeader)
       if let verificationMethods = config?.verificationMethods {
         VerificationButtonView(methods: verificationMethods)
       }
@@ -88,5 +89,5 @@ private struct VerificationButton: View {
 }
 
 #Preview {
-  LoginVerificationMethodView()
+  VerificationMethodView()
 }
