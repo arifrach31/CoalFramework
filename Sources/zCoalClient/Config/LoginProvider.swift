@@ -9,12 +9,15 @@ import CoalCore
 
 class LoginProvider: LoginConfigProvider {
   func getConfig() -> LoginConfig {
-    return LoginConfig(backgroundImageName: "background",
-                       loginHeader: ConfigHeader(title: "Login",
-                                                 description: "Login Description",
-                                                 image: "garuda"),
-                       loginFields: getLoginFields(for: .email),
-                       additionalButtonConfig: AdditionalButtonConfig(isVisible: true, text: "Forgot Username & Password?"))
+    return LoginConfig(
+      loginHeader: ConfigHeader(title: "Login",
+                                description: "Login Description",
+                                image: "garuda"),
+      loginFields: getLoginFields(for: .email),
+      additionalButtonConfig: AdditionalButtonConfig(isVisible: true, text: "Forgot Username & Password?"),
+      verificationMethods: getVerificationMethods(),
+      verificationMethodHeader: ConfigHeader(title: "Select Verification Methods",
+                                             description: "Choose one of the methods below to get a verification code."))
   }
   
   func getLoginFields(for type: LoginType) -> [ConfigField] {
@@ -31,5 +34,12 @@ class LoginProvider: LoginConfigProvider {
         ConfigField(type: .submit, label: "Login")
       ]
     }
+  }
+  
+  func getVerificationMethods() -> [ConfigField] {
+    return [
+      ConfigField(type: .email, label: "arifrach31@gmail.com"),
+      ConfigField(type: .phone, label: "082111113184")
+    ]
   }
 }
