@@ -31,7 +31,7 @@ class LoginProvider: LoginConfigProvider {
       return [
         ConfigField(type: .email, label: "Emailp", placeholder: "Enter your emailp"),
         ConfigField(type: .password, label: "Passwordp", placeholder: "Enter your passwordp"),
-        ConfigField(type: .submit, label: "Login")
+        ConfigField(type: .submit, label: "Login", backgroundColor: Color.mainBackground.toHex())
       ]
     case .phone:
       return [
