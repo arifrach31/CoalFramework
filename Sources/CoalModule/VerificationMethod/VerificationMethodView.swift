@@ -50,7 +50,7 @@ public struct VerificationMethodView: View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config?.verificationMethodHeader)
       if let verificationMethods = config?.verificationMethods {
-        VerificationButtonView(methods: verificationMethods)
+        VerificationButtonView(methods: verificationMethods, navigator: navigator)
       }
       Spacer()
     }
@@ -59,12 +59,13 @@ public struct VerificationMethodView: View {
 
 private struct VerificationButtonView: View {
   let methods: [ConfigField]
+  let navigator: CoalNavigatorProtocol?
   
   var body: some View {
     VStack(spacing: 12) {
       ForEach(methods.indices, id: \.self) { index in
         let field = methods[index]
-        VerificationButton(field: field)
+        VerificationButton(field: field, navigator: navigator)
           .padding(.bottom, 24)
       }
     }
@@ -74,6 +75,7 @@ private struct VerificationButtonView: View {
 
 private struct VerificationButton: View {
   let field: ConfigField
+  let navigator: CoalNavigatorProtocol?
   
   var body: some View {
     LGNOutlineButton(
@@ -83,7 +85,9 @@ private struct VerificationButton: View {
       tintPressedBtnColor: LGNColor.tertiary700,
       pressedBtnColor: .white,
       cornerRadius: 30
-    )
+    ) {
+      navigator?.showVerificationCodePage()
+    }
     .variant(size: .medium, responsive: true)
   }
 }
