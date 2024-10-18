@@ -36,4 +36,9 @@ public struct CoalString {
   public static let account = localized(forKey: "account")
   public static let emailTo = localized(forKey: "email_to")
   public static let smsTo = localized(forKey: "sms_to")
+  public static let accountVerification = localized(forKey: "account_verification")
+  public static let incorrectCodeMessage = localized(forKey: "incorrect_code_message")
+  public static let didNotReceiveCode = localized(forKey: "did_not_receive_code")
+  public static let resendCodeMessage = localized(forKey: "resend_code_message")
+  public static let verify = localized(forKey: "verify")
 }

@@ -11,6 +11,7 @@ public enum PageType {
   case home
   case account
   case verificationMethod
+  case verificationCode
   case other(String)
   
   var title: String? {
@@ -19,6 +20,8 @@ public enum PageType {
       return CoalString.account
     case .other(let customTitle):
       return customTitle
+    case .verificationCode:
+      return CoalString.accountVerification
     default:
       return nil
     }
@@ -95,6 +98,6 @@ public struct CoalNavBar: View {
   private func titleView(title: String) -> some View {
     Text(title)
       .font(.headline)
-      .foregroundColor(.primary)
+      .foregroundColor(.white)
   }
 }

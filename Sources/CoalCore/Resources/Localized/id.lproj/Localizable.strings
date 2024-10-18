@@ -27,3 +27,8 @@
 "account" = "Account";
 "email_to" = "Email to %@";
 "sms_to" = "SMS to %@";
+"account_verification" = "Account Verification";
+"incorrect_code_message" = "The code you entered is incorrect";
+"did_not_receive_code" = "Didn’t receive the code?";
+"resend_code_message" = "Resend OTP Code";
+"verify" = "Verify";
