@@ -89,7 +89,7 @@ private struct ButtonView: View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonView(field: field) {
-          navigator?.showLoginVerificationMethodPage()
+          navigator?.showVerificationMethodPage()
         }
         .padding(.vertical, 10)
       }
