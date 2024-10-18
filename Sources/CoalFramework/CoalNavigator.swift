@@ -14,6 +14,7 @@ import CoalRegister
 import CoalHome
 import CoalAccount
 import CoalVerificationMethod
+import CoalVerificationCode
 
 public class CoalNavigator: CoalNavigatorProtocol {
   public static let shared = CoalNavigator()
@@ -72,6 +73,18 @@ public class CoalNavigator: CoalNavigatorProtocol {
     tabManager?.addTabs(tabItems)
   }
   
+  public func pushToViewController<Content: View>(_ swiftUIView: Content) {
+    guard let rootViewManager = rootViewManager else {
+      print("RootViewManager is not initialized")
+      return
+    }
+    rootViewManager.pushViewController(swiftUIView)
+  }
+  
+  public func popToPreviousView() {
+    rootViewManager?.popViewController(animated: false)
+  }
+  
   public func showSplashScreen() {
     initRootViewManager()
     let splashView = SplashView(config: config?.splashConfig)
@@ -109,7 +122,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
     tabManager?.navigateToTab(at: 1)
   }
   
-  public func showLoginVerificationMethodPage() {
+  public func showVerificationMethodPage() {
     let loginVerificationView = VerificationMethodView(
       navigator: self,
       config: config?.loginConfig
@@ -117,15 +130,11 @@ public class CoalNavigator: CoalNavigatorProtocol {
     pushToViewController(loginVerificationView)
   }
   
-  public func pushToViewController<Content: View>(_ swiftUIView: Content) {
-    guard let rootViewManager = rootViewManager else {
-      print("RootViewManager is not initialized")
-      return
-    }
-    rootViewManager.pushViewController(swiftUIView)
-  }
-  
-  public func popToPreviousView() {
-    rootViewManager?.popViewController(animated: false)
+  public func showVerificationCodePage() {
+    let loginVerificationView = VerificationCodeView(
+      navigator: self,
+      config: config?.loginConfig
+    )
+    pushToViewController(loginVerificationView)
   }
 }
