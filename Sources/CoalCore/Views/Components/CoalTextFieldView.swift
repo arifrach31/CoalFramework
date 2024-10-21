@@ -55,13 +55,13 @@ public struct CoalTextFieldView: View {
       )
       .setSecured($isSecure)
       .setRightView(isPasswordField ? secureButton : nil)
-      .state(field.isShowError ? .error : .idle)
+      .state(field.isShowError ?? false ? .error : .idle)
       .showCaption(
         caption: ContentModel(
           image: Image(systemName: "exclamationmark.triangle"),
           text: field.errorMessage ?? ""
         ), 
-        showCaption: field.isShowError
+        showCaption: field.isShowError ?? false
       )
       .padding(.top, 10)
       

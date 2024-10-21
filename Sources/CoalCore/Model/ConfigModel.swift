@@ -76,7 +76,7 @@ public struct ConfigField: Codable, Identifiable {
   public let type: ConfigFieldType
   public let label: String?
   public let placeholder: String?
-  public var isShowError: Bool
+  public var isShowError: Bool?
   public let errorMessage: String?
   public let labelColor: String?
   public let backgroundColor: String?
@@ -87,7 +87,7 @@ public struct ConfigField: Codable, Identifiable {
     label: String? = nil,
     placeholder: String? = nil,
     errorMessage: String? = nil,
-    isShowError: Bool = false,
+    isShowError: Bool? = nil,
     labelColor: String? = nil,
     backgroundColor: String? = nil
   ) {
