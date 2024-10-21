@@ -23,8 +23,8 @@ public struct CoalButtonView: View {
   public var body: some View {
     LGNSolidButton(
       title: field.label ?? "BUTTON",
-      tintBtnColor: Color(hex: field.labelColor ?? "") ?? .white,
-      defaultBtnColor: Color(hex: field.backgroundColor ?? "") ?? Color.redButton,
+      tintBtnColor: Color(hex: field.labelColor ?? Color.white.toHex() ?? ""),
+      defaultBtnColor: Color(hex: field.backgroundColor ?? Color.redButton.toHex() ?? ""),
       cornerRadius: 24
     ) {
       action()
