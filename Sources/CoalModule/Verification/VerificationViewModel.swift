@@ -1,5 +1,5 @@
 //
-//  VerificationCodeViewModel.swift
+//  VerificationViewModel.swift
 //
 //
 //  Created by ArifRachman on 18/10/24.
@@ -7,8 +7,9 @@
 
 import SwiftUI
 import Combine
+import CoalCore
 
-public class VerificationCodeViewModel: ObservableObject {
+public class VerificationViewModel: ObservableObject {
   @Published var code: [String] = Array(repeating: "", count: 4)
   @Published var isError: Bool = false
   @Published var remainingTime: Int = 15
@@ -16,6 +17,10 @@ public class VerificationCodeViewModel: ObservableObject {
   
   private var timer: AnyCancellable?
   public let correctOTP = "0000"
+  public var sendTo: [ConfigField]? = [
+    ConfigField(type: .email, label: "arifrach31@gmail.com"),
+    ConfigField(type: .phone, label: "082111113184")
+  ]
   
   var isOTPComplete: Bool {
     code.allSatisfy { $0.count == 1 }
