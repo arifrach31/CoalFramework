@@ -10,18 +10,11 @@ import CoalCore
 class LoginProvider: LoginConfigProvider {
   func getConfig() -> LoginConfig {
     return LoginConfig(
-      loginHeader: ConfigHeader(
-        title: "Login",
-        description: "Login Description",
-        image: "telkom"
-      ),
+      loginHeader: ConfigHeader(title: "Login",
+                                description: "Login Description",
+                                image: "garuda"),
       loginFields: getLoginFields(for: .email),
-      additionalButtonConfig: AdditionalButtonConfig(isVisible: true, text: "Forgot Username & Password?"),
-      verificationMethods: getVerificationMethods(),
-      verificationMethodHeader: ConfigHeader(
-        title: "Select Verification Methods",
-        description: "Choose one of the methods below to get a verification code."),
-      showHome: false
+      additionalButtonConfig: AdditionalButtonConfig(isVisible: true, text: "Forgot Username & Password?")
     )
   }
   
@@ -31,7 +24,7 @@ class LoginProvider: LoginConfigProvider {
       return [
         ConfigField(type: .email, label: "Emailp", placeholder: "Enter your emailp"),
         ConfigField(type: .password, label: "Passwordp", placeholder: "Enter your passwordp"),
-        ConfigField(type: .submit, label: "Login", backgroundColor: Color.mainBackground.toHex())
+        ConfigField(type: .submit, label: "Login")
       ]
     case .phone:
       return [
@@ -39,12 +32,5 @@ class LoginProvider: LoginConfigProvider {
         ConfigField(type: .submit, label: "Login")
       ]
     }
-  }
-  
-  func getVerificationMethods() -> [ConfigField] {
-    return [
-      ConfigField(type: .email, label: "arifrach31@gmail.com"),
-      ConfigField(type: .phone, label: "082111113184")
-    ]
   }
 }
