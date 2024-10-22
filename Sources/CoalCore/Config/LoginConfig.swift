@@ -16,10 +16,8 @@ public class LoginConfig: BaseConfig {
   public var loginHeader: ConfigHeader?
   public var loginFields: [ConfigField]?
   public var additionalButtonConfig: AdditionalButtonConfig?
-  public var showRegister: Bool?
-  public var showForgotPassword: Bool?
-  public var showVerificationMethod: Bool?
-  public var showHome: Bool?
+  public var verificationMethods: [ConfigField]?
+  public var verificationMethodHeader: ConfigHeader?
   
   private var loginConfig: ConfigPage? {
     ConfigModel.currentConfig?.pages?.login
@@ -31,18 +29,14 @@ public class LoginConfig: BaseConfig {
     loginHeader: ConfigHeader? = nil,
     loginFields: [ConfigField]? = nil,
     additionalButtonConfig: AdditionalButtonConfig? = nil,
-    showRegister: Bool = true,
-    showForgotPassword: Bool = true,
-    showVerificationMethod: Bool = true,
-    showHome: Bool = true
+    verificationMethods: [ConfigField]? = nil,
+    verificationMethodHeader: ConfigHeader? = nil
   ) {
     super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
     self.loginHeader = loginHeader ?? loginConfig?.header
     self.loginFields = loginFields ?? loginConfig?.fields
     self.additionalButtonConfig = additionalButtonConfig
-    self.showRegister = showRegister
-    self.showForgotPassword = showForgotPassword
-    self.showVerificationMethod = showVerificationMethod
-    self.showHome = showHome
+    self.verificationMethods = verificationMethods
+    self.verificationMethodHeader = verificationMethodHeader
   }
 }

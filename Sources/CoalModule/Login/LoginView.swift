@@ -111,9 +111,7 @@ private struct ButtonView: View {
         Text(CoalString.doNotHaveAccount)
           .LGNBodySmall(color: LGNColor.tertiary500)
         AnchorText(title: CoalString.register, tintColor: Color.LGNTheme.secondary500) {
-          if config?.showRegister == true {
-            navigator?.showRegisterPage(backgroundColor: .white)
-          }
+          navigator?.showRegisterPage(backgroundColor: .white)
         }.variant(size: .small)
       }
       .padding(.vertical, 10)
