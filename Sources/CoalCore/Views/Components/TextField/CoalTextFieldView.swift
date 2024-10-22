@@ -14,15 +14,24 @@ public struct CoalTextFieldView: View {
   @Binding public var value: String
   @Binding public var isSecure: Bool
   public var additionalButtonConfig: AdditionalButtonConfig?
+  public var isError: Bool
+  public var errorMessage: String?
+  @FocusState private var isEmailFieldFocused: Bool
   
-  public init(field: ConfigField, 
-              value: Binding<String>,
-              isSecure: Binding<Bool>,
-              additionalButtonConfig: AdditionalButtonConfig? = nil) {
+  public init(
+    field: ConfigField,
+    value: Binding<String>,
+    isSecure: Binding<Bool>,
+    additionalButtonConfig: AdditionalButtonConfig? = nil,
+    isError: Bool = false,
+    errorMessage: String? = nil
+  ) {
     self.field = field
     self._value = value
     self._isSecure = isSecure
     self.additionalButtonConfig = additionalButtonConfig
+    self.isError = isError
+    self.errorMessage = errorMessage
   }
   
   private var isPasswordField: Bool {
@@ -55,15 +64,25 @@ public struct CoalTextFieldView: View {
       )
       .setSecured($isSecure)
       .setRightView(isPasswordField ? secureButton : nil)
-      .state(field.isShowError ?? false ? .error : .idle)
-      .showCaption(
-        caption: ContentModel(
-          image: Image(systemName: "exclamationmark.triangle"),
-          text: field.errorMessage ?? ""
-        ), 
-        showCaption: field.isShowError ?? false
-      )
-      .padding(.top, 10)
+      .state(isError ? .error : .idle)
+      .focused($isEmailFieldFocused, equals: field.type == .email)
+      .onChange(of: isError) { newValue in
+        if newValue && field.type == .email {
+          isEmailFieldFocused = true 
+        }
+      }
+      if isError {
+        HStack(alignment: .top) {
+          Image(systemName: "exclamationmark.triangle")
+            .foregroundColor(.red)
+          
+          Text(errorMessage ?? "")
+            .lgnBodySmallRegular(color: Color.redButton)
+            .lineLimit(nil)
+            .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.top, 2)
+      }
       
       if additionalButtonConfig?.isVisible == true {
         if let additionalText = additionalButtonConfig?.text {

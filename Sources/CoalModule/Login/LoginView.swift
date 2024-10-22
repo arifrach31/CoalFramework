@@ -80,7 +80,9 @@ private struct FormView: View {
           field: field,
           value: viewModel.binding(for: field),
           isSecure: viewModel.bindingSecure(for: field),
-          additionalButtonConfig: index == formFields.count - 1 ? additionalButtonConfig : nil
+          additionalButtonConfig: index == formFields.count - 1 ? additionalButtonConfig : nil,
+          isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
+          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? ""
         )
       }
     }
@@ -98,10 +100,8 @@ private struct ButtonView: View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonView(field: field, isDisabled: !viewModel.isFormValid) {
-          if config?.showVerificationMethod == true {
+          if viewModel.verifyEmail(correctEmail: viewModel.correctEmail) {
             navigator?.showVerificationMethodPage()
-          } else if config?.showHome == true {
-            navigator?.showHomePage()
           }
         }
         .padding(.vertical, 10)
