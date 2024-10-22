@@ -7,17 +7,16 @@
 
 import SwiftUI
 import CoalCore
-import CoalLogin
 import LegionUI
 import ThemeLGN
 
 public struct VerificationMethodView: View {
-  @StateObject private var viewModel: LoginViewModel
+  @StateObject private var viewModel: VerificationViewModel
   private let navigator: CoalNavigatorProtocol?
-  private let config: LoginConfig?
+  private let config: VerificationConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: LoginConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: LoginViewModel(config: config))
+  public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil) {
+    _viewModel = StateObject(wrappedValue: VerificationViewModel())
     self.navigator = navigator
     self.config = config
   }
@@ -40,7 +39,7 @@ public struct VerificationMethodView: View {
   }
   
   private var headerImage: some View {
-    CoalImageView(imageURL: config?.loginHeader?.image ?? "")
+    CoalImageView(imageURL: config?.verificationMethodHeader?.image ?? "")
       .scaledToFill()
       .frame(width: 125, height: 125)
       .padding(.top, -8)
@@ -49,7 +48,7 @@ public struct VerificationMethodView: View {
   private var bottomSheetView: some View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config?.verificationMethodHeader)
-      if let verificationMethods = config?.verificationMethods {
+      if let verificationMethods = viewModel.sendTo {
         VerificationButtonView(methods: verificationMethods, navigator: navigator)
       }
       Spacer()
@@ -86,7 +85,9 @@ private struct VerificationButton: View {
       pressedBtnColor: .white,
       cornerRadius: 30
     ) {
-      navigator?.showVerificationCodePage()
+      if let sendTo = field.label {
+        navigator?.showVerificationCodePage(sendTo: maskingAccount(sendTo, type: field.type))
+      }
     }
     .variant(size: .medium, responsive: true)
   }

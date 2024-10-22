@@ -28,11 +28,8 @@ let package = Package(
       name: "CoalAccount",
       targets: ["CoalAccount"]),
     .library(
-      name: "CoalVerificationMethod",
-      targets: ["CoalVerificationMethod"]),
-    .library(
-      name: "CoalVerificationCode",
-      targets: ["CoalVerificationCode"])
+      name: "CoalVerification",
+      targets: ["CoalVerification"])
   ],
   dependencies: [
     .package(url: "ssh://git@gitlab.playcourt.id:31022/mobileteam/legion-ios.git", branch: "main")
@@ -58,8 +55,7 @@ let package = Package(
                      "CoalHome",
                      "CoalRegister",
                      "CoalAccount",
-                     "CoalVerificationMethod",
-                     "CoalVerificationCode"],
+                     "CoalVerification"],
       path: "Sources/CoalFramework"
     ),
     .target(
@@ -88,14 +84,9 @@ let package = Package(
       path: "Sources/CoalModule/Account"
     ),
     .target(
-      name: "CoalVerificationMethod",
-      dependencies: ["CoalCore", "CoalLogin"],
-      path: "Sources/CoalModule/VerificationMethod"
-    ),
-    .target(
-      name: "CoalVerificationCode",
-      dependencies: ["CoalCore", "CoalLogin"],
-      path: "Sources/CoalModule/VerificationCode"
+      name: "CoalVerification",
+      dependencies: ["CoalCore"],
+      path: "Sources/CoalModule/Verification"
     )
   ]
 )

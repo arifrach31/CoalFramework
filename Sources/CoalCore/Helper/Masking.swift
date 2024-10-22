@@ -7,13 +7,7 @@
 
 import Foundation
 
-public enum MaskingType {
-  case email
-  case phone
-  case password
-}
-
-public func maskingAccount(_ input: String, type: MaskingType) -> String {
+public func maskingAccount(_ input: String, type: ConfigFieldType) -> String {
   switch type {
   case .email:
     let emailPattern = #"(^.)(.*?)(.@.)(.*)(..)(.*)$"#
@@ -37,12 +31,12 @@ public func maskingAccount(_ input: String, type: MaskingType) -> String {
       range: NSRange(input.startIndex..<input.endIndex, in: input),
       withTemplate: "$1*****$3"
     )
-  case .password:
+  default:
     return ""
   }
 }
 
-public func Validator(_ input: String, type: MaskingType) -> Bool {
+public func Validator(_ input: String, type: ConfigFieldType) -> Bool {
   switch type {
   case .email:
     let emailPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"

@@ -9,14 +9,17 @@ import SwiftUI
 import CoalCore
 
 public struct VerificationCodeView: View {
-  @StateObject private var viewModel = VerificationCodeViewModel()
+  @StateObject private var viewModel: VerificationViewModel
   
   private let navigator: CoalNavigatorProtocol?
-  private let config: LoginConfig?
+  private let config: VerificationConfig?
+  private let sendTo: String?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: LoginConfig? = nil) {
+  public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil, sendTo: String? = "") {
+    _viewModel = StateObject(wrappedValue: VerificationViewModel())
     self.navigator = navigator
     self.config = config
+    self.sendTo = sendTo
   }
   
   public var body: some View {
@@ -37,7 +40,8 @@ public struct VerificationCodeView: View {
   private var bottomSheetView: some View {
     BottomSheetView {
       AuthenticationHeaderView(
-        configHeader: config?.loginHeader,
+        configHeader: config?.verificationCodeHeader,
+        additionalParam: (sendTo ?? config?.sendVerificationCodeTo) ?? "",
         alignment: .center
       ).padding(.top, 30)
       

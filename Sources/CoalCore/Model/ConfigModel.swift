@@ -32,6 +32,8 @@ public struct ConfigProject: Codable {
 
 public struct ConfigPages: Codable {
   public let login: ConfigPage?
+  public let verification: ConfigPage?
+  public let verificationCode: ConfigPage?
   public let register: ConfigPage?
   public let home: ConfigHomePage?
 }
