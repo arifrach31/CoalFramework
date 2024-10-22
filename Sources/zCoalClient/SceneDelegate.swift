@@ -13,6 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
   let appProvider = AppProvider(
     splashProvider: SplashProvider(),
     loginProvider: LoginProvider(),
+    verificationProvider: VerificationProvider(),
     menuProvider: MenuProvider(),
     homeProvider: HomeProvider())
   
