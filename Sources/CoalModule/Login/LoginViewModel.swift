@@ -13,6 +13,10 @@ public class LoginViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
   @Published var formFields: [ConfigField]
+  @Published var fieldErrors: [String: Bool] = [:]
+  @Published var fieldErrorMessages: [String: String] = [:]
+  
+  public let correctEmail = "emaildummy@gmail.com"
   
   public init(config: LoginConfig?) {
     self.formFields = config?.loginFields ?? []
@@ -43,5 +47,29 @@ public class LoginViewModel: ObservableObject {
       get: { self.isSecured[field.label ?? ""] ?? (field.type == .password) },
       set: { self.isSecured[field.label ?? ""] = $0 }
     )
+  }
+  
+  func verifyEmail(correctEmail: String) -> Bool {
+    let emailField = formFields.first(where: { $0.type == .email })
+    let email = formValues[emailField?.label ?? ""] ?? ""
+    
+    if email == correctEmail {
+      fieldErrors[emailField?.label ?? ""] = false
+      fieldErrorMessages[emailField?.label ?? ""] = ""
+      return true
+    } else {
+      fieldErrors[emailField?.label ?? ""] = true
+      fieldErrorMessages[emailField?.label ?? ""] = CoalString.emailError
+      clearPassword()
+      return false
+    }
+  }
+  
+  func clearPassword() {
+    let passwordField = formFields.first(where: { $0.type == .password })
+    
+    if let passwordFieldLabel = passwordField?.label {
+      formValues[passwordFieldLabel] = ""
+    }
   }
 }
