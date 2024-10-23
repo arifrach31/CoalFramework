@@ -27,7 +27,8 @@ public struct LoginView: View {
     
     CoalBaseView(
       backgroundImage: backgroundImage,
-      backgroundColor: backgroundColor
+      backgroundColor: backgroundColor,
+      isLoading: viewModel.isLoading
     ) {
       VStack(spacing: 40) {
         headerImage
@@ -99,9 +100,7 @@ private struct ButtonView: View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
-          if viewModel.verifyEmail(correctEmail: viewModel.correctEmail) {
-            navigator?.showVerificationMethodPage()
-          }
+          handleLogin()
         }
         .padding(.vertical, 10)
       }
@@ -114,6 +113,17 @@ private struct ButtonView: View {
         }.variant(size: .small)
       }
       .padding(.vertical, 10)
+    }
+  }
+  
+  private func handleLogin() {
+    viewModel.login { result in
+      switch result {
+      case .success:
+        navigator?.showVerificationMethodPage()
+      case .failure:
+        break
+      }
     }
   }
 }
