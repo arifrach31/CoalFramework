@@ -10,12 +10,40 @@ import Foundation
 public class NetworkManager {
   public static let shared = NetworkManager()
   
-  public func request<T: Decodable>(endpoint: CoalAPI, responseType: T.Type, completion: @escaping (Result<T, ApiError>) -> Void) {
-    let request = endpoint.urlRequest
+  private var networkConfigProvider: NetworkConfigProvider
+  
+  public init(
+    networkConfigProvider: NetworkConfigProvider = NetworkConfig()
+  ) {
+    self.networkConfigProvider = networkConfigProvider
+  }
+  
+  public func setNetworkConfigProvider(_ provider: NetworkConfigProvider) {
+    self.networkConfigProvider = provider
+  }
+  
+  public func request<T: Decodable>(
+    endpoint: CoalAPI,
+    responseType: T.Type,
+    completion: @escaping (Result<T, ApiError>) -> Void
+  ) {
+    do {
+      let request = try endpoint.urlRequest(using: networkConfigProvider)
+      executeRequest(request, completion: completion)
+    } catch {
+      completion(.failure(.connectionError))
+    }
+  }
+  
+  private func executeRequest<T: Decodable>(
+    _ request: URLRequest,
+    completion: @escaping (Result<T, ApiError>) -> Void
+  ) {
     NetworkLogger.shared.logRequest(request)
     
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
       NetworkLogger.shared.logResponse(response, data: data, error: error)
+      
       if error != nil {
         completion(.failure(.connectionError))
         return
@@ -48,7 +76,6 @@ public class NetworkManager {
         }
       }
     }
-    
     task.resume()
   }
 }

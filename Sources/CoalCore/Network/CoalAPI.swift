@@ -12,15 +12,6 @@ public enum CoalAPI {
   case getCurrentUser
   case getConfig
   
-  var baseURL: String {
-    switch self {
-    case .getConfig:
-      return NetworkConfig.mockyURL
-    default:
-      return NetworkConfig.baseURL
-    }
-  }
-  
   var path: String {
     switch self {
     case .login:
@@ -51,7 +42,7 @@ public enum CoalAPI {
     }
   }
   
-  var headers: [String: String]? {
+  func headers(using config: NetworkConfig) -> [String: String]? {
     var headers = ["Content-Type": "application/json"]
     switch self {
     case .getCurrentUser:
@@ -59,23 +50,26 @@ public enum CoalAPI {
         headers["Authorization"] = "Bearer \(token)"
       }
     case .login:
-      if let userAndPassword = "\(NetworkConfig.BasicAuth.username):\(NetworkConfig.BasicAuth.password)".data(using: .utf8)?.base64EncodedString() {
-        headers["Authorization"] = "Basic \(userAndPassword)"
+      let userAndPassword = "\(config.basicAuth.username):\(config.basicAuth.password)"
+      if let userAndPasswordData = userAndPassword.data(using: .utf8) {
+        headers["Authorization"] = "Basic \(userAndPasswordData.base64EncodedString())"
       }
+
     default:
       return nil
     }
     
-    return headers
+    return headers.isEmpty ? nil : headers
   }
   
-  var urlRequest: URLRequest {
-    let url = URL(string: baseURL + path)!
+  public func urlRequest(using configProvider: NetworkConfigProvider) throws -> URLRequest {
+    let config = configProvider.getConfig()
+    let url = URL(string: config.baseURL + path)!
     
     var request = URLRequest(url: url)
     request.httpMethod = method
     
-    if let headers = headers {
+    if let headers = self.headers(using: config) {
       for (key, value) in headers {
         request.setValue(value, forHTTPHeaderField: key)
       }

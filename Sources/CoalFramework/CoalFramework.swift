@@ -14,7 +14,10 @@ public class CoalFramework {
   private let networkManager: NetworkManager
   private let coalNavigator: CoalNavigator
   
-  init(networkManager: NetworkManager = NetworkManager.shared, coalNavigator: CoalNavigator = CoalNavigator.shared) {
+  init(
+    networkManager: NetworkManager = NetworkManager.shared,
+    coalNavigator: CoalNavigator = CoalNavigator.shared
+  ) {
     self.networkManager = networkManager
     self.coalNavigator = coalNavigator
   }
@@ -24,6 +27,7 @@ public class CoalFramework {
     backgroundColor: UIColor? = .white,
     frameworkConfig: CoalConfig?
   ) {
+    configNetwork(config: frameworkConfig?.networkConfig)
     configNavigator(windowScene: windowScene, from: frameworkConfig)
     fetchAndUpdateInitialConfig()
   }
@@ -63,6 +67,12 @@ public class CoalFramework {
   
   private func showInitialScreen() {
     coalNavigator.showSplashScreen()
+  }
+  
+  private func configNetwork(config: NetworkConfigProvider? = NetworkConfig()) {
+    if let config = config {
+      networkManager.setNetworkConfigProvider(config.getConfig())
+    }
   }
   
   private func configNavigator(windowScene: UIWindowScene?, from frameworkConfig: CoalConfig?) {

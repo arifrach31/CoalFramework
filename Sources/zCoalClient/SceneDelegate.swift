@@ -15,7 +15,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
     loginProvider: LoginProvider(),
     verificationProvider: VerificationProvider(),
     menuProvider: MenuProvider(),
-    homeProvider: HomeProvider())
+    homeProvider: HomeProvider(),
+    networkProvider: NetworkProvider())
   
   func initCoalConfig() -> CoalConfig? {
     return appProvider.getConfig()
