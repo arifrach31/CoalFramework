@@ -14,17 +14,20 @@ class AppProvider: CoalAppProvider {
   var verificationProvider: VerificationConfigProvider?
   let menuProvider: MenuConfigProvider?
   let homeProvider: HomeConfigProvider?
+  let networkProvider: NetworkConfigProvider?
   
   init(splashProvider: SplashConfigProvider? = nil,
        loginProvider: LoginConfigProvider? = nil,
        verificationProvider: VerificationConfigProvider? = nil,
        menuProvider: MenuConfigProvider? = nil,
-       homeProvider: HomeConfigProvider? = nil) {
+       homeProvider: HomeConfigProvider? = nil,
+       networkProvider: NetworkConfigProvider? = nil) {
     self.splashProvider = splashProvider
     self.loginProvider = loginProvider
     self.verificationProvider = verificationProvider
     self.menuProvider = menuProvider
     self.homeProvider = homeProvider
+    self.networkProvider = networkProvider
   }
   
   func getConfig() -> CoalConfig? {
@@ -33,7 +36,8 @@ class AppProvider: CoalAppProvider {
       loginConfig: loginProvider?.getConfig(),
       verificationConfig: verificationProvider?.getConfig(),
       menuConfig: menuProvider?.getConfig(),
-      homeConfig: homeProvider?.getConfig()
+      homeConfig: homeProvider?.getConfig(),
+      networkConfig: networkProvider?.getConfig()
     )
   }
 }
