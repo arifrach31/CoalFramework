@@ -26,8 +26,8 @@ public struct CoalUser: Codable {
 }
 
 public struct UserData: Codable {
-  public let email: String
-  public let username: String
-  public let fullname: String
-  public let mobileNumber: String
+  public let email: String?
+  public let username: String?
+  public let fullname: String?
+  public let mobileNumber: String?
 }

@@ -15,30 +15,41 @@ public class LoginViewModel: ObservableObject {
   @Published var formFields: [ConfigField]
   @Published var fieldErrors: [String: Bool] = [:]
   @Published var fieldErrorMessages: [String: String] = [:]
-  
-  public let correctEmail = "emaildummy@gmail.com"
+  @Published var isLoading: Bool = false
   
   public init(config: LoginConfig?) {
     self.formFields = config?.loginFields ?? []
   }
   
   var isFormValid: Bool {
-    let emailField = formFields.first(where: { $0.type == .email })
-    let passwordField = formFields.first(where: { $0.type == .password })
+    validateFields()
+  }
+  
+  private func validateFields() -> Bool {
+    let email = getFieldValue(for: .email) ?? ""
+    let password = getFieldValue(for: .password) ?? ""
     
-    let email = formValues[emailField?.label ?? ""] ?? ""
-    let password = formValues[passwordField?.label ?? ""] ?? ""
-    
-    let isEmailValid = Validator(email, type: .email)
-    let isPasswordValid = Validator(password, type: .password)
-    
-    return isEmailValid && isPasswordValid
+    return Validator(email, type: .email) && Validator(password, type: .password)
+  }
+  
+  private func getFieldValue(for type: ConfigFieldType) -> String? {
+    let field = formFields.first { $0.type == type }
+    return field.flatMap { formValues[$0.label ?? ""] }
+  }
+  
+  private func handleLoginError(error: ApiError) {
+    if let emailField = formFields.first(where: { $0.type == .email }) {
+      setError(for: emailField, message: CoalString.emailError)
+    }
   }
   
   func binding(for field: ConfigField) -> Binding<String> {
     Binding<String>(
       get: { self.formValues[field.label ?? ""] ?? "" },
-      set: { self.formValues[field.label ?? ""] = $0 }
+      set: { newValue in
+        self.formValues[field.label ?? ""] = newValue
+        self.clearErrors(for: field)
+      }
     )
   }
   
@@ -49,27 +60,51 @@ public class LoginViewModel: ObservableObject {
     )
   }
   
-  func verifyEmail(correctEmail: String) -> Bool {
-    let emailField = formFields.first(where: { $0.type == .email })
-    let email = formValues[emailField?.label ?? ""] ?? ""
-    
-    if email == correctEmail {
-      fieldErrors[emailField?.label ?? ""] = false
-      fieldErrorMessages[emailField?.label ?? ""] = ""
-      return true
-    } else {
-      fieldErrors[emailField?.label ?? ""] = true
-      fieldErrorMessages[emailField?.label ?? ""] = CoalString.emailError
-      clearPassword()
-      return false
+  func setError(for field: ConfigField, message: String) {
+    fieldErrors[field.label ?? ""] = true
+    fieldErrorMessages[field.label ?? ""] = message
+  }
+  
+  func clearErrors(for field: ConfigField) {
+    fieldErrors[field.label ?? ""] = false
+    fieldErrorMessages[field.label ?? ""] = ""
+  }
+  
+  func clearAllErrors() {
+    for field in formFields {
+      clearErrors(for: field)
     }
   }
   
-  func clearPassword() {
-    let passwordField = formFields.first(where: { $0.type == .password })
+  private func clearPassword() {
+    formValues["password"] = ""
+  }
+  
+  func login(completion: @escaping (Result<Void, ApiError>) -> Void) {
+    guard let email = getFieldValue(for: .email),
+          let password = getFieldValue(for: .password) else {
+      completion(.failure(.connectionError))
+      return
+    }
     
-    if let passwordFieldLabel = passwordField?.label {
-      formValues[passwordFieldLabel] = ""
+    isLoading = true
+    NetworkManager.shared.request(
+      endpoint: .login(username: email, password: password),
+      responseType: CoalUser.self
+    ) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.isLoading = false
+        switch result {
+        case .success(let response):
+          response.save()
+          self?.clearAllErrors()
+          completion(.success(()))
+        case .failure(let error):
+          self?.handleLoginError(error: error)
+          self?.clearPassword()
+          completion(.failure(error))
+        }
+      }
     }
   }
 }

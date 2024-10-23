@@ -9,6 +9,6 @@ import CoalCore
 
 class NetworkProvider: NetworkConfigProvider {
   func getConfig() -> CoalCore.NetworkConfig {
-    NetworkConfig(baseURL: "")
+    NetworkConfig(baseURL: "https://y22y4.wiremockapi.cloud")
   }
 }
