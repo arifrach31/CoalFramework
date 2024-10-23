@@ -15,6 +15,7 @@ public struct CoalBaseView<Content: View>: View {
   private let backgroundColor: Color?
   private let content: Content
   private let isShowNavBar: Bool
+  private let isLoading: Bool
   
   public init(
     pageType: PageType? = nil,
@@ -23,6 +24,7 @@ public struct CoalBaseView<Content: View>: View {
     backgroundImage: Image? = nil,
     backgroundColor: Color? = .white,
     isShowNavBar: Bool = true,
+    isLoading: Bool = false,
     @ViewBuilder content: @escaping () -> Content
   ) {
     self.pageType = pageType
@@ -31,6 +33,7 @@ public struct CoalBaseView<Content: View>: View {
     self.backgroundImage = backgroundImage
     self.backgroundColor = backgroundColor
     self.isShowNavBar = isShowNavBar
+    self.isLoading = isLoading
     self.content = content()
   }
   
@@ -59,6 +62,11 @@ public struct CoalBaseView<Content: View>: View {
           )
         }
         content
+      }.blur(radius: isLoading ? 3 : 0)
+      
+      if isLoading {
+        ProgressView()
+          .scaleEffect(1.5)
       }
     }
     .navigationBarHidden(true)
