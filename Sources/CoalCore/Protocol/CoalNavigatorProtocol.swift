@@ -18,5 +18,5 @@ public protocol CoalNavigatorProtocol {
   func showRegisterPage(backgroundColor: UIColor)
   func showAccountPage()
   func showVerificationMethodPage()
-  func showVerificationCodePage(field: ConfigField?)
+  func showVerificationCodePage(methodField: ConfigField?)
 }

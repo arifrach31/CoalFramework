@@ -130,15 +130,15 @@ public class CoalNavigator: CoalNavigatorProtocol {
       )
       pushToViewController(loginVerificationView)
     } else {
-      showVerificationCodePage(field: config?.verificationConfig?.sendVerificationCodeTo)
+      showVerificationCodePage()
     }
   }
   
-  public func showVerificationCodePage(field: ConfigField?) {
+  public func showVerificationCodePage(methodField: ConfigField? = nil) {
     let loginVerificationView = VerificationCodeView(
       navigator: self,
       config: config?.verificationConfig,
-      field: field
+      methodField: methodField
     )
     pushToViewController(loginVerificationView)
   }

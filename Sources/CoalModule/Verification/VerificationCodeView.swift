@@ -13,13 +13,13 @@ public struct VerificationCodeView: View {
   
   private let navigator: CoalNavigatorProtocol?
   private let config: VerificationConfig?
-  private let field: ConfigField?
+  private let methodField: ConfigField?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil, field: ConfigField? = nil) {
-    _viewModel = StateObject(wrappedValue: VerificationViewModel())
+  public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil, methodField: ConfigField? = nil) {
+    _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
     self.navigator = navigator
     self.config = config
-    self.field = field
+    self.methodField = methodField
   }
   
   public var body: some View {
@@ -40,11 +40,9 @@ public struct VerificationCodeView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      let sendToMasking = maskingAccount((field?.label ?? config?.sendVerificationCodeTo?.label) ?? "", type: field?.type ?? .email)
-      
       AuthenticationHeaderView(
         configHeader: config?.verificationCodeHeader,
-        additionalParam: sendToMasking,
+        additionalText: viewModel.getSendToMasking(methodField: methodField),
         alignment: .center
       )
       .padding(.top, 20)
@@ -63,10 +61,7 @@ public struct VerificationCodeView: View {
         })
       
       CoalButtonPrimary(
-        field: config?.verificationField ?? ConfigField(
-          type: .submit,
-          label: CoalString.verify
-        ),
+        field: viewModel.buttonVerifyCode,
         isDisabled: !viewModel.isOTPComplete || viewModel.isError
       ) {
         if viewModel.verifyOTP(correctOTP: viewModel.correctOTP) {

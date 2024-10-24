@@ -16,7 +16,7 @@ public struct VerificationMethodView: View {
   private let config: VerificationConfig?
   
   public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: VerificationViewModel())
+    _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
     self.navigator = navigator
     self.config = config
   }
@@ -78,7 +78,7 @@ private struct VerificationButtonView: View {
     viewModel.sendOTP(method: field) { result in
       switch result {
       case .success:
-        navigator?.showVerificationCodePage(field: field)
+        navigator?.showVerificationCodePage(methodField: field)
       case .failure:
         break
       }
