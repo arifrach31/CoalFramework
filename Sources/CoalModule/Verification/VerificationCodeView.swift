@@ -40,45 +40,42 @@ public struct VerificationCodeView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      VStack(spacing: 0) {
-        AuthenticationHeaderView(
-          configHeader: config?.verificationCodeHeader,
-          additionalParam: (sendTo ?? config?.sendVerificationCodeTo) ?? "",
-          alignment: .center
-        )
-        .padding(.top, 20)
-        .frame(maxWidth: .infinity)
-        
-        CodeFieldView(
-          code: $viewModel.code,
-          isError: viewModel.isError,
-          isTimerActive: viewModel.isTimerActive,
-          remainingTime: viewModel.remainingTime,
-          onResetError: {
-            viewModel.clearError()
-          },
-          onResendCode: {
-            viewModel.resetTimer()
-          })
-        
-        CoalButtonPrimary(
-          field:
-            ConfigField(
-              type: .submit,
-              label: CoalString.verify
-            ),
-          isDisabled: !viewModel.isOTPComplete || viewModel.isError
-        ) {
-          if viewModel.verifyOTP(correctOTP: viewModel.correctOTP) {
-            navigator?.showVerificationMethodPage()
-          }
+      AuthenticationHeaderView(
+        configHeader: config?.verificationCodeHeader,
+        additionalParam: (sendTo ?? config?.sendVerificationCodeTo) ?? "",
+        alignment: .center
+      )
+      .padding(.top, 20)
+      .frame(maxWidth: .infinity)
+      
+      CodeFieldView(
+        code: $viewModel.code,
+        isError: viewModel.isError,
+        isTimerActive: viewModel.isTimerActive,
+        remainingTime: viewModel.remainingTime,
+        onResetError: {
+          viewModel.clearError()
+        },
+        onResendCode: {
+          viewModel.resetTimer()
+        })
+      
+      CoalButtonPrimary(
+        field: config?.verificationField ?? ConfigField(
+          type: .submit,
+          label: CoalString.verify
+        ),
+        isDisabled: !viewModel.isOTPComplete || viewModel.isError
+      ) {
+        if viewModel.verifyOTP(correctOTP: viewModel.correctOTP) {
+          navigator?.showVerificationMethodPage()
         }
-        
-        Spacer()
       }
-      .onAppear {
+      
+      Spacer()
+    }
+    .onAppear {
         viewModel.startTimer()
-      }
     }
   }
 }

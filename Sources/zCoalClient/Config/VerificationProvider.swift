@@ -18,7 +18,12 @@ class VerificationProvider: VerificationConfigProvider {
       verificationCodeHeader: ConfigHeader(
         title: "Enter Verification Code",
         description: "The verification code has been sent to"
-      )
+      ),
+      verificationField: verificationField()
     )
+  }
+  
+  private func verificationField() -> ConfigField {
+    return ConfigField(type: .submit, label: "Submit", backgroundColor: Color.mainBackground.toHex())
   }
 }
