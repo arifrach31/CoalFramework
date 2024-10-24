@@ -9,7 +9,7 @@ import SwiftUI
 import ThemeLGN
 import LegionUI
 
-public enum PageType: Equatable {
+public enum PageType {
   case home
   case account
   case verificationMethod
@@ -53,24 +53,22 @@ public struct CoalNavBar: View {
   }
   
   public var body: some View {
-    VStack(spacing: 0) {
-      HStack {
-        if let leadingAction = leadingAction {
-          leadingButtonView(action: leadingAction)
-        }
-        
-        if let title = pageType.title {
-          titleView(title: title)
-        }
-        
-        Spacer()
-        
-        if let trailingAction = trailingAction, let trailingIcon = pageType.trailingIcon {
-          trailingButtonView(action: trailingAction, icon: trailingIcon)
-        }
+    HStack {
+      if let leadingAction = leadingAction {
+        leadingButtonView(action: leadingAction)
       }
-      .padding(.horizontal, 4)
+      
+      if let title = pageType.title {
+        titleView(title: title)
+      }
+      
+      Spacer()
+      
+      if let trailingAction = trailingAction, let trailingIcon = pageType.trailingIcon {
+        trailingButtonView(action: trailingAction, icon: trailingIcon)
+      }
     }
+    .padding(.horizontal, 4)
     .frame(height: 60)
     .background(.clear)
   }
@@ -81,7 +79,7 @@ public struct CoalNavBar: View {
         .resizable()
         .scaledToFit()
         .frame(width: 20, height: 20)
-        .foregroundColor(pageType == .verificationCode ? Color.blackText : .white)
+        .foregroundColor(.white)
         .padding(12)
     }
   }
@@ -98,6 +96,6 @@ public struct CoalNavBar: View {
   
   private func titleView(title: String) -> some View {
     Text(title)
-      .lgnHeading5(color: pageType == .verificationCode ? Color.blackText : .white)
+      .lgnHeading5(color: .white)
   }
 }

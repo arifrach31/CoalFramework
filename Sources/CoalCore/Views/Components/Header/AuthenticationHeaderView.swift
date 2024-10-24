@@ -30,11 +30,11 @@ public struct AuthenticationHeaderView: View {
         .lgnHeading5(color: Color.blackText)
       
       Text(configHeader?.description ?? CoalString.loginDescription)
-        .lgnBodySmallRegular(color: Color.grayText)
+        .lgnBodySmallRegular(color: LGNColor.tertiary500)
       
       if !additionalParam.isEmpty {
         Text(additionalParam)
-          .lgnBodySmallRegular(color: Color.grayText)
+          .lgnBodySmallRegular(color: LGNColor.tertiary500)
       }
     }
     .padding(.top, 20)

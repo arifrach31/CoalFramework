@@ -14,7 +14,6 @@ public class VerificationViewModel: ObservableObject {
   @Published var isError: Bool = false
   @Published var remainingTime: Int = 15
   @Published var isTimerActive: Bool = true
-  @Published var configField: [ConfigField]
   
   private var timer: AnyCancellable?
   public let correctOTP = "0000"
@@ -25,10 +24,6 @@ public class VerificationViewModel: ObservableObject {
   
   var isOTPComplete: Bool {
     code.allSatisfy { $0.count == 1 }
-  }
-  
-  public init(config: VerificationConfig?) {
-    self.configField = config?.verificationField ?? []
   }
 
   func startTimer() {
