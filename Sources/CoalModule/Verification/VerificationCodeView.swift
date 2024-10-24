@@ -13,13 +13,13 @@ public struct VerificationCodeView: View {
   
   private let navigator: CoalNavigatorProtocol?
   private let config: VerificationConfig?
-  private let sendTo: String?
+  private let field: ConfigField?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil, sendTo: String? = "") {
+  public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil, field: ConfigField? = nil) {
     _viewModel = StateObject(wrappedValue: VerificationViewModel())
     self.navigator = navigator
     self.config = config
-    self.sendTo = sendTo
+    self.field = field
   }
   
   public var body: some View {
@@ -40,9 +40,11 @@ public struct VerificationCodeView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
+      let sendToMasking = maskingAccount((field?.label ?? config?.sendVerificationCodeTo?.label) ?? "", type: field?.type ?? .email)
+      
       AuthenticationHeaderView(
         configHeader: config?.verificationCodeHeader,
-        additionalParam: (sendTo ?? config?.sendVerificationCodeTo) ?? "",
+        additionalParam: sendToMasking,
         alignment: .center
       )
       .padding(.top, 20)
