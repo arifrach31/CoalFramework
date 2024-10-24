@@ -16,7 +16,7 @@ public struct VerificationMethodView: View {
   private let config: VerificationConfig?
   
   public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
+    _viewModel = StateObject(wrappedValue: VerificationViewModel())
     self.navigator = navigator
     self.config = config
   }
@@ -48,7 +48,7 @@ public struct VerificationMethodView: View {
   private var bottomSheetView: some View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config?.verificationMethodHeader)
-      VerificationButtonView(methods: config?.verificationField ?? viewModel.sendTo, navigator: navigator)
+      VerificationButtonView(methods: viewModel.sendTo, navigator: navigator)
       Spacer()
     }
   }

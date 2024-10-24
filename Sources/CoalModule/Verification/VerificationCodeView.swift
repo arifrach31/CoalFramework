@@ -16,7 +16,7 @@ public struct VerificationCodeView: View {
   private let sendTo: String?
   
   public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil, sendTo: String? = "") {
-    _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
+    _viewModel = StateObject(wrappedValue: VerificationViewModel())
     self.navigator = navigator
     self.config = config
     self.sendTo = sendTo
@@ -30,10 +30,9 @@ public struct VerificationCodeView: View {
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isShowNavBar: false
+      isShowNavBar: true
     ) {
       VStack(spacing: 20) {
-        Spacer()
         bottomSheetView
       }
     }
@@ -42,13 +41,6 @@ public struct VerificationCodeView: View {
   private var bottomSheetView: some View {
     BottomSheetView {
       VStack(spacing: 0) {
-        CoalNavBar(
-          pageType: .verificationCode,
-          leadingAction: { navigator?.popToPreviousView() }
-        )
-        .padding(.horizontal, -16)
-        .padding(.top, 16)
-        
         AuthenticationHeaderView(
           configHeader: config?.verificationCodeHeader,
           additionalParam: (sendTo ?? config?.sendVerificationCodeTo) ?? "",
