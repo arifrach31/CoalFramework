@@ -133,4 +133,34 @@ public class VerificationViewModel: ObservableObject {
       return maskingAccount((methodField?.label ?? config?.verificationCodeFields?.sendVerificationCodeTo?.label) ?? "", type: methodField?.type ?? .email)
     }
   }
+  
+  func verifyOTP(sendTo: String?, completion: @escaping (Result<Void, ApiError>) -> Void) {
+    guard let sendTo = sendTo else {
+      completion(.failure(.connectionError))
+      return
+    }
+    
+    let enteredOTP = code.joined()
+    isLoading = true
+    
+    NetworkManager.shared.request(
+      endpoint: .verifyOTP(
+        sendTo: sendTo,
+        otp: enteredOTP
+      ),
+      responseType: BaseResponseModel<VerificationModel>.self
+    ) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.isLoading = false
+        switch result {
+        case .success:
+          self?.isError = false
+          completion(.success(()))
+        case .failure(let error):
+          self?.isError = true
+          completion(.failure(error))
+        }
+      }
+    }
+  }
 }
