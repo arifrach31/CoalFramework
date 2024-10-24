@@ -15,7 +15,7 @@ public class VerificationConfig: BaseConfig {
   public var showVerificationMethod: Bool?
   public var verificationMethodHeader: ConfigHeader?
   public var verificationCodeHeader: ConfigHeader?
-  public var sendVerificationCodeTo: String?
+  public var sendVerificationCodeTo: ConfigField?
   public var verificationField: ConfigField?
   
   private var verificationConfig: ConfigPage? {
@@ -32,7 +32,7 @@ public class VerificationConfig: BaseConfig {
     showVerificationMethod: Bool? = true,
     verificationMethodHeader: ConfigHeader? = nil,
     verificationCodeHeader: ConfigHeader? = nil,
-    sendVerificationCodeTo: String? = "",
+    sendVerificationCodeTo: ConfigField? = nil,
     verificationField: ConfigField? = nil
   ) {
     super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)

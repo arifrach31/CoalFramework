@@ -66,20 +66,19 @@ private struct VerificationButtonView: View {
     VStack(spacing: 12) {
       ForEach(Array(methods.enumerated()), id: \.offset) { _, field in
         CoalButtonSecondary(field: field) {
-          self.handleSendOTP(method: field)
+          self.handleSendOTP(field: field)
         }
         .padding(.bottom, 16)
+      }
     }
     .padding(.top, 24)
   }
 
-  private func handleSendOTP(method: ConfigField) {
-    viewModel.sendOTP(method: method) { result in
+  private func handleSendOTP(field: ConfigField) {
+    viewModel.sendOTP(method: field) { result in
       switch result {
       case .success:
-        if let sendTo = method.label {
-          navigator?.showVerificationCodePage(sendTo: maskingAccount(sendTo, type: field.type ?? .email))
-        }
+        navigator?.showVerificationCodePage(field: field)
       case .failure:
         break
       }
