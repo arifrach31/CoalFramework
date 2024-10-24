@@ -29,5 +29,5 @@ public struct UserData: Codable {
   public let email: String?
   public let username: String?
   public let fullname: String?
-  public let mobileNumber: String?
+  public let phoneNumber: String?
 }

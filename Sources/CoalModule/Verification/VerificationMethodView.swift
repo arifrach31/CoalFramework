@@ -28,7 +28,8 @@ public struct VerificationMethodView: View {
       pageType: .verificationMethod,
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
-      backgroundColor: backgroundColor
+      backgroundColor: backgroundColor,
+      isLoading: viewModel.isLoading
     ) {
       VStack(spacing: 40) {
         headerImage
@@ -48,13 +49,16 @@ public struct VerificationMethodView: View {
   private var bottomSheetView: some View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config?.verificationMethodHeader)
-      VerificationButtonView(methods: viewModel.sendTo, navigator: navigator)
+      if let verificationMethods = viewModel.sendTo {
+        VerificationButtonView(viewModel: viewModel, methods: verificationMethods, navigator: navigator)
+      }
       Spacer()
     }
   }
 }
 
 private struct VerificationButtonView: View {
+  @ObservedObject var viewModel: VerificationViewModel
   let methods: [ConfigField]
   let navigator: CoalNavigatorProtocol?
   
@@ -62,14 +66,24 @@ private struct VerificationButtonView: View {
     VStack(spacing: 12) {
       ForEach(Array(methods.enumerated()), id: \.offset) { _, field in
         CoalButtonSecondary(field: field) {
-          if let sendTo = field.label {
-            navigator?.showVerificationCodePage(sendTo: maskingAccount(sendTo, type: field.type))
-          }
+          self.handleSendOTP(method: field)
         }
         .padding(.bottom, 16)
-      }
     }
     .padding(.top, 24)
+  }
+
+  private func handleSendOTP(method: ConfigField) {
+    viewModel.sendOTP(method: method) { result in
+      switch result {
+      case .success:
+        if let sendTo = method.label {
+          navigator?.showVerificationCodePage(sendTo: maskingAccount(sendTo, type: field.type ?? .email))
+        }
+      case .failure:
+        break
+      }
+    }
   }
 }
 

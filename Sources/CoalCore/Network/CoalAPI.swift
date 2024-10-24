@@ -11,6 +11,11 @@ public enum CoalAPI {
   case login(username: String, password: String)
   case getCurrentUser
   case getConfig
+  case sendOTP(channel: String, 
+               sendTo: String,
+               timeStamp: String,
+               nonce: String,
+               signature: String)
   
   var path: String {
     switch self {
@@ -20,12 +25,15 @@ public enum CoalAPI {
       return "/users/v1/me"
     case .getConfig:
       return "/config/project"
+    case .sendOTP:
+      return "/user/v1/otp"
     }
   }
   
   var method: String {
     switch self {
-    case .login:
+    case .login,
+        .sendOTP:
       return "POST"
     case .getCurrentUser, .getConfig:
       return "GET"
@@ -37,6 +45,18 @@ public enum CoalAPI {
     case .login(let username, let password):
       return ["username": username,
               "password": password]
+    case .sendOTP(let channel, 
+                  let sendTo,
+                  let timeStamp,
+                  let nonce,
+                  let signature):
+      return [
+        "channel": channel,
+        "sendTo": sendTo,
+        "timeStamp": timeStamp,
+        "nonce": nonce,
+        "signature": signature
+      ]
     default:
       return nil
     }

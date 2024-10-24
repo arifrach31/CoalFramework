@@ -75,7 +75,7 @@ public enum ConfigFieldType: String, Codable {
 
 public struct ConfigField: Codable, Identifiable {
   public let id: Int?
-  public let type: ConfigFieldType
+  public let type: ConfigFieldType?
   public let label: String?
   public let placeholder: String?
   public var isShowError: Bool?
@@ -85,7 +85,7 @@ public struct ConfigField: Codable, Identifiable {
   
   public init(
     id: Int? = nil,
-    type: ConfigFieldType,
+    type: ConfigFieldType?,
     label: String? = nil,
     placeholder: String? = nil,
     errorMessage: String? = nil,
