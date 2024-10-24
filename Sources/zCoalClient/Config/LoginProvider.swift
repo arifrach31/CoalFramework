@@ -20,10 +20,16 @@ class LoginProvider: LoginConfigProvider {
   
   func getLoginFields(for type: LoginType) -> [ConfigField] {
     switch type {
+    case .username:
+      return [
+        ConfigField(type: .text, label: "Username", placeholder: "Enter your username"),
+        ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
+        ConfigField(type: .submit, label: "Login")
+      ]
     case .email:
       return [
-        ConfigField(type: .email, label: "Emailp", placeholder: "Enter your emailp"),
-        ConfigField(type: .password, label: "Passwordp", placeholder: "Enter your passwordp"),
+        ConfigField(type: .email, label: "Email", placeholder: "Enter your email"),
+        ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
         ConfigField(type: .submit, label: "Login")
       ]
     case .phone:
