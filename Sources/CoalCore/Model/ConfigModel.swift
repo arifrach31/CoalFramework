@@ -129,3 +129,14 @@ public struct ConfigMenuItem: Codable {
   public let url: String
   public let icon: String
 }
+
+public struct ConfigVerificationCodeField: Codable {
+  public let sendVerificationCodeTo: ConfigField?
+  public let buttonVerificationCode: ConfigField?
+  
+  public init(sendVerificationCodeTo: ConfigField? = nil,
+              buttonVerificationCode: ConfigField? = nil) {
+    self.sendVerificationCodeTo = sendVerificationCodeTo
+    self.buttonVerificationCode = buttonVerificationCode
+  }
+}

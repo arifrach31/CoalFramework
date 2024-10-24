@@ -19,12 +19,21 @@ public class VerificationViewModel: ObservableObject {
   private var timer: AnyCancellable?
   public let correctOTP = "0000"
   public var sendTo: [ConfigField]?
+  public var config: VerificationConfig?
+  
+  var buttonVerifyCode: ConfigField {
+    config?.verificationCodeFields?.buttonVerificationCode ?? ConfigField(
+      type: .submit,
+      label: CoalString.verify
+    )
+  }
   
   var isOTPComplete: Bool {
     code.allSatisfy { $0.count == 1 }
   }
   
-  init() {
+  public init(config: VerificationConfig?) {
+    self.config = config
     setupSendTo()
   }
 
@@ -112,6 +121,16 @@ public class VerificationViewModel: ObservableObject {
           completion(.failure(error))
         }
       }
+    }
+  }
+  
+  func getSendToMasking(methodField: ConfigField?) -> String {
+    if let showMethod = config?.showVerificationMethod,
+       showMethod == false {
+      let sendVerificationTo = config?.verificationCodeFields?.sendVerificationCodeTo
+      return maskingAccount(sendVerificationTo?.label ?? "", type: (sendVerificationTo?.type ?? .email))
+    } else {
+      return maskingAccount((methodField?.label ?? config?.verificationCodeFields?.sendVerificationCodeTo?.label) ?? "", type: methodField?.type ?? .email)
     }
   }
 }

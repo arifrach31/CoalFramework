@@ -12,16 +12,16 @@ import ThemeLGN
 public struct AuthenticationHeaderView: View {
   let configHeader: ConfigHeader?
   let alignment: HorizontalAlignment
-  let additionalParam: String
+  let additionalText: String
   
   public init(
     configHeader: ConfigHeader? = nil,
-    additionalParam: String = "",
+    additionalText: String = "",
     alignment: HorizontalAlignment = .leading
   ) {
     self.configHeader = configHeader
     self.alignment = alignment
-    self.additionalParam = additionalParam
+    self.additionalText = additionalText
   }
   
   public var body: some View {
@@ -32,8 +32,8 @@ public struct AuthenticationHeaderView: View {
       Text(configHeader?.description ?? CoalString.loginDescription)
         .lgnBodySmallRegular(color: LGNColor.tertiary500)
       
-      if !additionalParam.isEmpty {
-        Text(additionalParam)
+      if !additionalText.isEmpty {
+        Text(additionalText)
           .lgnBodySmallRegular(color: LGNColor.tertiary500)
       }
     }
