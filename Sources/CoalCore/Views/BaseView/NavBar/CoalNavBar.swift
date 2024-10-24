@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import ThemeLGN
+import LegionUI
 
-public enum PageType {
+public enum PageType: Equatable {
   case home
   case account
   case verificationMethod
@@ -51,38 +53,37 @@ public struct CoalNavBar: View {
   }
   
   public var body: some View {
-    HStack {
-      if let leadingAction = leadingAction {
-        leadingButtonView(action: leadingAction)
+    VStack(spacing: 0) {
+      HStack {
+        if let leadingAction = leadingAction {
+          leadingButtonView(action: leadingAction)
+        }
+        
+        if let title = pageType.title {
+          titleView(title: title)
+        }
+        
+        Spacer()
+        
+        if let trailingAction = trailingAction, let trailingIcon = pageType.trailingIcon {
+          trailingButtonView(action: trailingAction, icon: trailingIcon)
+        }
       }
-      
-      Spacer()
-      
-      if let title = pageType.title {
-        titleView(title: title)
-      }
-      
-      Spacer()
-      
-      if let trailingAction = trailingAction, let trailingIcon = pageType.trailingIcon {
-        trailingButtonView(action: trailingAction, icon: trailingIcon)
-      }
+      .padding(.horizontal, 4)
     }
     .frame(height: 60)
     .background(.clear)
-    .shadow(radius: 2)
   }
   
   private func leadingButtonView(action: @escaping () -> Void) -> some View {
     Button(action: action) {
       Image(systemName: "arrow.left")
         .resizable()
-        .frame(width: 24, height: 20)
-        .font(.title)
-        .foregroundColor(.white)
+        .scaledToFit()
+        .frame(width: 20, height: 20)
+        .foregroundColor(pageType == .verificationCode ? Color.blackText : .white)
+        .padding(12)
     }
-    .frame(width: 44, height: 44)
-    .padding(.leading, 10)
   }
   
   private func trailingButtonView(action: @escaping () -> Void, icon: Image) -> some View {
@@ -97,7 +98,6 @@ public struct CoalNavBar: View {
   
   private func titleView(title: String) -> some View {
     Text(title)
-      .font(.headline)
-      .foregroundColor(.white)
+      .lgnHeading5(color: pageType == .verificationCode ? Color.blackText : .white)
   }
 }

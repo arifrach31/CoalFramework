@@ -61,7 +61,6 @@ public struct LoginView: View {
         )
       }
       Spacer()
-      FooterView()
     }
   }
 }
@@ -99,7 +98,7 @@ private struct ButtonView: View {
   var body: some View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonView(field: field, isDisabled: !viewModel.isFormValid) {
+        CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
           if viewModel.verifyEmail(correctEmail: viewModel.correctEmail) {
             navigator?.showVerificationMethodPage()
           }
@@ -116,25 +115,6 @@ private struct ButtonView: View {
       }
       .padding(.vertical, 10)
     }
-  }
-}
-
-private struct FooterView: View {
-  var body: some View {
-    VStack(spacing: 8) {
-      HStack {
-        Spacer()
-        Image.icInfo
-          .frame(width: 16, height: 16)
-          .foregroundColor(LGNColor.tertiary500)
-        Text(CoalString.haveAccountProblem)
-          .LGNBodySmall(color: LGNColor.tertiary500)
-        Spacer()
-      }
-      AnchorText(title: CoalString.contactUs, tintColor: Color.LGNTheme.secondary500)
-        .variant(size: .small)
-    }
-    .padding(.bottom, 24)
   }
 }
 

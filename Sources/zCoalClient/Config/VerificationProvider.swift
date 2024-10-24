@@ -13,11 +13,20 @@ class VerificationProvider: VerificationConfigProvider {
       verificationMethodHeader: ConfigHeader(
         title: "Select Verification Methods",
         description: "Choose one of the methods below to get a verification code.",
-        image: "garuda"),
+        image: "garuda"
+      ),
       verificationCodeHeader: ConfigHeader(
         title: "Enter Verification Code",
         description: "The verification code has been sent to"
-      )
+      ),
+      verificationField: verificationField()
     )
+  }
+  
+  func verificationField() -> [ConfigField] {
+    return [
+      ConfigField(type: .email, label: "arifrach31@gmail.com"),
+      ConfigField(type: .phone, label: "082111113184")
+    ]
   }
 }

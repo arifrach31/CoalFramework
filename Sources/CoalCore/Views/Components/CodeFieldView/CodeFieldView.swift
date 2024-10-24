@@ -89,7 +89,7 @@ public struct CodeFieldView: View {
     Group {
       if isError {
         Text(errorMessageText)
-          .foregroundColor(errorMessageColor)
+          .lgnCaptionLargeRegular(color: errorMessageColor)
           .padding(.top, 8)
       }
     }
@@ -133,7 +133,7 @@ public struct CodeField: View {
       .multilineTextAlignment(.center)
       .overlay(
         RoundedRectangle(cornerRadius: 10)
-          .stroke(isFocused ? focusedBorderColor : (isError ? errorColor : defaultBorderColor), lineWidth: 2)
+          .stroke(isFocused ? focusedBorderColor : (isError ? errorColor : defaultBorderColor), lineWidth: 1)
       )
       .onChange(of: text) { newValue in
         if newValue.count > 1 {

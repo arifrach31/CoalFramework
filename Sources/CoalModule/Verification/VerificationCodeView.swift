@@ -16,7 +16,7 @@ public struct VerificationCodeView: View {
   private let sendTo: String?
   
   public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil, sendTo: String? = "") {
-    _viewModel = StateObject(wrappedValue: VerificationViewModel())
+    _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
     self.navigator = navigator
     self.config = config
     self.sendTo = sendTo
@@ -29,9 +29,11 @@ public struct VerificationCodeView: View {
       pageType: .verificationCode,
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
-      backgroundColor: backgroundColor
+      backgroundColor: backgroundColor,
+      isShowNavBar: false
     ) {
       VStack(spacing: 20) {
+        Spacer()
         bottomSheetView
       }
     }
@@ -39,40 +41,52 @@ public struct VerificationCodeView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(
-        configHeader: config?.verificationCodeHeader,
-        additionalParam: (sendTo ?? config?.sendVerificationCodeTo) ?? "",
-        alignment: .center
-      ).padding(.top, 30)
-      
-      CodeFieldView(
-        code: $viewModel.code,
-        isError: viewModel.isError,
-        isTimerActive: viewModel.isTimerActive,
-        remainingTime: viewModel.remainingTime,
-        onResetError: {
-          viewModel.clearError()
-        },
-        onResendCode: {
-          viewModel.resetTimer()
-        })
-      
-      CoalButtonView(
-        field:
-          ConfigField(
-            type: .submit,
-            label: CoalString.verify
-          ),
-        isDisabled: !viewModel.isOTPComplete || viewModel.isError
-      ) {
-        if viewModel.verifyOTP(correctOTP: viewModel.correctOTP) {
-          navigator?.showVerificationMethodPage()
+      VStack(spacing: 0) {
+        CoalNavBar(
+          pageType: .verificationCode,
+          leadingAction: { navigator?.popToPreviousView() }
+        )
+        .padding(.horizontal, -16)
+        .padding(.top, 16)
+        
+        AuthenticationHeaderView(
+          configHeader: config?.verificationCodeHeader,
+          additionalParam: (sendTo ?? config?.sendVerificationCodeTo) ?? "",
+          alignment: .center
+        )
+        .padding(.top, 20)
+        .frame(maxWidth: .infinity)
+        
+        CodeFieldView(
+          code: $viewModel.code,
+          isError: viewModel.isError,
+          isTimerActive: viewModel.isTimerActive,
+          remainingTime: viewModel.remainingTime,
+          onResetError: {
+            viewModel.clearError()
+          },
+          onResendCode: {
+            viewModel.resetTimer()
+          })
+        
+        CoalButtonPrimary(
+          field:
+            ConfigField(
+              type: .submit,
+              label: CoalString.verify
+            ),
+          isDisabled: !viewModel.isOTPComplete || viewModel.isError
+        ) {
+          if viewModel.verifyOTP(correctOTP: viewModel.correctOTP) {
+            navigator?.showVerificationMethodPage()
+          }
         }
+        
+        Spacer()
       }
-      Spacer()
-    }
-    .onAppear {
-      viewModel.startTimer()
+      .onAppear {
+        viewModel.startTimer()
+      }
     }
   }
 }
