@@ -14,16 +14,18 @@ public class VerificationViewModel: ObservableObject {
   @Published var isError: Bool = false
   @Published var remainingTime: Int = 15
   @Published var isTimerActive: Bool = true
+  @Published var isLoading: Bool = false
   
   private var timer: AnyCancellable?
   public let correctOTP = "0000"
-  public var sendTo: [ConfigField] = [
-    ConfigField(type: .email, label: "arifrach31@gmail.com"),
-    ConfigField(type: .phone, label: "082111113184")
-  ]
+  public var sendTo: [ConfigField]?
   
   var isOTPComplete: Bool {
     code.allSatisfy { $0.count == 1 }
+  }
+  
+  init() {
+    setupSendTo()
   }
 
   func startTimer() {
@@ -61,5 +63,55 @@ public class VerificationViewModel: ObservableObject {
   
   func clearError() {
     isError = false
+  }
+  
+  private func setupSendTo() {
+    guard let currentUser = CoalUser.currentUser,
+          let userData = currentUser.data else {
+      sendTo = []
+      return
+    }
+    
+    sendTo = [
+      ConfigField(type: .email, label: userData.email ?? "-"),
+      ConfigField(type: .phone, label: userData.phoneNumber ?? "-")
+    ]
+  }
+  
+  func sendOTP(method: ConfigField, completion: @escaping (Result<Void, ApiError>) -> Void) {
+    guard let sendTo = method.label else {
+      completion(.failure(.connectionError))
+      return
+    }
+    
+    let channel = method.type?.rawValue ?? ""
+//    let nonce = UUID().uuidString
+//    let timestamp = "\(Int(Date().timeIntervalSince1970))"
+//    let signatureInput = "\(timestamp)\(nonce)\(channel)"
+//    let signature = signatureInput.hmac(algorithm: .SHA256, key: Config.hmac256Key.decrypt())
+    
+    isLoading = true
+    
+    NetworkManager.shared.request(
+      endpoint: .sendOTP(
+        channel: channel,
+        sendTo: sendTo,
+        timeStamp: "1591752712",
+        nonce: "asdasdaseqweqwe",
+        signature: "wINJIP3ZVMDlYQIJJZ1bgk9xkc8chLWY59Dj512LyaE="
+      ),
+      responseType: BaseResponseModel<UserData>.self
+    ) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.isLoading = false
+        switch result {
+        case .success:
+          completion(.success(()))
+        case .failure(let error):
+          self?.isError = true
+          completion(.failure(error))
+        }
+      }
+    }
   }
 }
