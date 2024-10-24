@@ -8,6 +8,7 @@
 import Foundation
 
 public enum LoginType: String, Codable {
+  case username
   case email
   case phone
 }
