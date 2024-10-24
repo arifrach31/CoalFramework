@@ -30,7 +30,8 @@ public struct VerificationCodeView: View {
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isShowNavBar: true
+      isShowNavBar: true,
+      isLoading: viewModel.isLoading
     ) {
       VStack(spacing: 20) {
         bottomSheetView
@@ -64,15 +65,24 @@ public struct VerificationCodeView: View {
         field: viewModel.buttonVerifyCode,
         isDisabled: !viewModel.isOTPComplete || viewModel.isError
       ) {
-        if viewModel.verifyOTP(correctOTP: viewModel.correctOTP) {
-          navigator?.showVerificationMethodPage()
-        }
+        self.handleVerifyOTP(sendTo: sendTo)
       }
       
       Spacer()
     }
     .onAppear {
         viewModel.startTimer()
+    }
+  }
+  
+  private func handleVerifyOTP(sendTo: String?) {
+    viewModel.verifyOTP(sendTo: sendTo) { result in
+      switch result {
+      case .success:
+        navigator?.showHomePage()
+      case .failure:
+        break
+      }
     }
   }
 }
