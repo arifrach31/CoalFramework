@@ -16,7 +16,7 @@ public struct VerificationMethodView: View {
   private let config: VerificationConfig?
   
   public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: VerificationViewModel())
+    _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
     self.navigator = navigator
     self.config = config
   }
@@ -48,9 +48,7 @@ public struct VerificationMethodView: View {
   private var bottomSheetView: some View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config?.verificationMethodHeader)
-      if let verificationMethods = viewModel.sendTo {
-        VerificationButtonView(methods: verificationMethods, navigator: navigator)
-      }
+      VerificationButtonView(methods: config?.verificationField ?? viewModel.sendTo, navigator: navigator)
       Spacer()
     }
   }
@@ -62,34 +60,16 @@ private struct VerificationButtonView: View {
   
   var body: some View {
     VStack(spacing: 12) {
-      ForEach(methods.indices, id: \.self) { index in
-        let field = methods[index]
-        VerificationButton(field: field, navigator: navigator)
-          .padding(.bottom, 24)
+      ForEach(Array(methods.enumerated()), id: \.offset) { _, field in
+        CoalButtonSecondary(field: field) {
+          if let sendTo = field.label {
+            navigator?.showVerificationCodePage(sendTo: maskingAccount(sendTo, type: field.type))
+          }
+        }
+        .padding(.bottom, 16)
       }
     }
     .padding(.top, 24)
-  }
-}
-
-private struct VerificationButton: View {
-  let field: ConfigField
-  let navigator: CoalNavigatorProtocol?
-  
-  var body: some View {
-    LGNOutlineButton(
-      title: field.titleVerification,
-      leftImage: field.iconVerification,
-      tintBtnColor: LGNColor.tertiary400,
-      tintPressedBtnColor: LGNColor.tertiary700,
-      pressedBtnColor: .white,
-      cornerRadius: 30
-    ) {
-      if let sendTo = field.label {
-        navigator?.showVerificationCodePage(sendTo: maskingAccount(sendTo, type: field.type))
-      }
-    }
-    .variant(size: .medium, responsive: true)
   }
 }
 

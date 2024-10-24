@@ -113,7 +113,7 @@ private struct RegisterButtonView: View {
       AgreementView(isAgreed: $isAgreed)
       
       ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonView(field: field, isDisabled: !isAgreed)
+        CoalButtonPrimary(field: field, isDisabled: !isAgreed)
           .padding(.vertical, 10)
       }
     }

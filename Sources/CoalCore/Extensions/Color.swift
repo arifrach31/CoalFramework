@@ -14,6 +14,7 @@ public extension Color {
   static let blackText            = Color(hex: "#212121")
   static let grayBorder           = Color(hex: "#D0D5DD")
   static let redBorder            = Color(hex: "#F04438")
+  static let grayText             = Color(hex: "#667085")
 }
 
 public extension Color {

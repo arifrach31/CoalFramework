@@ -1,5 +1,5 @@
 //
-//  CoalButtonView.swift
+//  CoalButtonPrimary.swift
 //  CoalFramework
 //
 //  Created by ArifRachman on 04/09/24.
@@ -9,7 +9,7 @@ import SwiftUI
 import LegionUI
 import ThemeLGN
 
-public struct CoalButtonView: View {
+public struct CoalButtonPrimary: View {
   public let field: ConfigField
   public var isDisabled: Bool? = nil
   public var action: () -> Void

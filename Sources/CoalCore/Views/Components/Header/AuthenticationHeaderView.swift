@@ -27,10 +27,15 @@ public struct AuthenticationHeaderView: View {
   public var body: some View {
     VStack(alignment: alignment, spacing: 8) {
       Text(configHeader?.title ?? CoalString.loginTitle)
-        .lgnHeading5()
+        .lgnHeading5(color: Color.blackText)
       
-      Text("\((configHeader?.description ?? CoalString.loginDescription) + " " + additionalParam)")
-        .lgnBodySmallRegular()
+      Text(configHeader?.description ?? CoalString.loginDescription)
+        .lgnBodySmallRegular(color: Color.grayText)
+      
+      if !additionalParam.isEmpty {
+        Text(additionalParam)
+          .lgnBodySmallRegular(color: Color.grayText)
+      }
     }
     .padding(.top, 20)
   }
