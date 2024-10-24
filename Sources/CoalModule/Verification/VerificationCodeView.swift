@@ -65,7 +65,7 @@ public struct VerificationCodeView: View {
         field: viewModel.buttonVerifyCode,
         isDisabled: !viewModel.isOTPComplete || viewModel.isError
       ) {
-        self.handleVerifyOTP(sendTo: sendTo)
+        self.handleVerifyOTP(sendTo: field?.label)
       }
       
       Spacer()
