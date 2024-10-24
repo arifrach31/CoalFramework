@@ -17,6 +17,9 @@ public struct CoalBaseView<Content: View>: View {
   private let isShowNavBar: Bool
   private let isLoading: Bool
   
+  @State private var toastMessage: String? = ""
+  @State private var isToastVisible: Bool = false
+  
   public init(
     pageType: PageType? = nil,
     leftAction: (() -> Void)? = nil,
@@ -68,6 +71,9 @@ public struct CoalBaseView<Content: View>: View {
         ProgressView()
           .scaleEffect(1.5)
       }
+      
+      ToastView(isVisible: $isToastVisible, message: toastMessage ?? "")
+        .padding(.bottom, 50)
     }
     .navigationBarHidden(true)
   }
