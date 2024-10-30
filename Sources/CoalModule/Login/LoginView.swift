@@ -109,7 +109,7 @@ private struct ButtonView: View {
         Text(CoalString.doNotHaveAccount)
           .LGNBodySmall(color: LGNColor.tertiary500)
         AnchorText(title: CoalString.register, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.showRegisterPage(backgroundColor: .white)
+          navigator?.goTo(.register)
         }.variant(size: .small)
       }
       .padding(.vertical, 10)
@@ -120,7 +120,7 @@ private struct ButtonView: View {
     viewModel.login { result in
       switch result {
       case .success:
-        navigator?.showVerificationMethodPage()
+        navigator?.goTo(.verificationMethod)
       case .failure:
         break
       }

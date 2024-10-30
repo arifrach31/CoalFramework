@@ -13,10 +13,5 @@ public protocol CoalNavigatorProtocol {
   func popToPreviousView()
   
   func showInitialPage(isLoggedIn: Bool)
-  func showLoginPage()
-  func showHomePage()
-  func showRegisterPage(backgroundColor: UIColor)
-  func showAccountPage()
-  func showVerificationMethodPage()
-  func showVerificationCodePage(methodField: ConfigField?)
+  func goTo(_ screen: CoalScreen)
 }
