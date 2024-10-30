@@ -79,7 +79,7 @@ public struct VerificationCodeView: View {
     viewModel.verifyOTP(sendTo: sendTo) { result in
       switch result {
       case .success:
-        navigator?.showHomePage()
+        navigator?.goTo(.home)
       case .failure:
         break
       }

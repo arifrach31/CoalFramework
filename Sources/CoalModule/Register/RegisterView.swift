@@ -12,18 +12,16 @@ import ThemeLGN
 
 public struct RegisterView: View {
   @StateObject private var viewModel: RegisterViewModel
-  private let backgroundColor: Color
   public var navigator: CoalNavigatorProtocol?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: ConfigModel? = nil, backgroundColor: Color = .white) {
+  public init(navigator: CoalNavigatorProtocol? = nil, config: ConfigModel? = nil) {
     _viewModel = StateObject(wrappedValue: RegisterViewModel(config: config))
-    self.backgroundColor = backgroundColor
     self.navigator = navigator
   }
   
   public var body: some View {
     CoalBaseView(backgroundImage: Image.mainBackground, 
-                 backgroundColor: backgroundColor) {
+                 backgroundColor: .black) {
       VStack(spacing: 40) {
         Spacer()
         bottomSheetView
@@ -131,7 +129,7 @@ private struct RegisterFooterView: View {
         Text(CoalString.alreadyHaveAccount)
           .LGNBodySmall(color: LGNColor.tertiary500)
         AnchorText(title: CoalString.loginTitle, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.showInitialPage(isLoggedIn: false)
+          navigator?.goTo(.login)
         }.variant(size: .small)
         Spacer()
       }

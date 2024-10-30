@@ -66,7 +66,7 @@ public class CoalFramework {
   }
   
   private func showInitialScreen() {
-    coalNavigator.showSplashScreen()
+    coalNavigator.goTo(.splash)
   }
   
   private func configNetwork(config: NetworkConfigProvider? = NetworkConfig()) {
@@ -77,6 +77,6 @@ public class CoalFramework {
   
   private func configNavigator(windowScene: UIWindowScene?, from frameworkConfig: CoalConfig?) {
     coalNavigator.windowScene = windowScene
-    coalNavigator.setViewConfig(frameworkConfig)
+    coalNavigator.configure(frameworkConfig)
   }
 }

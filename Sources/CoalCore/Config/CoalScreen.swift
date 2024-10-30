@@ -1,0 +1,18 @@
+//
+//  CoalScreen.swift
+//
+//
+//  Created by ArifRachman on 28/10/24.
+//
+
+import Foundation
+
+public enum CoalScreen {
+  case splash
+  case login
+  case register
+  case home
+  case verificationMethod
+  case verificationCode(methodField: ConfigField?)
+  case account
+}

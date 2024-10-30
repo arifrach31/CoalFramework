@@ -9,7 +9,13 @@ import SwiftUI
 import CoalCore
 
 public struct SplashView: View {
+  public var navigator: CoalNavigatorProtocol?
   public let config: SplashConfig?
+  
+  public init(navigator: CoalNavigatorProtocol? = nil, config: SplashConfig? = nil) {
+    self.navigator = navigator
+    self.config = config
+  }
   
   private var backgroundImage: Image? {
     if let imageName = config?.backgroundImageName, Image.exists(imageName) {
@@ -48,7 +54,11 @@ public struct SplashView: View {
       content: {
         loadLogo()
       }
-    )
+    ).onAppear {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        navigator?.showInitialPage(isLoggedIn: false)
+      }
+    }
   }
 }
 

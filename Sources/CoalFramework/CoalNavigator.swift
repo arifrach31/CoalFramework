@@ -18,41 +18,35 @@ import CoalVerification
 public class CoalNavigator: CoalNavigatorProtocol {
   public static let shared = CoalNavigator()
   
-  public var windowScene: UIWindowScene?
+  public var windowScene: UIWindowScene? {
+    didSet {
+      if oldValue == nil, let windowScene = windowScene {
+        rootViewManager = CoalRootView(windowScene: windowScene)
+      }
+    }
+  }
+  
   private var tabManager: CoalTabProtocol?
   private var rootViewManager: CoalRootViewProtocol?
   private var config: CoalConfig?
   
-  public func setViewConfig(_ config: CoalConfig?) {
+  public func configure(_ config: CoalConfig?) {
     self.config = config
   }
   
-  private func initRootViewManager() {
-    guard rootViewManager == nil else { return }
-    guard let windowScene = windowScene else { fatalError("windowScene is not set") }
-    self.rootViewManager = CoalRootView(windowScene: windowScene)
-  }
-  
-  public func setTabBarController(_ tabBarController: CoalTabBarController) {
-    self.tabManager = CoalTabManager(tabBarController: tabBarController)
+  private func setupTabBarController(_ tabBarController: CoalTabBarController) {
+    rootViewManager?.setRootViewController(tabBarController)
+
+    tabManager = CoalTabManager(tabBarController: tabBarController)
     tabManager?.setShowTabBar(isShowTab: config?.menuConfig?.isShowTabBar ?? false)
-    
     addDefaultTabs()
-    if let tabItems = config?.menuConfig?.addTabItems {
-      tabManager?.addNewTab(tabItems)
-    }
-  }
-  
-  public func setRootViewController(_ viewController: UIViewController) {
-    initRootViewManager()
-    rootViewManager?.setRootViewController(viewController)
     
-    if let tabBarController = viewController as? CoalTabBarController {
-      setTabBarController(tabBarController)
+    if let additionalTabs = config?.menuConfig?.addTabItems {
+      tabManager?.addNewTab(additionalTabs)
     }
   }
   
-  public func addDefaultTabs() {
+  private func addDefaultTabs() {
     let homeView = HomeView(navigator: self, config: config?.homeConfig)
     let accountView = AccountView(navigator: self)
     
@@ -73,73 +67,55 @@ public class CoalNavigator: CoalNavigatorProtocol {
   }
   
   public func pushToViewController<Content: View>(_ swiftUIView: Content) {
-    guard let rootViewManager = rootViewManager else {
-      print("RootViewManager is not initialized")
-      return
-    }
-    rootViewManager.pushViewController(swiftUIView)
+    rootViewManager?.pushViewController(swiftUIView)
   }
   
   public func popToPreviousView() {
     rootViewManager?.popViewController(animated: false)
   }
   
-  public func showSplashScreen() {
-    initRootViewManager()
-    let splashView = SplashView(config: config?.splashConfig)
-    rootViewManager?.setSwiftUIView(splashView)
-    
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-      self.showInitialPage(isLoggedIn: false)
-    }
-  }
-  
   public func showInitialPage(isLoggedIn: Bool) {
-    isLoggedIn ? showHomePage() : showLoginPage()
+    isLoggedIn ? self.goTo(.home) : self.goTo(.login)
   }
   
-  public func showLoginPage() {
-    let loginView = LoginView(navigator: self, config: config?.loginConfig)
-    rootViewManager?.setSwiftUIView(loginView)
-  }
-  
-  public func showRegisterPage(backgroundColor: UIColor = .white) {
-    let registerView = RegisterView(
-      navigator: self,
-      config: ConfigModel.currentConfig,
-      backgroundColor: Color(backgroundColor)
-    )
-    rootViewManager?.setSwiftUIView(registerView)
-  }
-  
-  public func showHomePage() {
-    let tabBarController = CoalTabBarController()
-    setRootViewController(tabBarController)
-  }
-  
-  public func showAccountPage() {
-    tabManager?.navigateToTab(at: 1)
-  }
-  
-  public func showVerificationMethodPage() {
-    if let showMethod = config?.verificationConfig?.showVerificationMethod,
-       showMethod == true {
-      let loginVerificationView = VerificationMethodView(
-        navigator: self,
-        config: config?.verificationConfig
-      )
-      pushToViewController(loginVerificationView)
-    } else {
-      showVerificationCodePage()
+  public func goTo(_ screen: CoalScreen) {
+    let view: AnyView
+    
+    switch screen {
+    case .splash:
+      let splashView = SplashView(navigator: self,
+                                  config: config?.splashConfig)
+      rootViewManager?.setSwiftUIView(splashView)
+      return
+    case .login:
+      let loginView = LoginView(navigator: self,
+                                config: config?.loginConfig)
+      view = AnyView(loginView)
+    case .register:
+      let registerView = RegisterView(navigator: self,
+                                      config: ConfigModel.currentConfig)
+      view = AnyView(registerView)
+    case .home:
+      setupTabBarController(CoalTabBarController())
+      return
+    case .account:
+      tabManager?.navigateToTab(at: 1)
+      return
+    case .verificationMethod:
+      guard let showMethod = config?.verificationConfig?.showVerificationMethod, showMethod else {
+        goTo(.verificationCode(methodField: nil))
+        return
+      }
+      let verifView = VerificationMethodView(navigator: self,
+                                             config: config?.verificationConfig)
+      view = AnyView(verifView)
+    case .verificationCode(let methodField):
+      let verifView = VerificationCodeView(navigator: self,
+                                           config: config?.verificationConfig,
+                                           methodField: methodField)
+      view = AnyView(verifView)
     }
-  }
-  
-  public func showVerificationCodePage(methodField: ConfigField? = nil) {
-    let loginVerificationView = VerificationCodeView(
-      navigator: self,
-      config: config?.verificationConfig,
-      methodField: methodField
-    )
-    pushToViewController(loginVerificationView)
+    
+    rootViewManager?.pushViewController(view)
   }
 }
