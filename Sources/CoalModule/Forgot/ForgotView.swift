@@ -1,23 +1,22 @@
 //
-//  LoginView.swift
-//  CoalFramework
+//  ForgotView.swift
 //
-//  Created by ArifRachman on 05/09/24.
+//
+//  Created by ArifRachman on 01/11/24.
 //
 
-import UIKit
 import SwiftUI
 import CoalCore
 import LegionUI
 import ThemeLGN
 
-public struct LoginView: View {
-  @StateObject private var viewModel: LoginViewModel
-  public var navigator: CoalNavigatorProtocol?
-  public var config: LoginConfig?
+public struct ForgotView: View {
+  @StateObject private var viewModel: ForgotViewModel
+  private let navigator: CoalNavigatorProtocol?
+  private let config: ForgotConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: LoginConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: LoginViewModel(config: config))
+  public init(navigator: CoalNavigatorProtocol? = nil, config: ForgotConfig? = nil) {
+    _viewModel = StateObject(wrappedValue: ForgotViewModel(config: config))
     self.navigator = navigator
     self.config = config
   }
@@ -26,9 +25,10 @@ public struct LoginView: View {
     let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
+      pageType: .verificationMethod,
+      leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
-      backgroundColor: backgroundColor,
-      isLoading: viewModel.isLoading
+      backgroundColor: backgroundColor
     ) {
       VStack(spacing: 40) {
         headerImage
@@ -42,7 +42,7 @@ public struct LoginView: View {
     CoalImageView(imageURL: config?.header?.image ?? "")
       .scaledToFill()
       .frame(width: 125, height: 125)
-      .padding(.top, 60)
+      .padding(.top, -8)
   }
   
   private var bottomSheetView: some View {
@@ -55,11 +55,11 @@ public struct LoginView: View {
           config: config,
           navigator: navigator
         )
+        
         ButtonView(
           viewModel: viewModel,
           form: form,
-          navigator: navigator,
-          config: config
+          navigator: navigator
         )
       }
       Spacer()
@@ -68,13 +68,13 @@ public struct LoginView: View {
 }
 
 private struct FormView: View {
-  @ObservedObject var viewModel: LoginViewModel
+  @ObservedObject var viewModel: ForgotViewModel
   let form: [ConfigField]
-  var config: LoginConfig?
+  var config: ForgotConfig?
   var navigator: CoalNavigatorProtocol?
   
   var body: some View {
-    VStack(spacing: 12) {
+    VStack() {
       let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
       ForEach(formFields.indices, id: \.self) { index in
         let field = formFields[index]
@@ -82,57 +82,35 @@ private struct FormView: View {
           field: field,
           value: viewModel.binding(for: field),
           isSecure: viewModel.bindingSecure(for: field),
-          additionalButtonConfig: index == formFields.count - 1 ? config?.additionalButtonConfig : nil,
           isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
-          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? "",
-          additionalButtonAction: { screen in
-            navigator?.goTo(screen)
-          }
+          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? ""
         )
       }
     }
-    .padding(.vertical, 10)
+    .padding(.vertical, 24)
   }
 }
 
 private struct ButtonView: View {
-  @ObservedObject var viewModel: LoginViewModel
+  @ObservedObject var viewModel: ForgotViewModel
   let form: [ConfigField]
   var navigator: CoalNavigatorProtocol?
-  var config: LoginConfig?
   
   var body: some View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
-          handleLogin()
+          handleForgot()
         }
         .padding(.vertical, 10)
       }
-      
-      HStack(spacing: 0) {
-        Text(CoalString.doNotHaveAccount)
-          .LGNBodySmall(color: LGNColor.tertiary500)
-        AnchorText(title: CoalString.register, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.goTo(.register)
-        }.variant(size: .small)
-      }
-      .padding(.vertical, 10)
     }
   }
   
-  private func handleLogin() {
-    viewModel.login { result in
-      switch result {
-      case .success:
-        navigator?.goTo(.verificationMethod)
-      case .failure:
-        break
-      }
-    }
+  private func handleForgot() {
   }
 }
 
 #Preview {
-  LoginView()
+  ForgotView()
 }
