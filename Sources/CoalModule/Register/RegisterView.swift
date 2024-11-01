@@ -13,53 +13,47 @@ import ThemeLGN
 public struct RegisterView: View {
   @StateObject private var viewModel: RegisterViewModel
   public var navigator: CoalNavigatorProtocol?
+  public var config: RegisterConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: ConfigModel? = nil) {
+  public init(navigator: CoalNavigatorProtocol? = nil, config: RegisterConfig? = nil) {
     _viewModel = StateObject(wrappedValue: RegisterViewModel(config: config))
     self.navigator = navigator
+    self.config = config
   }
   
   public var body: some View {
-    CoalBaseView(backgroundImage: Image.mainBackground, 
-                 backgroundColor: .black) {
-      VStack(spacing: 40) {
-        Spacer()
-        bottomSheetView
-      }
+    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    
+    CoalBaseView(
+      backgroundImage: backgroundImage,
+      backgroundColor: backgroundColor
+    ) {
+      Spacer()
+      bottomSheetView
     }
   }
   
   private var bottomSheetView: some View {
-    LGNBottomSheet(isShowing: .constant(true), dragable: false) {
-      VStack(alignment: .leading, spacing: 5) {
-        RegisterHeaderView(configHeader: viewModel.configHeader)
-        if let form = viewModel.formFields {
-          RegisterFormView(form: form, viewModel: viewModel)
-          RegisterButtonView(form: form)
-        }
-        Spacer()
-        RegisterFooterView(navigator: navigator)
+    BottomSheetView {
+      AuthenticationHeaderView(configHeader: config?.header)
+      
+      if let form = config?.fields {
+        FormView(
+          form: form,
+          viewModel: viewModel
+        )
+        ButtonView(
+          viewModel: viewModel,
+          form: form
+        )
       }
-      .padding(.horizontal, 20)
+      Spacer()
+      RegisterFooterView(navigator: navigator)
     }
   }
 }
 
-private struct RegisterHeaderView: View {
-  let configHeader: ConfigHeader?
-  
-  var body: some View {
-    VStack(alignment: .leading, spacing: 8) {
-      Text(configHeader?.title ?? CoalString.register)
-        .lgnHeading5()
-      Text(configHeader?.description ?? CoalString.registerDescription)
-        .lgnBodySmallRegular()
-    }
-    .padding(.top, 20)
-  }
-}
-
-private struct RegisterFormView: View {
+private struct FormView: View {
   let form: [ConfigField]
   @ObservedObject var viewModel: RegisterViewModel
   
@@ -69,7 +63,9 @@ private struct RegisterFormView: View {
         CoalTextFieldView(
           field: field,
           value: viewModel.binding(for: field),
-          isSecure: viewModel.bindingSecure(for: field)
+          isSecure: viewModel.bindingSecure(for: field),
+          isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
+          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? ""
         )
       }
     }
@@ -102,7 +98,8 @@ private struct AgreementView: View {
   }
 }
 
-private struct RegisterButtonView: View {
+private struct ButtonView: View {
+  @ObservedObject var viewModel: RegisterViewModel
   let form: [ConfigField]
   @State private var isAgreed = false
   
@@ -111,10 +108,16 @@ private struct RegisterButtonView: View {
       AgreementView(isAgreed: $isAgreed)
       
       ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonPrimary(field: field, isDisabled: !isAgreed)
+        CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid)  {
+          verifyRegister()
+        }
           .padding(.vertical, 10)
       }
     }
+  }
+  
+  func verifyRegister() {
+//    viewModel.verifyRegister()
   }
 }
 
@@ -138,8 +141,6 @@ private struct RegisterFooterView: View {
   }
 }
 
-struct RegisterView_Previews: PreviewProvider {
-  static var previews: some View {
-    RegisterView()
-  }
+#Preview {
+  RegisterView()
 }

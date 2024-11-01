@@ -93,7 +93,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
       view = AnyView(loginView)
     case .register:
       let registerView = RegisterView(navigator: self,
-                                      config: ConfigModel.currentConfig)
+                                      config: config?.registerConfig)
       view = AnyView(registerView)
     case .home:
       setupTabBarController(CoalTabBarController())

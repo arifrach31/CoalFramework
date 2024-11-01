@@ -36,7 +36,11 @@ public func maskingAccount(_ input: String, type: ConfigFieldType) -> String {
   }
 }
 
-public func Validator(_ input: String, type: ConfigFieldType) -> Bool {
+public func Validator(_ input: String, type: ConfigFieldType, isRequired: Bool = false) -> Bool {
+  if isRequired && input.isEmpty {
+    return false
+  }
+  
   switch type {
   case .email:
     let emailPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -46,6 +50,8 @@ public func Validator(_ input: String, type: ConfigFieldType) -> Bool {
     let passwordPattern = "^.{8,}$"
     let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordPattern)
     return passwordPredicate.evaluate(with: input)
+  case .text:
+    return !input.isEmpty || !isRequired
   default:
     return false
   }
