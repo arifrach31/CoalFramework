@@ -18,10 +18,13 @@ public struct LoginModel {}
 public struct AdditionalButtonConfig {
   public var isVisible: Bool?
   public var text: String?
+  public var actionScreen: CoalScreen
   
   public init(isVisible: Bool? = true,
-              text: String? = nil) {
+              text: String? = nil,
+              actionScreen: CoalScreen = .forgot) {
     self.isVisible = isVisible
     self.text = text
+    self.actionScreen = actionScreen
   }
 }

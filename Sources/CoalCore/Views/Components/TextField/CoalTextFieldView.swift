@@ -17,6 +17,7 @@ public struct CoalTextFieldView: View {
   public var isError: Bool
   public var errorMessage: String?
   @FocusState private var isEmailFieldFocused: Bool
+  public var additionalButtonAction: (CoalScreen) -> Void
   
   public init(
     field: ConfigField,
@@ -24,7 +25,8 @@ public struct CoalTextFieldView: View {
     isSecure: Binding<Bool>,
     additionalButtonConfig: AdditionalButtonConfig? = nil,
     isError: Bool = false,
-    errorMessage: String? = nil
+    errorMessage: String? = nil,
+    additionalButtonAction: @escaping (CoalScreen) -> Void = { _ in }
   ) {
     self.field = field
     self._value = value
@@ -32,6 +34,7 @@ public struct CoalTextFieldView: View {
     self.additionalButtonConfig = additionalButtonConfig
     self.isError = isError
     self.errorMessage = errorMessage
+    self.additionalButtonAction = additionalButtonAction
   }
   
   private var isPasswordField: Bool {
@@ -87,8 +90,11 @@ public struct CoalTextFieldView: View {
       if additionalButtonConfig?.isVisible == true {
         if let additionalText = additionalButtonConfig?.text {
           HStack {
-            AnchorText(title: additionalText, tintColor: Color.LGNTheme.secondary500)
-              .variant(size: .small)
+            AnchorText(title: additionalText, tintColor: Color.LGNTheme.secondary500) {
+              if let actionScreen = additionalButtonConfig?.actionScreen {
+                additionalButtonAction(actionScreen)
+              }
+            }.variant(size: .small)
             Spacer()
           }
           .padding(.top, 5)

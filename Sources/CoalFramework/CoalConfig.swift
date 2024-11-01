@@ -19,6 +19,7 @@ public protocol CoalAppProvider {
   var menuProvider: MenuConfigProvider? { get }
   var homeProvider: HomeConfigProvider? { get }
   var networkProvider: NetworkConfigProvider? { get }
+  var forgotProvider: ForgotConfigProvider? { get }
   
   func getConfig() -> CoalConfig?
 }
@@ -33,6 +34,7 @@ public struct CoalConfig {
   public let menuConfig: MenuConfig?
   public let homeConfig: HomeConfig?
   public let networkConfig: NetworkConfig?
+  public let forgotConfig: ForgotConfig?
   
   public init(splashConfig: SplashConfig? = nil,
               loginConfig: LoginConfig? = nil,
@@ -40,7 +42,8 @@ public struct CoalConfig {
               verificationConfig: VerificationConfig? = nil,
               menuConfig: MenuConfig? = nil,
               homeConfig: HomeConfig? = nil,
-              networkConfig: NetworkConfig? = nil) {
+              networkConfig: NetworkConfig? = nil,
+              forgotConfig: ForgotConfig? = nil) {
     self.splashConfig = splashConfig
     self.loginConfig = loginConfig
     self.registerConfig = registerConfig
@@ -48,5 +51,6 @@ public struct CoalConfig {
     self.menuConfig = menuConfig
     self.homeConfig = homeConfig
     self.networkConfig = networkConfig
+    self.forgotConfig = forgotConfig
   }
 }

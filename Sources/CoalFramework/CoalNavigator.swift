@@ -14,6 +14,7 @@ import CoalRegister
 import CoalHome
 import CoalAccount
 import CoalVerification
+import CoalForgot
 
 public class CoalNavigator: CoalNavigatorProtocol {
   public static let shared = CoalNavigator()
@@ -114,6 +115,11 @@ public class CoalNavigator: CoalNavigatorProtocol {
                                            config: config?.verificationConfig,
                                            methodField: methodField)
       view = AnyView(verifView)
+    case .forgot:
+      let forgotView = ForgotView(
+        navigator: self,
+        config: config?.forgotConfig)
+      view = AnyView(forgotView)
     }
     
     rootViewManager?.pushViewController(view)
