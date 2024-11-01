@@ -18,7 +18,7 @@ public class LoginViewModel: ObservableObject {
   @Published var isLoading: Bool = false
   
   public init(config: LoginConfig?) {
-    self.formFields = config?.loginFields ?? []
+    self.formFields = config?.fields ?? []
   }
   
   var isFormValid: Bool {

@@ -13,8 +13,8 @@ public protocol LoginConfigProvider {
 }
 
 public class LoginConfig: BaseConfig {
-  public var loginHeader: ConfigHeader?
-  public var loginFields: [ConfigField]?
+  public var header: ConfigHeader? = nil
+  public var fields: [ConfigField]? = nil
   public var additionalButtonConfig: AdditionalButtonConfig?
   
   private var loginConfig: ConfigPage? {
@@ -24,13 +24,13 @@ public class LoginConfig: BaseConfig {
   public init(
     backgroundImageName: String? = nil,
     backgroundColor: String? = nil,
-    loginHeader: ConfigHeader? = nil,
-    loginFields: [ConfigField]? = nil,
+    header: ConfigHeader? = nil,
+    fields: [ConfigField]? = nil,
     additionalButtonConfig: AdditionalButtonConfig? = nil
   ) {
     super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
-    self.loginHeader = loginHeader ?? loginConfig?.header
-    self.loginFields = loginFields ?? loginConfig?.fields
+    self.header = header ?? loginConfig?.header
+    self.fields = fields ?? loginConfig?.fields
     self.additionalButtonConfig = additionalButtonConfig
   }
 }
