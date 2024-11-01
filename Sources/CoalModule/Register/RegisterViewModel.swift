@@ -14,16 +14,34 @@ class RegisterViewModel: ObservableObject {
   @Published var isSecured: [String: Bool] = [:]
   @Published var config: ConfigModel?
   
-  var configHeader: ConfigHeader? {
-    config?.pages?.register?.header
+  @Published var formFields: [ConfigField]
+  @Published var fieldErrors: [String: Bool] = [:]
+  @Published var fieldErrorMessages: [String: String] = [:]
+  @Published var isLoading: Bool = false
+  
+  public init(config: RegisterConfig?) {
+    self.formFields = config?.fields ?? []
   }
   
-  var formFields: [ConfigField]? {
-    config?.pages?.register?.fields
+  var isFormValid: Bool {
+    validateFields()
   }
   
-  init(config: ConfigModel? = nil) {
-    self.config = config
+  private func validateFields() -> Bool {
+    let fullname = getFieldValue(for: .text) ?? ""
+    let email = getFieldValue(for: .email) ?? ""
+    let password = getFieldValue(for: .password) ?? ""
+    
+    let isFullnameValid = Validator(fullname, type: .text, isRequired: true)
+    let isEmailValid = Validator(email, type: .email)
+    let isPasswordValid = Validator(password, type: .password)
+    
+    return isEmailValid && isPasswordValid && isFullnameValid
+  }
+  
+  private func getFieldValue(for type: ConfigFieldType) -> String? {
+    let field = formFields.first { $0.type == type }
+    return field.flatMap { formValues[$0.label ?? ""] }
   }
   
   func binding(for field: ConfigField) -> Binding<String> {
@@ -38,5 +56,29 @@ class RegisterViewModel: ObservableObject {
       get: { self.isSecured[field.label ?? ""] ?? (field.type == .password) },
       set: { self.isSecured[field.label ?? ""] = $0 }
     )
+  }
+  
+  func setError(for field: ConfigField, message: String) {
+    fieldErrors[field.label ?? ""] = true
+    fieldErrorMessages[field.label ?? ""] = message
+  }
+  
+  func clearErrors(for field: ConfigField) {
+    fieldErrors[field.label ?? ""] = false
+    fieldErrorMessages[field.label ?? ""] = ""
+  }
+  
+  func clearAllErrors() {
+    for field in formFields {
+      clearErrors(for: field)
+    }
+  }
+  
+  func verifyRegister() -> Bool {
+    return true
+  }
+  
+  func register(completion: @escaping (Result<Void, ApiError>) -> Void) {
+    
   }
 }

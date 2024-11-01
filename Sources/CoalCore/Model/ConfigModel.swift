@@ -82,6 +82,7 @@ public struct ConfigField: Codable, Identifiable {
   public let errorMessage: String?
   public let labelColor: String?
   public let backgroundColor: String?
+  public var isRequired: Bool?
   
   public init(
     id: Int? = nil,
@@ -91,7 +92,8 @@ public struct ConfigField: Codable, Identifiable {
     errorMessage: String? = nil,
     isShowError: Bool? = nil,
     labelColor: String? = nil,
-    backgroundColor: String? = nil
+    backgroundColor: String? = nil,
+    isRequired: Bool? = false
   ) {
     self.id = id
     self.type = type
@@ -101,6 +103,7 @@ public struct ConfigField: Codable, Identifiable {
     self.errorMessage = errorMessage
     self.labelColor = labelColor
     self.backgroundColor = backgroundColor
+    self.isRequired = isRequired
   }
   
   public var titleVerification: String {
