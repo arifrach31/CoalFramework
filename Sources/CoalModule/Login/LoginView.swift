@@ -39,7 +39,7 @@ public struct LoginView: View {
   }
   
   private var headerImage: some View {
-    CoalImageView(imageURL: config?.loginHeader?.image ?? "")
+    CoalImageView(imageURL: config?.header?.image ?? "")
       .scaledToFill()
       .frame(width: 125, height: 125)
       .padding(.top, 60)
@@ -47,8 +47,8 @@ public struct LoginView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config?.loginHeader)
-      if let form = config?.loginFields {
+      AuthenticationHeaderView(configHeader: config?.header)
+      if let form = config?.fields {
         FormView(
           viewModel: viewModel,
           form: form,
