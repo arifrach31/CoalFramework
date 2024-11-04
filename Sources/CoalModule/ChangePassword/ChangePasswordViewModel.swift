@@ -1,5 +1,5 @@
 //
-//  ForgotViewModel.swift
+//  ChangePasswordViewModel.swift
 //
 //
 //  Created by ArifRachman on 01/11/24.
@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import CoalCore
 
-class ForgotViewModel: ObservableObject {
+class ChangePasswordViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
   @Published var formFields: [ConfigField]
@@ -17,7 +17,7 @@ class ForgotViewModel: ObservableObject {
   @Published var fieldErrorMessages: [String: String] = [:]
   @Published var isLoading: Bool = false
   
-  public init(config: ForgotConfig?) {
+  public init(config: ChangePasswordConfig?) {
     self.formFields = config?.fields ?? []
   }
   
@@ -26,9 +26,9 @@ class ForgotViewModel: ObservableObject {
   }
   
   private func validateFields() -> Bool {
-    let email = getFieldValue(for: .text) ?? ""
+    let password = getFieldValue(for: .password) ?? ""
     
-    return Validator(email, type: .text, minLength: 10)
+    return Validator(password, type: .password, minLength: 8)
   }
   
   private func getFieldValue(for type: ConfigFieldType) -> String? {

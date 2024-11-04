@@ -14,15 +14,18 @@ public protocol ForgotConfigProvider {
 public class ForgotConfig: BaseConfig {
   public var header: ConfigHeader? = nil
   public var fields: [ConfigField]? = ConfigDefault.forgotFields
+  public var actionScreen: CoalScreen = .changePassword
   
   public init(
     backgroundImageName: String? = nil,
     backgroundColor: String? = nil,
     header: ConfigHeader? = nil,
-    fields: [ConfigField]? = ConfigDefault.forgotFields
+    fields: [ConfigField]? = ConfigDefault.forgotFields,
+    actionScreen: CoalScreen = .changePassword
   ) {
-    super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
     self.header = header
     self.fields = fields
+    self.actionScreen = actionScreen
+    super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
   }
 }

@@ -15,6 +15,7 @@ import CoalHome
 import CoalAccount
 import CoalVerification
 import CoalForgot
+import CoalChangePassword
 
 public class CoalNavigator: CoalNavigatorProtocol {
   public static let shared = CoalNavigator()
@@ -119,6 +120,11 @@ public class CoalNavigator: CoalNavigatorProtocol {
       let forgotView = ForgotView(
         navigator: self,
         config: config?.forgotConfig)
+      view = AnyView(forgotView)
+    case .changePassword:
+      let forgotView = ChangePasswordView(
+        navigator: self,
+        config: config?.changePasswordConfig)
       view = AnyView(forgotView)
     }
     

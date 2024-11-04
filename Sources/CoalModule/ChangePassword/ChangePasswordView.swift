@@ -1,5 +1,5 @@
 //
-//  ForgotView.swift
+//  ChangePasswordView.swift
 //
 //
 //  Created by ArifRachman on 01/11/24.
@@ -10,13 +10,13 @@ import CoalCore
 import LegionUI
 import ThemeLGN
 
-public struct ForgotView: View {
-  @StateObject private var viewModel: ForgotViewModel
+public struct ChangePasswordView: View {
+  @StateObject private var viewModel: ChangePasswordViewModel
   private let navigator: CoalNavigatorProtocol?
-  private let config: ForgotConfig?
+  private let config: ChangePasswordConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: ForgotConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: ForgotViewModel(config: config))
+  public init(navigator: CoalNavigatorProtocol? = nil, config: ChangePasswordConfig? = nil) {
+    _viewModel = StateObject(wrappedValue: ChangePasswordViewModel(config: config))
     self.navigator = navigator
     self.config = config
   }
@@ -59,8 +59,7 @@ public struct ForgotView: View {
         ButtonView(
           viewModel: viewModel,
           form: form,
-          navigator: navigator,
-          config: config
+          navigator: navigator
         )
       }
       Spacer()
@@ -69,9 +68,9 @@ public struct ForgotView: View {
 }
 
 private struct FormView: View {
-  @ObservedObject var viewModel: ForgotViewModel
+  @ObservedObject var viewModel: ChangePasswordViewModel
   let form: [ConfigField]
-  var config: ForgotConfig?
+  var config: ChangePasswordConfig?
   var navigator: CoalNavigatorProtocol?
   
   var body: some View {
@@ -93,29 +92,25 @@ private struct FormView: View {
 }
 
 private struct ButtonView: View {
-  @ObservedObject var viewModel: ForgotViewModel
+  @ObservedObject var viewModel: ChangePasswordViewModel
   let form: [ConfigField]
   var navigator: CoalNavigatorProtocol?
-  var config: ForgotConfig?
   
   var body: some View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
-          handleForgot()
+          handleChangePassword()
         }
         .padding(.vertical, 10)
       }
     }
   }
   
-  private func handleForgot() {
-    if let actionScreen = config?.actionScreen {
-      navigator?.goTo(actionScreen)
-    }
+  private func handleChangePassword() {
   }
 }
 
 #Preview {
-  ForgotView()
+  ChangePasswordView()
 }

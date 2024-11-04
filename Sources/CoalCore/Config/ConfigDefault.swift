@@ -42,8 +42,16 @@ public struct ConfigDefault {
   
   public static var forgotFields: [ConfigField] {
     return [
-      ConfigField(type: .email, label: "Email Address / Mobile Number", placeholder: "Enter registered data"),
+      ConfigField(type: .text, label: "Email Address / Mobile Number", placeholder: "Enter registered data"),
       ConfigField(type: .submit, label: "Next")
+    ]
+  }
+  
+  public static var changePasswordFields: [ConfigField] {
+    return [
+      ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
+      ConfigField(type: .password, label: "Confirm Password", placeholder: "Enter your confirm password"),
+      ConfigField(type: .submit, label: "Change Password")
     ]
   }
 }

@@ -9,7 +9,6 @@ import Foundation
 
 public protocol LoginConfigProvider {
   func getConfig() -> LoginConfig
-  func getLoginFields(for type: LoginType) -> [ConfigField]
 }
 
 public class LoginConfig: BaseConfig {
