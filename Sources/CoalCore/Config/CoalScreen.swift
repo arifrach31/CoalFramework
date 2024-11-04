@@ -16,4 +16,5 @@ public enum CoalScreen {
   case verificationCode(methodField: ConfigField?)
   case account
   case forgot
+  case changePassword
 }

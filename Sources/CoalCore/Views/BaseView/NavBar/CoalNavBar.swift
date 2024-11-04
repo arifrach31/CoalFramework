@@ -14,6 +14,7 @@ public enum PageType {
   case account
   case verificationMethod
   case verificationCode
+  case back
   case other(String)
   
   var title: String? {

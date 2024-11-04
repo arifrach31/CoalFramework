@@ -13,10 +13,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
   let appProvider = AppProvider(
     splashProvider: SplashProvider(),
     loginProvider: LoginProvider(),
+    registerProvider: RegisterProvider(),
     verificationProvider: VerificationProvider(),
     menuProvider: MenuProvider(),
     homeProvider: HomeProvider(),
-    networkProvider: NetworkProvider())
+    networkProvider: NetworkProvider(),
+    forgotProvider: ForgotProvider(),
+    changePasswordProvider: ChangePasswordProvider())
   
   func initCoalConfig() -> CoalConfig? {
     return appProvider.getConfig()

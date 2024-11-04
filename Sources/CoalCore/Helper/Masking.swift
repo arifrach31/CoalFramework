@@ -36,8 +36,16 @@ public func maskingAccount(_ input: String, type: ConfigFieldType) -> String {
   }
 }
 
-public func Validator(_ input: String, type: ConfigFieldType, isRequired: Bool = false) -> Bool {
+public func Validator(_ input: String, type: ConfigFieldType, isRequired: Bool = false, minLength: Int? = nil, maxLength: Int? = nil) -> Bool {
   if isRequired && input.isEmpty {
+    return false
+  }
+  
+  if let minLength = minLength, input.count < minLength {
+    return false
+  }
+  
+  if let maxLength = maxLength, input.count > maxLength {
     return false
   }
   
