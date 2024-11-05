@@ -30,13 +30,27 @@ class RegisterViewModel: ObservableObject {
   private func validateFields() -> Bool {
     let fullname = getFieldValue(for: .text) ?? ""
     let email = getFieldValue(for: .email) ?? ""
+    let phone = getFieldValue(for: .phone) ?? ""
     let password = getFieldValue(for: .password) ?? ""
+    let confirmPassword = getFieldValue(for: .confirmPassword) ?? ""
     
     let isFullnameValid = Validator(fullname, type: .text, isRequired: true)
     let isEmailValid = Validator(email, type: .email)
+    let isPhoneValid = Validator(phone, type: .phone, isRequired: true)
     let isPasswordValid = Validator(password, type: .password)
+    let isConfirmPasswordValid = Validator(confirmPassword, type: .confirmPassword, passwordToMatch: password)
     
-    return isEmailValid && isPasswordValid && isFullnameValid
+    if let confirmPasswordField = formFields.first(where: { $0.type == .confirmPassword }) {
+      DispatchQueue.main.async {
+        if !confirmPassword.isEmpty && password != confirmPassword {
+          self.setError(for: confirmPasswordField, message: "Your password not match, try again.")
+        } else {
+          self.clearErrors(for: confirmPasswordField)
+        }
+      }
+    }
+    
+    return isFullnameValid && isEmailValid && isPhoneValid && isPasswordValid && isConfirmPasswordValid
   }
   
   private func getFieldValue(for type: ConfigFieldType) -> String? {
@@ -53,7 +67,7 @@ class RegisterViewModel: ObservableObject {
   
   func bindingSecure(for field: ConfigField) -> Binding<Bool> {
     Binding<Bool>(
-      get: { self.isSecured[field.label ?? ""] ?? (field.type == .password) },
+      get: { self.isSecured[field.label ?? ""] ?? (field.type == .password || field.type == .confirmPassword) },
       set: { self.isSecured[field.label ?? ""] = $0 }
     )
   }

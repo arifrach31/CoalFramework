@@ -71,6 +71,7 @@ public enum ConfigFieldType: String, Codable {
   case date
   case checkbox
   case submit
+  case confirmPassword
 }
 
 public struct ConfigField: Codable, Identifiable {

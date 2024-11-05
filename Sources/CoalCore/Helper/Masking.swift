@@ -36,7 +36,7 @@ public func maskingAccount(_ input: String, type: ConfigFieldType) -> String {
   }
 }
 
-public func Validator(_ input: String, type: ConfigFieldType, isRequired: Bool = false, minLength: Int? = nil, maxLength: Int? = nil) -> Bool {
+public func Validator(_ input: String, type: ConfigFieldType, isRequired: Bool = false, minLength: Int? = nil, maxLength: Int? = nil, passwordToMatch: String? = nil) -> Bool {
   if isRequired && input.isEmpty {
     return false
   }
@@ -58,7 +58,18 @@ public func Validator(_ input: String, type: ConfigFieldType, isRequired: Bool =
     let passwordPattern = "^.{8,}$"
     let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordPattern)
     return passwordPredicate.evaluate(with: input)
+  case .confirmPassword:
+    let passwordPattern = "^.{8,}$"
+    let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordPattern)
+    let isValidPassword = passwordPredicate.evaluate(with: input)
+    
+    if let passwordToMatch = passwordToMatch {
+      return isValidPassword && input == passwordToMatch
+    }
+    return isValidPassword
   case .text:
+    return !input.isEmpty || !isRequired
+  case .phone:
     return !input.isEmpty || !isRequired
   default:
     return false

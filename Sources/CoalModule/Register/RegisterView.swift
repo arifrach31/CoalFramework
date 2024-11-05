@@ -59,7 +59,9 @@ private struct FormView: View {
   
   var body: some View {
     VStack(spacing: 12) {
-      ForEach(form.filter { $0.type != .submit }) { field in
+      let formFields = form.filter { $0.type != .submit }
+      ForEach(formFields.indices, id: \.self) { index in
+        let field = formFields[index]
         CoalTextFieldView(
           field: field,
           value: viewModel.binding(for: field),
@@ -77,7 +79,7 @@ private struct AgreementView: View {
   @Binding var isAgreed: Bool
   
   var body: some View {
-    HStack(alignment: .center, spacing: 4) {
+    HStack(alignment: .center, spacing: 0) {
       Checkbox(
         defaultIsChecked: isAgreed,
         size: .medium,
@@ -85,14 +87,20 @@ private struct AgreementView: View {
           isAgreed = isChecked
         }
       )
+      .padding(.trailing, 4)
+      
       Text(CoalString.agreement)
         .LGNBodySmall(color: LGNColor.tertiary500)
+        .padding(.trailing, 2)
       AnchorText(title: CoalString.termCondition, tintColor: Color.LGNTheme.secondary500)
         .variant(size: .small)
+        .underlined()
       Text(CoalString.and)
         .LGNBodySmall(color: LGNColor.tertiary500)
+        .padding(.horizontal, 2)
       AnchorText(title: CoalString.privacyPolicy, tintColor: Color.LGNTheme.secondary500)
         .variant(size: .small)
+        .underlined()
     }
     .padding(.horizontal, 10)
   }
@@ -103,12 +111,16 @@ private struct ButtonView: View {
   let form: [ConfigField]
   @State private var isAgreed = false
   
+  private var isEnabled: Bool {
+    return viewModel.isFormValid && isAgreed
+  }
+  
   var body: some View {
     VStack(spacing: 10) {
       AgreementView(isAgreed: $isAgreed)
       
       ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid)  {
+        CoalButtonPrimary(field: field, isDisabled: !isEnabled)  {
           verifyRegister()
         }
           .padding(.vertical, 10)
@@ -138,6 +150,18 @@ private struct RegisterFooterView: View {
       }
       .padding(.bottom, 24)
     }
+  }
+}
+
+extension AnchorText {
+  func underlined() -> some View {
+    self.overlay(
+      Rectangle()
+        .frame(height: 1)
+        .offset(y: 1)
+        .foregroundColor(Color.LGNTheme.secondary500),
+      alignment: .bottom
+    )
   }
 }
 

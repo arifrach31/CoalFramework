@@ -38,7 +38,7 @@ public struct CoalTextFieldView: View {
   }
   
   private var isPasswordField: Bool {
-    field.type == .password
+    field.type == .password || field.type == .confirmPassword
   }
   
   private var secureButton: some View {
