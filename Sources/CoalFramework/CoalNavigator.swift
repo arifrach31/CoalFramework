@@ -16,6 +16,7 @@ import CoalAccount
 import CoalVerification
 import CoalForgot
 import CoalChangePassword
+import CoalWebView
 
 public class CoalNavigator: CoalNavigatorProtocol {
   public static let shared = CoalNavigator()
@@ -122,10 +123,15 @@ public class CoalNavigator: CoalNavigatorProtocol {
         config: config?.forgotConfig)
       view = AnyView(forgotView)
     case .changePassword:
-      let forgotView = ChangePasswordView(
+      let changePasswordView = ChangePasswordView(
         navigator: self,
         config: config?.changePasswordConfig)
-      view = AnyView(forgotView)
+      view = AnyView(changePasswordView)
+    case .webview(let model):
+      let webView = WebView(
+        navigator: self,
+        config: model)
+      view = AnyView(webView)
     }
     
     rootViewManager?.pushViewController(view)
