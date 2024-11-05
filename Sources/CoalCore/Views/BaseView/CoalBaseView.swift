@@ -17,8 +17,9 @@ public struct CoalBaseView<Content: View>: View {
   private let isShowNavBar: Bool
   private let isLoading: Bool
   
-  @State private var toastMessage: String? = ""
+  @State private var toastData: ToastModel?
   @State private var isToastVisible: Bool = false
+  @StateObject private var toastManager = ToastManager()
   
   public init(
     pageType: PageType? = nil,
@@ -65,6 +66,7 @@ public struct CoalBaseView<Content: View>: View {
           )
         }
         content
+          .environmentObject(toastManager)
       }.blur(radius: isLoading ? 3 : 0)
       
       if isLoading {
@@ -72,9 +74,21 @@ public struct CoalBaseView<Content: View>: View {
           .scaleEffect(1.5)
       }
       
-      ToastView(isVisible: $isToastVisible, message: toastMessage ?? "")
-        .padding(.bottom, 50)
+      if let toast = toastManager.toastData {
+        ToastView(
+          isVisible: $toastManager.isVisible,
+          title: toast.title,
+          subTitle: toast.subtitle,
+          isError: toast.isError
+        )
+        .padding(.top, 50)
+      }
     }
     .navigationBarHidden(true)
+    .onChange(of: toastManager.isVisible) { newValue in
+      if !newValue {
+        toastManager.hide()
+      }
+    }
   }
 }
