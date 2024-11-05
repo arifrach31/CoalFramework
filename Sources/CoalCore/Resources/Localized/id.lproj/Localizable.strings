@@ -33,3 +33,4 @@
 "resend_code_message" = "Resend OTP Code";
 "verify" = "Verify";
 "email_error" = "Email not found. Please check your input or create a new account.";
+"confirm_password_error" = "Your password not match, try again.";

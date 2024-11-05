@@ -43,7 +43,7 @@ class RegisterViewModel: ObservableObject {
     if let confirmPasswordField = formFields.first(where: { $0.type == .confirmPassword }) {
       DispatchQueue.main.async {
         if !confirmPassword.isEmpty && password != confirmPassword {
-          self.setError(for: confirmPasswordField, message: "Your password not match, try again.")
+          self.setError(for: confirmPasswordField, message: CoalString.confirmPasswordError)
         } else {
           self.clearErrors(for: confirmPasswordField)
         }
