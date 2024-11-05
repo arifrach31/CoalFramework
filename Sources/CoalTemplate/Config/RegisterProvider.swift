@@ -10,8 +10,11 @@ import CoalCore
 class RegisterProvider: RegisterConfigProvider {
   func getConfig() -> RegisterConfig {
     return RegisterConfig(
-      header: ConfigHeader(title: "Register",
-                           description: "Register Your Account")
+      header: ConfigHeader(
+        title: "Register",
+        description: "Register Your Account"
+      ),
+      fields: ConfigDefault.registerFields()
     )
   }
 }

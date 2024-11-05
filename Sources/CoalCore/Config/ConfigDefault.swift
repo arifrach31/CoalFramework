@@ -33,9 +33,10 @@ public struct ConfigDefault {
   public static func registerFields() -> [ConfigField] {
     return [
       ConfigField(type: .text, label: "Full Name", placeholder: "Enter your full name"),
-      ConfigField(type: .email, label: "Email", placeholder: "Enter your email"),
+      ConfigField(type: .email, label: "Email Address", placeholder: "Enter your email address"),
+      ConfigField(type: .phone, label: "Mobile Number", placeholder: "Enter your mobile number"),
       ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
-      ConfigField(type: .checkbox, label: "Agree to Terms and Conditions", placeholder: nil),
+      ConfigField(type: .confirmPassword, label: "Confirm Password", placeholder: "Enter your confirm password"),
       ConfigField(type: .submit, label: "Register")
     ]
   }
