@@ -153,18 +153,6 @@ private struct RegisterFooterView: View {
   }
 }
 
-extension AnchorText {
-  func underlined() -> some View {
-    self.overlay(
-      Rectangle()
-        .frame(height: 1)
-        .offset(y: 1)
-        .foregroundColor(Color.LGNTheme.secondary500),
-      alignment: .bottom
-    )
-  }
-}
-
 #Preview {
   RegisterView()
 }
