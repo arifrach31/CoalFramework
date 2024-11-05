@@ -6,28 +6,35 @@
 //
 
 import SwiftUI
+import LegionUI
+import ThemeLGN
 
 public struct ToastView: View {
   @Binding var isVisible: Bool
-  var message: String
+  var title: String
+  var subTitle: String
+  var isError: Bool
+  
+  public init(isVisible: Binding<Bool>, title: String, subTitle: String, isError: Bool = false) {
+    self._isVisible = isVisible
+    self.title = title
+    self.subTitle = subTitle
+    self.isError = isError
+  }
   
   public var body: some View {
-    if isVisible {
-      Text(message)
-        .padding()
-        .background(Color.black.opacity(0.7))
-        .foregroundColor(.white)
-        .cornerRadius(8)
-        .padding(.horizontal)
-        .transition(.slide)
-        .onAppear {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            withAnimation {
-              isVisible = false
-            }
-          }
-        }
+    VStack {
+      if isVisible {
+        Alert(
+          title: title,
+          subtitle: subTitle,
+          action: ""
+        )
+        .theme(variant: isError ? .error : .success)
+      }
+      Spacer()
     }
+    .padding(.top, -32)
+    .padding(.horizontal, 16)
   }
 }
-
