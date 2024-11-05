@@ -43,6 +43,8 @@ public struct RegisterView: View {
           viewModel: viewModel
         )
         ButtonView(
+          navigator: navigator,
+          config: config,
           viewModel: viewModel,
           form: form
         )
@@ -76,6 +78,8 @@ private struct FormView: View {
 }
 
 private struct AgreementView: View {
+  var navigator: CoalNavigatorProtocol?
+  var config: RegisterConfig?
   @Binding var isAgreed: Bool
   
   var body: some View {
@@ -92,21 +96,27 @@ private struct AgreementView: View {
       Text(CoalString.agreement)
         .LGNBodySmall(color: LGNColor.tertiary500)
         .padding(.trailing, 2)
-      AnchorText(title: CoalString.termCondition, tintColor: Color.LGNTheme.secondary500)
-        .variant(size: .small)
-        .underlined()
+      AnchorText(title: CoalString.termCondition, tintColor: Color.LGNTheme.secondary500) {
+        navigator?.goTo(.webview(model: config?.termCondition))
+      }
+      .variant(size: .small)
+      .underlined()
       Text(CoalString.and)
         .LGNBodySmall(color: LGNColor.tertiary500)
         .padding(.horizontal, 2)
-      AnchorText(title: CoalString.privacyPolicy, tintColor: Color.LGNTheme.secondary500)
-        .variant(size: .small)
-        .underlined()
+      AnchorText(title: CoalString.privacyPolicy, tintColor: Color.LGNTheme.secondary500) {
+        navigator?.goTo(.webview(model: config?.privacyPolicy))
+      }
+      .variant(size: .small)
+      .underlined()
     }
     .padding(.horizontal, 10)
   }
 }
 
 private struct ButtonView: View {
+  var navigator: CoalNavigatorProtocol?
+  var config: RegisterConfig?
   @ObservedObject var viewModel: RegisterViewModel
   let form: [ConfigField]
   @State private var isAgreed = false
@@ -117,19 +127,23 @@ private struct ButtonView: View {
   
   var body: some View {
     VStack(spacing: 10) {
-      AgreementView(isAgreed: $isAgreed)
+      AgreementView(
+        navigator: navigator,
+        config: config,
+        isAgreed: $isAgreed
+      )
       
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonPrimary(field: field, isDisabled: !isEnabled)  {
           verifyRegister()
         }
-          .padding(.vertical, 10)
+        .padding(.vertical, 10)
       }
     }
   }
   
   func verifyRegister() {
-//    viewModel.verifyRegister()
+    //    viewModel.verifyRegister()
   }
 }
 

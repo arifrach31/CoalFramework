@@ -1,6 +1,6 @@
 //
 //  CoalScreen.swift
-//
+//  CoalFramework
 //
 //  Created by ArifRachman on 28/10/24.
 //
@@ -17,4 +17,5 @@ public enum CoalScreen {
   case account
   case forgot
   case changePassword
+  case webview(model: WebViewModel?)
 }

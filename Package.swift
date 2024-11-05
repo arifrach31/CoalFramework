@@ -35,7 +35,10 @@ let package = Package(
       targets: ["CoalForgot"]),
     .library(
       name: "CoalChangePassword",
-      targets: ["CoalChangePassword"])
+      targets: ["CoalChangePassword"]),
+    .library(
+      name: "CoalWebView",
+      targets: ["CoalWebView"])
   ],
   dependencies: [
     .package(url: "ssh://git@gitlab.playcourt.id:31022/mobileteam/legion-ios.git", branch: "main")
@@ -63,7 +66,8 @@ let package = Package(
                      "CoalAccount",
                      "CoalVerification",
                      "CoalForgot",
-                     "CoalChangePassword"],
+                     "CoalChangePassword",
+                     "CoalWebView"],
       path: "Sources/CoalFramework"
     ),
     .target(
@@ -105,6 +109,11 @@ let package = Package(
       name: "CoalChangePassword",
       dependencies: ["CoalCore"],
       path: "Sources/CoalModule/ChangePassword"
+    ),
+    .target(
+      name: "CoalWebView",
+      dependencies: ["CoalCore"],
+      path: "Sources/CoalModule/WebView"
     )
   ]
 )

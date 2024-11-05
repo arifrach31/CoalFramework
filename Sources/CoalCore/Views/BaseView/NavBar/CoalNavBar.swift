@@ -15,13 +15,15 @@ public enum PageType {
   case verificationMethod
   case verificationCode
   case back
+  case web(String)
   case other(String)
   
   var title: String? {
     switch self {
     case .account:
       return CoalString.account
-    case .other(let customTitle):
+    case .other(let customTitle),
+        .web(let customTitle):
       return customTitle
     case .verificationCode:
       return CoalString.accountVerification
@@ -36,6 +38,15 @@ public enum PageType {
       return Image(systemName: "magnifyingglass")
     default:
       return nil
+    }
+  }
+  
+  var tintColor: Color {
+    switch self {
+    case .web:
+      return .black
+    default:
+      return .white
     }
   }
 }
@@ -80,7 +91,7 @@ public struct CoalNavBar: View {
         .resizable()
         .scaledToFit()
         .frame(width: 20, height: 20)
-        .foregroundColor(.white)
+        .foregroundColor(pageType.tintColor)
         .padding(12)
     }
   }
@@ -97,6 +108,6 @@ public struct CoalNavBar: View {
   
   private func titleView(title: String) -> some View {
     Text(title)
-      .lgnHeading5(color: .white)
+      .lgnHeading5(color: pageType.tintColor)
   }
 }
