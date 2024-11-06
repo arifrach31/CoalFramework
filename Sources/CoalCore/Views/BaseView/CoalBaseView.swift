@@ -75,6 +75,11 @@ public struct CoalBaseView<Content: View>: View {
           .environmentObject(toastManager)
       }.blur(radius: (isLoading || isShowingBottomSheet) ? 3 : 0)
       
+      if isLoading || isShowingBottomSheet {
+        Color.black.opacity(0.6)
+          .edgesIgnoringSafeArea(.all)
+      }
+      
       if isLoading {
         ProgressView()
           .scaleEffect(1.5)
