@@ -11,6 +11,11 @@ public protocol VerificationConfigProvider {
   func getConfig() -> VerificationConfig
 }
 
+public enum VerificationJourney {
+  case login
+  case forgot
+}
+
 public class VerificationConfig: BaseConfig {
   public var verificationMethodHeader: ConfigHeader?
   public var verificationCodeHeader: ConfigHeader?

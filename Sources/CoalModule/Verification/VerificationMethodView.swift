@@ -78,7 +78,12 @@ private struct VerificationButtonView: View {
     viewModel.sendOTP(method: field) { result in
       switch result {
       case .success:
-        navigator?.goTo(.verificationCode(methodField: field))
+        navigator?.goTo(
+          .verificationCode(
+            journey: .login,
+            methodField: field
+          )
+        )
       case .failure:
         break
       }

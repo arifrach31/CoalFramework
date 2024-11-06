@@ -13,7 +13,7 @@ public enum CoalScreen {
   case register
   case home
   case verificationMethod
-  case verificationCode(methodField: ConfigField?)
+  case verificationCode(journey: VerificationJourney?, methodField: ConfigField?)
   case account
   case forgot
   case changePassword

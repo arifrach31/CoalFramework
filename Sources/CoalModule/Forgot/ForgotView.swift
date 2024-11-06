@@ -28,13 +28,32 @@ public struct ForgotView: View {
       pageType: .back,
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
-      backgroundColor: backgroundColor
+      backgroundColor: backgroundColor,
+      isShowingBottomSheet: $viewModel.isShowingBottomSheet,
+      bottomSheetContent: AnyView(bottomSheetConfirmation)
     ) {
       VStack(spacing: 40) {
         headerImage
         Spacer()
         bottomSheetView
       }
+    }
+  }
+  
+  private var bottomSheetConfirmation: some View {
+    BottomSheetConfirmationView(
+      title: CoalString.otpSentTitle,
+      description: CoalString.otpSentDescription,
+      buttonTitle: CoalString.otpSentButtonOK) {
+        handleForgot()
+      }
+  }
+  
+  private func handleForgot() {
+    if let emailFieldValue = viewModel.getFieldValue(for: .text) {
+      let field = ConfigField(type: .text, label: emailFieldValue)
+      navigator?.goTo(.verificationCode(journey: .forgot, methodField: field))
+      viewModel.isShowingBottomSheet.toggle()
     }
   }
   
@@ -102,16 +121,10 @@ private struct ButtonView: View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
-          handleForgot()
+          viewModel.isShowingBottomSheet.toggle()
         }
         .padding(.vertical, 10)
       }
-    }
-  }
-  
-  private func handleForgot() {
-    if let actionScreen = config?.actionScreen {
-      navigator?.goTo(actionScreen)
     }
   }
 }

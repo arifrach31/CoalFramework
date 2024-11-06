@@ -16,6 +16,7 @@ class ForgotViewModel: ObservableObject {
   @Published var fieldErrors: [String: Bool] = [:]
   @Published var fieldErrorMessages: [String: String] = [:]
   @Published var isLoading: Bool = false
+  @Published var isShowingBottomSheet = false
   
   public init(config: ForgotConfig?) {
     self.formFields = config?.fields ?? []
@@ -31,7 +32,7 @@ class ForgotViewModel: ObservableObject {
     return Validator(email, type: .text, minLength: 10)
   }
   
-  private func getFieldValue(for type: ConfigFieldType) -> String? {
+  public func getFieldValue(for type: ConfigFieldType) -> String? {
     let field = formFields.first { $0.type == type }
     return field.flatMap { formValues[$0.label ?? ""] }
   }

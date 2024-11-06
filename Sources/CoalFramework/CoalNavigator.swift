@@ -106,16 +106,24 @@ public class CoalNavigator: CoalNavigatorProtocol {
       return
     case .verificationMethod:
       guard let showMethod = config?.verificationConfig?.showVerificationMethod, showMethod else {
-        goTo(.verificationCode(methodField: nil))
+        goTo(
+          .verificationCode(
+            journey: .login,
+            methodField: nil
+          )
+        )
         return
       }
       let verifView = VerificationMethodView(navigator: self,
                                              config: config?.verificationConfig)
       view = AnyView(verifView)
-    case .verificationCode(let methodField):
-      let verifView = VerificationCodeView(navigator: self,
-                                           config: config?.verificationConfig,
-                                           methodField: methodField)
+    case .verificationCode(let journey, let methodField):
+      let verifView = VerificationCodeView(
+        navigator: self,
+        config: config?.verificationConfig,
+        methodField: methodField,
+        journey: journey
+      )
       view = AnyView(verifView)
     case .forgot:
       let forgotView = ForgotView(

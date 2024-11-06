@@ -12,8 +12,7 @@ class ForgotProvider: ForgotConfigProvider {
     return ForgotConfig(
       header: ConfigHeader(title: "Forgot Password",
                            description: "Please enter registered email address or mobile number in your account to change the password.",
-                           image: "garuda"),
-      actionScreen: .changePassword
+                           image: "garuda")
     )
   }
 }

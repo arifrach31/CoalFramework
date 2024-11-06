@@ -16,10 +16,12 @@ public struct CoalBaseView<Content: View>: View {
   private let content: Content
   private let isShowNavBar: Bool
   private let isLoading: Bool
+  private let bottomSheetContent: AnyView?
   
   @State private var toastData: ToastModel?
   @State private var isToastVisible: Bool = false
   @StateObject private var toastManager = ToastManager()
+  @Binding private var isShowingBottomSheet: Bool
   
   public init(
     pageType: PageType? = nil,
@@ -29,6 +31,8 @@ public struct CoalBaseView<Content: View>: View {
     backgroundColor: Color? = .white,
     isShowNavBar: Bool = true,
     isLoading: Bool = false,
+    isShowingBottomSheet: Binding<Bool> = .constant(false),
+    bottomSheetContent: AnyView? = nil,
     @ViewBuilder content: @escaping () -> Content
   ) {
     self.pageType = pageType
@@ -38,6 +42,8 @@ public struct CoalBaseView<Content: View>: View {
     self.backgroundColor = backgroundColor
     self.isShowNavBar = isShowNavBar
     self.isLoading = isLoading
+    self._isShowingBottomSheet = isShowingBottomSheet
+    self.bottomSheetContent = bottomSheetContent
     self.content = content()
   }
   
@@ -67,7 +73,7 @@ public struct CoalBaseView<Content: View>: View {
         }
         content
           .environmentObject(toastManager)
-      }.blur(radius: isLoading ? 3 : 0)
+      }.blur(radius: (isLoading || isShowingBottomSheet) ? 3 : 0)
       
       if isLoading {
         ProgressView()
@@ -82,6 +88,16 @@ public struct CoalBaseView<Content: View>: View {
           isError: toast.isError
         )
         .padding(.top, 50)
+      }
+      
+      if isShowingBottomSheet,
+          let bottomSheetContent = bottomSheetContent {
+        VStack {
+          Spacer()
+          BottomSheetView(isShowing: $isShowingBottomSheet, dragable: true) {
+            bottomSheetContent
+          }
+        }
       }
     }
     .navigationBarHidden(true)
