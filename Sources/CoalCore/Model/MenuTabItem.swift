@@ -8,7 +8,7 @@
 import SwiftUI
 import UIKit
 
-public enum TabScreen {
+public enum ScreenType {
   case swiftUIView(AnyView)
   case uiKitViewController(UIViewController)
 }
@@ -16,11 +16,11 @@ public enum TabScreen {
 public struct MenuTabItem {
   public var title: String?
   public var icon: String?
-  public var screen: TabScreen
+  public var actionScreen: ScreenType
   
-  public init(title: String? = nil, icon: String? = nil, screen: TabScreen) {
+  public init(title: String? = nil, icon: String? = nil, actionScreen: ScreenType) {
     self.title = title
     self.icon = icon
-    self.screen = screen
+    self.actionScreen = actionScreen
   }
 }

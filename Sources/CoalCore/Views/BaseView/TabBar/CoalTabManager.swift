@@ -29,12 +29,14 @@ public class CoalTabManager: CoalTabProtocol {
   }
   
   public func addTab(_ item: MenuTabItem, at index: Int) {
-    switch item.screen {
+    let iconImage = UIImage.loadImage(item.icon)
+    
+    switch item.actionScreen {
     case .swiftUIView(let swiftUIView):
       let hostingController = UIHostingController(rootView: swiftUIView)
-      tabBarController?.addTab(viewController: hostingController, title: item.title, icon: UIImage(named: item.icon ?? "", in: .module, with: nil), atIndex: index)
+      tabBarController?.addTab(viewController: hostingController, title: item.title, icon: iconImage, atIndex: index)
     case .uiKitViewController(let viewController):
-      tabBarController?.addTab(viewController: viewController, title: item.title, icon: UIImage(named: item.icon ?? "", in: .module, with: nil), atIndex: index)
+      tabBarController?.addTab(viewController: viewController, title: item.title, icon: iconImage, atIndex: index)
     }
   }
   

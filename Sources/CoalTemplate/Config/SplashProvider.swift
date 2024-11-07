@@ -9,6 +9,8 @@ import CoalCore
 
 class SplashProvider: SplashConfigProvider {
   func getConfig() -> SplashConfig {
-    return SplashConfig(backgroundImageName: "background", backgroundColor: "#00a1dd", logoImage: "garuda")
+    return SplashConfig(
+      backgroundImageName: "background",
+      logoImage: "garuda")
   }
 }

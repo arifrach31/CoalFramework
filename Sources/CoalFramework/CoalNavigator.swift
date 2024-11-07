@@ -57,12 +57,12 @@ public class CoalNavigator: CoalNavigatorProtocol {
       MenuTabItem(
         title: homeView.coalTabInfo().title,
         icon: homeView.coalTabInfo().icon,
-        screen: .swiftUIView(AnyView(homeView))
+        actionScreen: .swiftUIView(AnyView(homeView))
       ),
       MenuTabItem(
         title: accountView.coalTabInfo().title,
         icon: accountView.coalTabInfo().icon,
-        screen: .swiftUIView(AnyView(accountView))
+        actionScreen: .swiftUIView(AnyView(accountView))
       )
     ]
     

@@ -34,4 +34,14 @@ public extension UIImage {
   static let mainBackground: UIImage? = image(named: "imgBackground", in: .module)
   static let icHome: UIImage? = image(named: "icHome", in: .module)
   static let icAccount: UIImage? = image(named: "icAccount", in: .module)
+  
+  static func loadImage(_ iconName: String?) -> UIImage? {
+    guard let iconName = iconName else { return nil }
+    
+    if let systemImage = UIImage(systemName: iconName) {
+      return systemImage
+    } else {
+      return UIImage(named: iconName, in: .module, with: nil)
+    }
+  }
 }
