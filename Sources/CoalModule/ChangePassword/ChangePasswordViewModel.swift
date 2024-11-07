@@ -27,8 +27,22 @@ class ChangePasswordViewModel: ObservableObject {
   
   private func validateFields() -> Bool {
     let password = getFieldValue(for: .password) ?? ""
+    let confirmPassword = getFieldValue(for: .confirmPassword) ?? ""
     
-    return Validator(password, type: .password, minLength: 8)
+    let isPasswordValid = Validator(password, type: .password)
+    let isConfirmPasswordValid = Validator(confirmPassword, type: .confirmPassword, passwordToMatch: password)
+    
+    if let confirmPasswordField = formFields.first(where: { $0.type == .confirmPassword }) {
+      DispatchQueue.main.async {
+        if !confirmPassword.isEmpty && password != confirmPassword {
+          self.setError(for: confirmPasswordField, message: CoalString.confirmPasswordError)
+        } else {
+          self.clearErrors(for: confirmPasswordField)
+        }
+      }
+    }
+    
+    return isPasswordValid && isConfirmPasswordValid
   }
   
   private func getFieldValue(for type: ConfigFieldType) -> String? {
