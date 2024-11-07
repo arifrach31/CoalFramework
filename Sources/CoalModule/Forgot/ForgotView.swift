@@ -29,6 +29,7 @@ public struct ForgotView: View {
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
+      isLoading: viewModel.isLoading,
       isShowingBottomSheet: $viewModel.isShowingBottomSheet,
       bottomSheetContent: AnyView(bottomSheetConfirmation)
     ) {
@@ -121,9 +122,20 @@ private struct ButtonView: View {
     VStack(spacing: 10) {
       ForEach(form.filter { $0.type == .submit }) { field in
         CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
-          viewModel.isShowingBottomSheet.toggle()
+          handleForgotPassword()
         }
         .padding(.vertical, 10)
+      }
+    }
+  }
+  
+  private func handleForgotPassword() {
+    viewModel.forgotPassword { result in
+      switch result {
+      case .success:
+        viewModel.isShowingBottomSheet.toggle()
+      case .failure:
+        break
       }
     }
   }

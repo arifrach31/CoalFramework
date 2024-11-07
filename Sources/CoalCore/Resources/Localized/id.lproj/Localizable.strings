@@ -41,3 +41,4 @@
 "register_success_subtitle" = "Login to continue the process";
 "register_failure_title" = "Register Failed";
 "register_failure_subtitle" = "Please try again";
+"forgot_password_error" = "Email or mobile number not registered";

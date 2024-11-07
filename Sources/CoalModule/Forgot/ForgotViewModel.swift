@@ -32,6 +32,12 @@ class ForgotViewModel: ObservableObject {
     return Validator(email, type: .text, minLength: 10)
   }
   
+  private func handleForgotError(error: ApiError) {
+    if let emailField = formFields.first(where: { $0.type == .text }) {
+      setError(for: emailField, message: CoalString.forgotPasswordError)
+    }
+  }
+  
   public func getFieldValue(for type: ConfigFieldType) -> String? {
     let field = formFields.first { $0.type == type }
     return field.flatMap { formValues[$0.label ?? ""] }
@@ -67,6 +73,30 @@ class ForgotViewModel: ObservableObject {
   func clearAllErrors() {
     for field in formFields {
       clearErrors(for: field)
+    }
+  }
+  
+  func forgotPassword(completion: @escaping (Result<Void, ApiError>) -> Void) {
+    guard let email = getFieldValue(for: .text) else {
+      completion(.failure(.connectionError))
+      return
+    }
+    
+    isLoading = true
+    NetworkManager.shared.request(
+      endpoint: .forgotPassword(email: email),
+      responseType: BaseResponseModel<UserData>.self
+    ) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.isLoading = false
+        switch result {
+        case .success:
+          completion(.success(()))
+        case .failure(let error):
+          self?.handleForgotError(error: error)
+          completion(.failure(error))
+        }
+      }
     }
   }
 }
