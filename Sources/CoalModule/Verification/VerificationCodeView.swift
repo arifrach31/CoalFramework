@@ -72,7 +72,9 @@ public struct VerificationCodeView: View {
         field: viewModel.buttonVerifyCode,
         isDisabled: !viewModel.isOTPComplete || viewModel.isError
       ) {
-        self.handleVerifyOTP(sendTo: methodField?.label)
+        self.journey == .login ?
+        self.handleVerifyOTP(sendTo: methodField?.label) :
+        self.handleVerifyPassword(email: methodField?.label)
       }
       
       Spacer()
@@ -86,9 +88,18 @@ public struct VerificationCodeView: View {
     viewModel.verifyOTP(sendTo: sendTo) { result in
       switch result {
       case .success:
-        self.journey == .login ?
-        navigator?.goTo(.home) :
-         navigator?.goTo(.changePassword)
+        navigator?.goTo(.home)
+      case .failure:
+        break
+      }
+    }
+  }
+  
+  private func handleVerifyPassword(email: String?) {
+    viewModel.verifyPassword(email: email) { result in
+      switch result {
+      case .success:
+        navigator?.goTo(.changePassword)
       case .failure:
         break
       }

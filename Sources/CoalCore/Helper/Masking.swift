@@ -31,6 +31,31 @@ public func maskingAccount(_ input: String, type: ConfigFieldType) -> String {
       range: NSRange(input.startIndex..<input.endIndex, in: input),
       withTemplate: "$1*****$3"
     )
+  case .text:
+    let emailPattern = #"(^.)(.*?)(.@.)(.*)(..)(.*)$"#
+    let phonePattern = #"(\d{3})(\d+)(\d{4})$"#
+    
+    if let emailRegex = try? NSRegularExpression(pattern: emailPattern),
+       emailRegex.firstMatch(in: input, options: [], range: NSRange(input.startIndex..<input.endIndex, in: input)) != nil {
+      return emailRegex.stringByReplacingMatches(
+        in: input,
+        options: [],
+        range: NSRange(input.startIndex..<input.endIndex, in: input),
+        withTemplate: "$1*****$3$4**$6"
+      )
+    }
+    
+    if let phoneRegex = try? NSRegularExpression(pattern: phonePattern),
+       phoneRegex.firstMatch(in: input, options: [], range: NSRange(input.startIndex..<input.endIndex, in: input)) != nil {
+      return phoneRegex.stringByReplacingMatches(
+        in: input,
+        options: [],
+        range: NSRange(input.startIndex..<input.endIndex, in: input),
+        withTemplate: "$1*****$3"
+      )
+    }
+    
+    return input
   default:
     return ""
   }

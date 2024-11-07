@@ -27,6 +27,7 @@ public enum CoalAPI {
     mobileNumber: String
   )
   case forgotPassword(email: String)
+  case verifyForgotPassword(email: String, code: String)
   
   var path: String {
     switch self {
@@ -44,6 +45,8 @@ public enum CoalAPI {
       return "/users/v1/register"
     case .forgotPassword:
       return "/user/v1/forgot-password"
+    case .verifyForgotPassword:
+      return "/user/v1/verify-password"
     }
   }
   
@@ -53,7 +56,8 @@ public enum CoalAPI {
         .sendOTP,
         .verifyOTP,
         .register,
-        .forgotPassword:
+        .forgotPassword,
+        .verifyForgotPassword:
       return "POST"
     case .getCurrentUser, .getConfig:
       return "GET"
@@ -100,6 +104,11 @@ public enum CoalAPI {
       ]
     case .forgotPassword(let email):
       return ["email": email]
+    case .verifyForgotPassword(let email, let code):
+      return [
+        "email": email,
+        "code": code
+      ]
     default:
       return nil
     }

@@ -163,4 +163,30 @@ public class VerificationViewModel: ObservableObject {
       }
     }
   }
+  
+  func verifyPassword(email: String?, completion: @escaping (Result<Void, ApiError>) -> Void) {
+    guard let email = email else {
+      completion(.failure(.connectionError))
+      return
+    }
+    
+    let enteredOTP = code.joined()
+    isLoading = true
+    NetworkManager.shared.request(
+      endpoint: .verifyForgotPassword(email: email, code: enteredOTP),
+      responseType: BaseResponseModel<VerificationModel>.self
+    ) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.isLoading = false
+        switch result {
+        case .success:
+          self?.isError = false
+          completion(.success(()))
+        case .failure(let error):
+          self?.isError = true
+          completion(.failure(error))
+        }
+      }
+    }
+  }
 }
