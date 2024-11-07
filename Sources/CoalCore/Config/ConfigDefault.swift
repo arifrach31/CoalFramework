@@ -51,7 +51,7 @@ public struct ConfigDefault {
   public static var changePasswordFields: [ConfigField] {
     return [
       ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
-      ConfigField(type: .password, label: "Confirm Password", placeholder: "Enter your confirm password"),
+      ConfigField(type: .confirmPassword, label: "Confirm Password", placeholder: "Enter your confirm password"),
       ConfigField(type: .submit, label: "Change Password")
     ]
   }

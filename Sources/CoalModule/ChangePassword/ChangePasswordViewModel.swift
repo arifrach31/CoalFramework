@@ -68,4 +68,31 @@ class ChangePasswordViewModel: ObservableObject {
       clearErrors(for: field)
     }
   }
+  
+  func changePassword(completion: @escaping (Result<Void, ApiError>) -> Void) {
+    guard let password = getFieldValue(for: .password),
+          let confirmPassword = getFieldValue(for: .confirmPassword) else {
+      completion(.failure(.connectionError))
+      return
+    }
+    
+    isLoading = true
+    NetworkManager.shared.request(
+      endpoint: .updatePassword(
+        password: password,
+        confirmPassword: confirmPassword
+      ),
+      responseType: BaseResponseModel<UserData>.self
+    ) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.isLoading = false
+        switch result {
+        case .success:
+          completion(.success(()))
+        case .failure(let error):
+          completion(.failure(error))
+        }
+      }
+    }
+  }
 }

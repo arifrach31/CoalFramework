@@ -28,7 +28,8 @@ public struct ChangePasswordView: View {
       pageType: .back,
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
-      backgroundColor: backgroundColor
+      backgroundColor: backgroundColor,
+      isLoading: viewModel.isLoading
     ) {
       VStack(spacing: 40) {
         headerImage
@@ -74,7 +75,7 @@ private struct FormView: View {
   var navigator: CoalNavigatorProtocol?
   
   var body: some View {
-    VStack() {
+    VStack(spacing: 16) {
       let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
       ForEach(formFields.indices, id: \.self) { index in
         let field = formFields[index]
@@ -108,6 +109,14 @@ private struct ButtonView: View {
   }
   
   private func handleChangePassword() {
+    viewModel.changePassword { result in
+      switch result {
+      case .success:
+        navigator?.goTo(.login)
+      case .failure:
+        break
+      }
+    }
   }
 }
 

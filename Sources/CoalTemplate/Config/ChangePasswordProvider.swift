@@ -20,7 +20,7 @@ class ChangePasswordProvider: ChangePasswordConfigProvider {
   func changePasswordFields() -> [ConfigField] {
     return [
       ConfigField(type: .password, label: "PasswordMu", placeholder: "Enter your password"),
-      ConfigField(type: .password, label: "Confirm PasswordMu", placeholder: "Enter your confirm password"),
+      ConfigField(type: .confirmPassword, label: "Confirm PasswordMu", placeholder: "Enter your confirm password"),
       ConfigField(type: .submit, label: "Change Password")
     ]
   }
