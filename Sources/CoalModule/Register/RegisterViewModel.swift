@@ -111,7 +111,7 @@ class RegisterViewModel: ObservableObject {
         confirmPassword: confirmPassword,
         mobileNumber: phone
       ),
-      responseType: RegisterModel.self
+      responseType: UserData.self
     ) { [weak self] result in
       DispatchQueue.main.async {
         self?.isLoading = false

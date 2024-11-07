@@ -148,7 +148,7 @@ private struct ButtonView: View {
     viewModel.register { result in
       switch result {
       case .success:
-        navigator?.goTo(.login(showToast: true))
+        navigator?.goTo(.login)
       case .failure:
         toastManager.show(
           title: CoalString.registerFailureTitle,
@@ -171,7 +171,7 @@ private struct RegisterFooterView: View {
         Text(CoalString.alreadyHaveAccount)
           .LGNBodySmall(color: LGNColor.tertiary500)
         AnchorText(title: CoalString.loginTitle, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.goTo(.login())
+          navigator?.goTo(.login)
         }.variant(size: .small)
         Spacer()
       }

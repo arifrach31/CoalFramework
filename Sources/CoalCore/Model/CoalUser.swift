@@ -30,4 +30,6 @@ public struct UserData: Codable {
   public let username: String?
   public let fullname: String?
   public let phoneNumber: String?
+  public var token: String?
+  public var refreshToken: String?
 }

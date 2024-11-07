@@ -15,18 +15,14 @@ public struct LoginView: View {
   @StateObject private var viewModel: LoginViewModel
   public var navigator: CoalNavigatorProtocol?
   public var config: LoginConfig?
-  @EnvironmentObject private var toastManager: ToastManager
-  @State private var showToast: Bool
   
   public init(
     navigator: CoalNavigatorProtocol? = nil,
-    config: LoginConfig? = nil,
-    showToast: Bool = false
+    config: LoginConfig? = nil
   ) {
     _viewModel = StateObject(wrappedValue: LoginViewModel(config: config))
     self.navigator = navigator
     self.config = config
-    self._showToast = State(initialValue: showToast)
   }
   
   public var body: some View {
@@ -41,15 +37,6 @@ public struct LoginView: View {
         headerImage
         Spacer()
         bottomSheetView
-      }
-      .onAppear {
-        if showToast {
-          toastManager.show(
-            title: CoalString.registerSuccessTitle,
-            subtitle: CoalString.registerSuccessSubtitle
-          )
-          showToast = false
-        }
       }
     }
   }
