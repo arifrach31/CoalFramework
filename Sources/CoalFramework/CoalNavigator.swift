@@ -20,6 +20,7 @@ import CoalWebView
 
 public class CoalNavigator: CoalNavigatorProtocol {
   public static let shared = CoalNavigator()
+  @Published var toastManager = ToastManager()
   
   public var windowScene: UIWindowScene? {
     didSet {
@@ -78,7 +79,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   }
   
   public func showInitialPage(isLoggedIn: Bool) {
-    isLoggedIn ? self.goTo(.home) : self.goTo(.login)
+    isLoggedIn ? self.goTo(.home) : self.goTo(.login())
   }
   
   public func goTo(_ screen: CoalScreen) {
@@ -90,9 +91,12 @@ public class CoalNavigator: CoalNavigatorProtocol {
                                   config: config?.splashConfig)
       rootViewManager?.setSwiftUIView(splashView)
       return
-    case .login:
-      let loginView = LoginView(navigator: self,
-                                config: config?.loginConfig)
+    case .login(let showToast):
+      let loginView = LoginView(
+        navigator: self,
+        config: config?.loginConfig,
+        showToast: showToast
+      )
       view = AnyView(loginView)
     case .register:
       let registerView = RegisterView(navigator: self,

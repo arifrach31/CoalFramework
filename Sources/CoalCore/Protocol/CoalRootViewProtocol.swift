@@ -36,7 +36,7 @@ public class CoalRootView: CoalRootViewProtocol {
   }
   
   public func setSwiftUIView<Content: View>(_ swiftUIView: Content) {
-    let hostingController = UIHostingController(rootView: swiftUIView)
+    let hostingController = UIHostingController(rootView: swiftUIView.environmentObject(ToastManager.shared))
     setRootViewController(hostingController)
   }
   
@@ -45,7 +45,7 @@ public class CoalRootView: CoalRootViewProtocol {
       print("NavigationController not found.")
       return
     }
-    let viewController = UIHostingController(rootView: swiftUIView)
+    let viewController = UIHostingController(rootView: swiftUIView.environmentObject(ToastManager.shared))
     navigationController.pushViewController(viewController, animated: false)
   }
   

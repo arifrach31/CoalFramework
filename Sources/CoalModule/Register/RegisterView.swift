@@ -26,7 +26,8 @@ public struct RegisterView: View {
     
     CoalBaseView(
       backgroundImage: backgroundImage,
-      backgroundColor: backgroundColor
+      backgroundColor: backgroundColor,
+      isLoading: viewModel.isLoading
     ) {
       Spacer()
       bottomSheetView
@@ -120,6 +121,7 @@ private struct ButtonView: View {
   @ObservedObject var viewModel: RegisterViewModel
   let form: [ConfigField]
   @State private var isAgreed = false
+  @EnvironmentObject private var toastManager: ToastManager
   
   private var isEnabled: Bool {
     return viewModel.isFormValid && isAgreed
@@ -143,7 +145,18 @@ private struct ButtonView: View {
   }
   
   func verifyRegister() {
-    //    viewModel.verifyRegister()
+    viewModel.register { result in
+      switch result {
+      case .success:
+        navigator?.goTo(.login(showToast: true))
+      case .failure:
+        toastManager.show(
+          title: CoalString.registerFailureTitle,
+          subtitle: CoalString.registerFailureSubtitle,
+          isError: true
+        )
+      }
+    }
   }
 }
 
@@ -158,7 +171,7 @@ private struct RegisterFooterView: View {
         Text(CoalString.alreadyHaveAccount)
           .LGNBodySmall(color: LGNColor.tertiary500)
         AnchorText(title: CoalString.loginTitle, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.goTo(.login)
+          navigator?.goTo(.login())
         }.variant(size: .small)
         Spacer()
       }

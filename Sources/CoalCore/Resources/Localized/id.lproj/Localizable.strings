@@ -37,3 +37,7 @@
 "otp_sent_title" = "OTP Has Been Sent";
 "otp_sent_description" = "Check your email or mobile number";
 "otp_sent_button_ok" = "OK";
+"register_success_title" = "Register success";
+"register_success_subtitle" = "Login to continue the process";
+"register_failure_title" = "Register Failed";
+"register_failure_subtitle" = "Please try again";

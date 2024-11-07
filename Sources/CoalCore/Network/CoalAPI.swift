@@ -11,13 +11,21 @@ public enum CoalAPI {
   case login(username: String, password: String)
   case getCurrentUser
   case getConfig
-  case sendOTP(channel: String,
-               sendTo: String,
-               timeStamp: String,
-               nonce: String,
-               signature: String)
-  case verifyOTP(sendTo: String,
-                 otp: String)
+  case sendOTP(
+    channel: String,
+    sendTo: String,
+    timeStamp: String,
+    nonce: String,
+    signature: String
+  )
+  case verifyOTP(sendTo: String, otp: String)
+  case register(
+    fullname: String,
+    email: String,
+    password: String,
+    confirmPassword: String,
+    mobileNumber: String
+  )
   
   var path: String {
     switch self {
@@ -31,6 +39,8 @@ public enum CoalAPI {
       return "/user/v1/otp"
     case .verifyOTP:
       return "/user/v1/verify"
+    case .register:
+      return "/users/v1/register"
     }
   }
   
@@ -38,7 +48,8 @@ public enum CoalAPI {
     switch self {
     case .login,
         .sendOTP,
-        .verifyOTP:
+        .verifyOTP,
+        .register:
       return "POST"
     case .getCurrentUser, .getConfig:
       return "GET"
@@ -50,11 +61,13 @@ public enum CoalAPI {
     case .login(let username, let password):
       return ["username": username,
               "password": password]
-    case .sendOTP(let channel,
-                  let sendTo,
-                  let timeStamp,
-                  let nonce,
-                  let signature):
+    case .sendOTP(
+      let channel,
+      let sendTo,
+      let timeStamp,
+      let nonce,
+      let signature
+    ):
       return [
         "channel": channel,
         "sendTo": sendTo,
@@ -62,11 +75,24 @@ public enum CoalAPI {
         "nonce": nonce,
         "signature": signature
       ]
-    case .verifyOTP(let sendTo,
-                    let otp):
+    case .verifyOTP(let sendTo, let otp):
       return [
         "sendTo": sendTo,
         "otp": otp
+      ]
+    case .register(
+      let fullname,
+      let email,
+      let password,
+      let confirmPassword,
+      let mobileNumber
+    ):
+      return [
+        "fullname": fullname,
+        "email": email,
+        "password": password,
+        "confirmPassword": confirmPassword,
+        "mobileNumber": mobileNumber
       ]
     default:
       return nil

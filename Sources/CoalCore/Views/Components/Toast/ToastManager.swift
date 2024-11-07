@@ -8,8 +8,11 @@
 import SwiftUI
 
 public class ToastManager: ObservableObject {
+  public static let shared = ToastManager()
   @Published public var toastData: ToastModel?
   @Published public var isVisible: Bool = false
+  
+  public init() {}
   
   public func show(title: String, subtitle: String, isError: Bool = false) {
     self.toastData = nil

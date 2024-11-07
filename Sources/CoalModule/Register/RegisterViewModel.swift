@@ -93,6 +93,35 @@ class RegisterViewModel: ObservableObject {
   }
   
   func register(completion: @escaping (Result<Void, ApiError>) -> Void) {
+    guard let fullName = getFieldValue(for: .text),
+          let email = getFieldValue(for: .email),
+          let phone = getFieldValue(for: .phone).map { CoalString.zonePhone + $0 },
+          let password = getFieldValue(for: .password),
+          let confirmPassword = getFieldValue(for: .confirmPassword) else {
+      completion(.failure(.connectionError))
+      return
+    }
     
+    isLoading = true
+    NetworkManager.shared.request(
+      endpoint: .register(
+        fullname: fullName,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+        mobileNumber: phone
+      ),
+      responseType: RegisterModel.self
+    ) { [weak self] result in
+      DispatchQueue.main.async {
+        self?.isLoading = false
+        switch result {
+        case .success:
+          completion(.success(()))
+        case .failure(let error):
+          completion(.failure(error))
+        }
+      }
+    }
   }
 }

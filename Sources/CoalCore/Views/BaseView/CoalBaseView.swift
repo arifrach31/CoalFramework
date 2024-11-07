@@ -18,10 +18,8 @@ public struct CoalBaseView<Content: View>: View {
   private let isLoading: Bool
   private let bottomSheetContent: AnyView?
   
-  @State private var toastData: ToastModel?
-  @State private var isToastVisible: Bool = false
-  @StateObject private var toastManager = ToastManager()
   @Binding private var isShowingBottomSheet: Bool
+  @EnvironmentObject private var toastManager: ToastManager
   
   public init(
     pageType: PageType? = nil,

@@ -9,7 +9,7 @@ import Foundation
 
 public enum CoalScreen {
   case splash
-  case login
+  case login(showToast: Bool = false)
   case register
   case home
   case verificationMethod

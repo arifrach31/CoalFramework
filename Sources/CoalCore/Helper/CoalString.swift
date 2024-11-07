@@ -46,4 +46,8 @@ public struct CoalString {
   public static let otpSentTitle = localized(forKey: "otp_sent_title")
   public static let otpSentDescription = localized(forKey: "otp_sent_description")
   public static let otpSentButtonOK = localized(forKey: "otp_sent_button_ok")
+  public static let registerSuccessTitle = localized(forKey: "register_success_title")
+  public static let registerSuccessSubtitle = localized(forKey: "register_success_subtitle")
+  public static let registerFailureTitle = localized(forKey: "register_failure_title")
+  public static let registerFailureSubtitle = localized(forKey: "register_failure_subtitle")
 }
