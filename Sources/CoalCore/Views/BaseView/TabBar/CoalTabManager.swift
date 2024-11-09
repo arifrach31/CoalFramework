@@ -10,9 +10,11 @@ import SwiftUI
 
 public class CoalTabManager: CoalTabProtocol {
   private weak var tabBarController: CoalTabBarController?
+  private var coalEnvironment: CoalEnvironment
   
-  public init(tabBarController: CoalTabBarController) {
+  public init(tabBarController: CoalTabBarController, coalEnvironment: CoalEnvironment) {
     self.tabBarController = tabBarController
+    self.coalEnvironment = coalEnvironment
   }
   
   public func addNewTab(_ items: [MenuTabItem]) {
@@ -33,7 +35,7 @@ public class CoalTabManager: CoalTabProtocol {
     
     switch item.actionScreen {
     case .swiftUIView(let swiftUIView):
-      let hostingController = UIHostingController(rootView: swiftUIView)
+      let hostingController = UIHostingController(rootView: swiftUIView.environmentObject(coalEnvironment))
       tabBarController?.addTab(viewController: hostingController, title: item.title, icon: iconImage, atIndex: index)
     case .uiKitViewController(let viewController):
       tabBarController?.addTab(viewController: viewController, title: item.title, icon: iconImage, atIndex: index)

@@ -31,10 +31,14 @@ public class CoalRootView: CoalRootViewProtocol {
   }
   
   public func setRootViewController(_ viewController: UIViewController) {
-    let navigationController = UINavigationController(rootViewController: viewController)
-    window = UIWindow(windowScene: windowScene)
-    window?.rootViewController = navigationController
-    window?.makeKeyAndVisible()
+    if let existingNavController = window?.rootViewController as? UINavigationController {
+      existingNavController.setViewControllers([viewController], animated: false)
+    } else {
+      let navigationController = UINavigationController(rootViewController: viewController)
+      window = UIWindow(windowScene: windowScene)
+      window?.rootViewController = navigationController
+      window?.makeKeyAndVisible()
+    }
   }
   
   public func setSwiftUIView<Content: View>(_ swiftUIView: Content) {

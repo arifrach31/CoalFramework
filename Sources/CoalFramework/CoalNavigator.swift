@@ -41,7 +41,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
   private func setupTabBarController(_ tabBarController: CoalTabBarController) {
     rootViewManager?.setRootViewController(tabBarController)
 
-    tabManager = CoalTabManager(tabBarController: tabBarController)
+    tabManager = CoalTabManager(tabBarController: tabBarController, coalEnvironment: coalEnvironment)
     tabManager?.setShowTabBar(isShowTab: config?.menuConfig?.isShowTabBar ?? false)
     addDefaultTabs()
     
