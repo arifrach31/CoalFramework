@@ -16,6 +16,9 @@ public struct LoginView: View {
   public var navigator: CoalNavigatorProtocol?
   public var config: LoginConfig?
   
+  @EnvironmentObject public var coalEnvironment: CoalEnvironment
+  @State private var isToastVisible: Bool = false
+  
   public init(
     navigator: CoalNavigatorProtocol? = nil,
     config: LoginConfig? = nil
@@ -31,12 +34,23 @@ public struct LoginView: View {
     CoalBaseView(
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isLoading: viewModel.isLoading
+      isLoading: viewModel.isLoading,
+      isToastVisible: $isToastVisible,
+      toastType: .registerSuccess
     ) {
       VStack(spacing: 40) {
         headerImage
         Spacer()
         bottomSheetView
+      }
+    }
+    .onReceive(coalEnvironment.$isRegisteredsuccessful) { isRegisteredsuccessful in
+      if let isRegisteredsuccessful = isRegisteredsuccessful, isRegisteredsuccessful {
+        isToastVisible = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+          isToastVisible = false
+        }
       }
     }
   }

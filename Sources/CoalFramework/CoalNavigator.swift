@@ -21,17 +21,18 @@ import CoalWebView
 public class CoalNavigator: CoalNavigatorProtocol {
   public static let shared = CoalNavigator()
   
-  public var windowScene: UIWindowScene? {
-    didSet {
-      if oldValue == nil, let windowScene = windowScene {
-        rootViewManager = CoalRootView(windowScene: windowScene)
-      }
-    }
-  }
-  
   private var tabManager: CoalTabProtocol?
   private var rootViewManager: CoalRootViewProtocol?
   private var config: CoalConfig?
+  private var coalEnvironment = CoalEnvironment()
+  
+  public var windowScene: UIWindowScene? {
+    didSet {
+      if oldValue == nil, let windowScene = windowScene {
+        rootViewManager = CoalRootView(windowScene: windowScene, coalEnvironment: coalEnvironment)
+      }
+    }
+  }
   
   public func configure(_ config: CoalConfig?) {
     self.config = config

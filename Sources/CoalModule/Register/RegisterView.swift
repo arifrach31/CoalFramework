@@ -15,6 +15,10 @@ public struct RegisterView: View {
   public var navigator: CoalNavigatorProtocol?
   public var config: RegisterConfig?
   
+  @EnvironmentObject public var coalEnvironment: CoalEnvironment
+  @State private var isToastVisible: Bool = false
+  @State private var toastType: ToastType = .registerFailure
+  
   public init(navigator: CoalNavigatorProtocol? = nil, config: RegisterConfig? = nil) {
     _viewModel = StateObject(wrappedValue: RegisterViewModel(config: config))
     self.navigator = navigator
@@ -27,10 +31,21 @@ public struct RegisterView: View {
     CoalBaseView(
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isLoading: viewModel.isLoading
+      isLoading: viewModel.isLoading,
+      isToastVisible: $isToastVisible,
+      toastType: toastType
     ) {
       Spacer()
       bottomSheetView
+    }
+    .onReceive(coalEnvironment.$isRegisteredsuccessful) { isRegisteredsuccessful in
+      if let isRegisteredsuccessful = isRegisteredsuccessful, !isRegisteredsuccessful {
+        isToastVisible = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+          isToastVisible = false
+        }
+      }
     }
   }
   
@@ -40,13 +55,13 @@ public struct RegisterView: View {
       
       if let form = config?.fields {
         FormView(
-          form: form,
-          viewModel: viewModel
+          viewModel: viewModel, 
+          form: form
         )
         ButtonView(
+          viewModel: viewModel, 
           navigator: navigator,
           config: config,
-          viewModel: viewModel,
           form: form
         )
       }
@@ -57,8 +72,8 @@ public struct RegisterView: View {
 }
 
 private struct FormView: View {
-  let form: [ConfigField]
   @ObservedObject var viewModel: RegisterViewModel
+  let form: [ConfigField]
   
   var body: some View {
     VStack(spacing: 12) {
@@ -116,12 +131,12 @@ private struct AgreementView: View {
 }
 
 private struct ButtonView: View {
+  @ObservedObject var viewModel: RegisterViewModel
   var navigator: CoalNavigatorProtocol?
   var config: RegisterConfig?
-  @ObservedObject var viewModel: RegisterViewModel
   let form: [ConfigField]
   @State private var isAgreed = false
-  @EnvironmentObject private var toastManager: ToastManager
+  @EnvironmentObject public var coalEnvironment: CoalEnvironment
   
   private var isEnabled: Bool {
     return viewModel.isFormValid && isAgreed
@@ -148,13 +163,10 @@ private struct ButtonView: View {
     viewModel.register { result in
       switch result {
       case .success:
+        coalEnvironment.isRegisteredsuccessful = true
         navigator?.goTo(.login)
       case .failure:
-        toastManager.show(
-          title: CoalString.registerFailureTitle,
-          subtitle: CoalString.registerFailureSubtitle,
-          isError: true
-        )
+        coalEnvironment.isRegisteredsuccessful = false
       }
     }
   }

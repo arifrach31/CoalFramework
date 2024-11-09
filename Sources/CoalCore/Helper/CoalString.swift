@@ -51,4 +51,6 @@ public struct CoalString {
   public static let registerFailureTitle = localized(forKey: "register_failure_title")
   public static let registerFailureSubtitle = localized(forKey: "register_failure_subtitle")
   public static let forgotPasswordError = localized(forKey: "forgot_password_error")
+  public static let errorTitle = localized(forKey: "error_title")
+  public static let errorSubtitle = localized(forKey: "error_subtitle")
 }

@@ -34,7 +34,7 @@ public struct ToastView: View {
       }
       Spacer()
     }
-    .padding(.top, -32)
+    .padding(.top, 16)
     .padding(.horizontal, 16)
   }
 }

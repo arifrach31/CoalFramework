@@ -17,9 +17,10 @@ public struct CoalBaseView<Content: View>: View {
   private let isShowNavBar: Bool
   private let isLoading: Bool
   private let bottomSheetContent: AnyView?
+  private var toastModel: ToastModel
   
   @Binding private var isShowingBottomSheet: Bool
-  @StateObject private var toastManager = ToastManager()
+  @Binding private var isToastVisible: Bool
   
   public init(
     pageType: PageType? = nil,
@@ -30,6 +31,8 @@ public struct CoalBaseView<Content: View>: View {
     isShowNavBar: Bool = true,
     isLoading: Bool = false,
     isShowingBottomSheet: Binding<Bool> = .constant(false),
+    isToastVisible: Binding<Bool> = .constant(false),
+    toastType: ToastType = .genericError,
     bottomSheetContent: AnyView? = nil,
     @ViewBuilder content: @escaping () -> Content
   ) {
@@ -42,6 +45,8 @@ public struct CoalBaseView<Content: View>: View {
     self.isLoading = isLoading
     self._isShowingBottomSheet = isShowingBottomSheet
     self.bottomSheetContent = bottomSheetContent
+    self._isToastVisible = isToastVisible
+    self.toastModel = toastType.getToastModel()
     self.content = content()
   }
   
@@ -70,7 +75,6 @@ public struct CoalBaseView<Content: View>: View {
           )
         }
         content
-          .environmentObject(toastManager)
       }.blur(radius: (isLoading || isShowingBottomSheet) ? 3 : 0)
       
       if isLoading || isShowingBottomSheet {
@@ -83,16 +87,6 @@ public struct CoalBaseView<Content: View>: View {
           .scaleEffect(1.5)
       }
       
-      if let toast = toastManager.toastData {
-        ToastView(
-          isVisible: $toastManager.isVisible,
-          title: toast.title,
-          subTitle: toast.subtitle,
-          isError: toast.isError
-        )
-        .padding(.top, 50)
-      }
-      
       if isShowingBottomSheet,
           let bottomSheetContent = bottomSheetContent {
         VStack {
@@ -102,12 +96,16 @@ public struct CoalBaseView<Content: View>: View {
           }
         }
       }
-    }
-    .navigationBarHidden(true)
-    .onChange(of: toastManager.isVisible) { newValue in
-      if !newValue {
-        toastManager.hide()
+      
+      if isToastVisible {
+        ToastView(
+          isVisible: $isToastVisible,
+          title: toastModel.title,
+          subTitle: toastModel.subtitle,
+          isError: toastModel.isError
+        )
       }
     }
+    .navigationBarHidden(true)
   }
 }

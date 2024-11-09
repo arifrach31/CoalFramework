@@ -7,6 +7,42 @@
 
 import Foundation
 
+public enum ToastType {
+  case registerSuccess
+  case registerFailure
+  case genericError
+  case custom(title: String, subtitle: String, isError: Bool)
+  
+  public func getToastModel() -> ToastModel {
+    switch self {
+    case .registerSuccess:
+      return ToastModel(
+        title: CoalString.registerSuccessTitle,
+        subtitle: CoalString.registerSuccessSubtitle,
+        isError: false
+      )
+    case .registerFailure:
+      return ToastModel(
+        title: CoalString.registerFailureTitle,
+        subtitle: CoalString.registerFailureSubtitle,
+        isError: true
+      )
+    case .genericError:
+      return ToastModel(
+        title: CoalString.errorTitle,
+        subtitle: CoalString.errorSubtitle,
+        isError: true
+      )
+    case .custom(let title, let subtitle, let isError):
+      return ToastModel(
+        title: title,
+        subtitle: subtitle,
+        isError: isError
+      )
+    }
+  }
+}
+
 public struct ToastModel {
   public var id: UUID
   public var title: String
