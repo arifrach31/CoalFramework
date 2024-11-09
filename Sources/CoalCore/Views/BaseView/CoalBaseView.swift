@@ -21,6 +21,7 @@ public struct CoalBaseView<Content: View>: View {
   
   @Binding private var isShowingBottomSheet: Bool
   @Binding private var isToastVisible: Bool
+  @EnvironmentObject private var coalEnvironment: CoalEnvironment
   
   public init(
     pageType: PageType? = nil,
@@ -107,5 +108,13 @@ public struct CoalBaseView<Content: View>: View {
       }
     }
     .navigationBarHidden(true)
+    .onReceive(coalEnvironment.$isRegisteredsuccessful) { isRegisteredsuccessful in
+      if isRegisteredsuccessful != nil {
+        isToastVisible = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+          isToastVisible = false
+        }
+      }
+    }
   }
 }

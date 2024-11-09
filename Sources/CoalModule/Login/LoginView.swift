@@ -44,15 +44,6 @@ public struct LoginView: View {
         bottomSheetView
       }
     }
-    .onReceive(coalEnvironment.$isRegisteredsuccessful) { isRegisteredsuccessful in
-      if let isRegisteredsuccessful = isRegisteredsuccessful, isRegisteredsuccessful {
-        isToastVisible = true
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-          isToastVisible = false
-        }
-      }
-    }
   }
   
   private var headerImage: some View {
