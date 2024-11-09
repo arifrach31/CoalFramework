@@ -53,59 +53,15 @@ public struct CoalBaseView<Content: View>: View {
   
   public var body: some View {
     ZStack {
-      if let image = backgroundImage {
-        image
-          .resizable()
-          .edgesIgnoringSafeArea(.all)
-      } else {
-        if backgroundColor == nil {
-          Image.mainBackground
-            .resizable()
-            .edgesIgnoringSafeArea(.all)
-        } else {
-          backgroundColor.edgesIgnoringSafeArea(.all)
-        }
-      }
-      
+      backgroundView
       VStack {
-        if isShowNavBar, let pageType = pageType {
-          CoalNavBar(
-            pageType: pageType,
-            leadingAction: leftAction,
-            trailingAction: rightAction
-          )
-        }
+        navbarView
         content
-      }.blur(radius: (isLoading || isShowingBottomSheet) ? 3 : 0)
-      
-      if isLoading || isShowingBottomSheet {
-        Color.black.opacity(0.6)
-          .edgesIgnoringSafeArea(.all)
       }
-      
-      if isLoading {
-        ProgressView()
-          .scaleEffect(1.5)
-      }
-      
-      if isShowingBottomSheet,
-          let bottomSheetContent = bottomSheetContent {
-        VStack {
-          Spacer()
-          BottomSheetView(isShowing: $isShowingBottomSheet, dragable: true) {
-            bottomSheetContent
-          }
-        }
-      }
-      
-      if isToastVisible {
-        ToastView(
-          isVisible: $isToastVisible,
-          title: toastModel.title,
-          subTitle: toastModel.subtitle,
-          isError: toastModel.isError
-        )
-      }
+      .blur(radius: (isLoading || isShowingBottomSheet) ? 3 : 0)
+      loadingOverlay
+      bottomSheetView
+      toastView
     }
     .navigationBarHidden(true)
     .onReceive(coalEnvironment.$isRegisteredsuccessful) { isRegisteredsuccessful in
@@ -114,6 +70,73 @@ public struct CoalBaseView<Content: View>: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
           isToastVisible = false
         }
+      }
+    }
+  }
+  
+  private var navbarView: some View {
+    Group {
+      if isShowNavBar, let pageType = pageType {
+        CoalNavBar(
+          pageType: pageType,
+          leadingAction: leftAction,
+          trailingAction: rightAction
+        )
+      }
+    }
+  }
+  
+  private var backgroundView: some View {
+    Group {
+      if let image = backgroundImage {
+        image
+          .resizable()
+          .edgesIgnoringSafeArea(.all)
+      } else if let color = backgroundColor {
+        color.edgesIgnoringSafeArea(.all)
+      } else {
+        Image.mainBackground
+          .resizable()
+          .edgesIgnoringSafeArea(.all)
+      }
+    }
+  }
+  
+  private var loadingOverlay: some View {
+    Group {
+      if isLoading || isShowingBottomSheet {
+        Color.black.opacity(0.6)
+          .edgesIgnoringSafeArea(.all)
+      }
+      if isLoading {
+        ProgressView()
+          .scaleEffect(1.5)
+      }
+    }
+  }
+  
+  private var bottomSheetView: some View {
+    Group {
+      if isShowingBottomSheet, let content = bottomSheetContent {
+        VStack {
+          Spacer()
+          BottomSheetView(isShowing: $isShowingBottomSheet, dragable: true) {
+            content
+          }
+        }
+      }
+    }
+  }
+  
+  private var toastView: some View {
+    Group {
+      if isToastVisible {
+        ToastView(
+          isVisible: $isToastVisible,
+          title: toastModel.title,
+          subTitle: toastModel.subtitle,
+          isError: toastModel.isError
+        )
       }
     }
   }
