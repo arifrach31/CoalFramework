@@ -62,7 +62,7 @@ class ChangePasswordViewModel: ObservableObject {
   
   func bindingSecure(for field: ConfigField) -> Binding<Bool> {
     Binding<Bool>(
-      get: { self.isSecured[field.label ?? ""] ?? (field.type == .password) },
+      get: { self.isSecured[field.label ?? ""] ?? (field.type == .password || field.type == .confirmPassword) },
       set: { self.isSecured[field.label ?? ""] = $0 }
     )
   }
