@@ -8,7 +8,7 @@
 import SwiftUI
 
 public class CoalEnvironment: ObservableObject {
-  @Published public var isRegisteredsuccessful: Bool? = nil
+  @Published public var toastType: ToastType? = nil
   
   public init() {}
 }

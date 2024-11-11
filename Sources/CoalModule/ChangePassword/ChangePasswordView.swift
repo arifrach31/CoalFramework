@@ -15,6 +15,9 @@ public struct ChangePasswordView: View {
   private let navigator: CoalNavigatorProtocol?
   private let config: ChangePasswordConfig?
   
+  @State private var isToastVisible: Bool = false
+  @State private var toastType: ToastType = .genericError
+  
   public init(navigator: CoalNavigatorProtocol? = nil, config: ChangePasswordConfig? = nil) {
     _viewModel = StateObject(wrappedValue: ChangePasswordViewModel(config: config))
     self.navigator = navigator
@@ -29,7 +32,9 @@ public struct ChangePasswordView: View {
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isLoading: viewModel.isLoading
+      isLoading: viewModel.isLoading,
+      isToastVisible: $isToastVisible,
+      toastType: toastType
     ) {
       VStack(spacing: 40) {
         headerImage
@@ -96,6 +101,7 @@ private struct ButtonView: View {
   @ObservedObject var viewModel: ChangePasswordViewModel
   let form: [ConfigField]
   var navigator: CoalNavigatorProtocol?
+  @EnvironmentObject private var coalEnvironment: CoalEnvironment
   
   var body: some View {
     VStack(spacing: 10) {
@@ -112,9 +118,10 @@ private struct ButtonView: View {
     viewModel.changePassword { result in
       switch result {
       case .success:
+        coalEnvironment.toastType = .resetPasswordSuccess
         navigator?.goTo(.login)
       case .failure:
-        break
+        coalEnvironment.toastType = .genericError
       }
     }
   }

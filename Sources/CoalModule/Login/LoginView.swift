@@ -16,8 +16,8 @@ public struct LoginView: View {
   public var navigator: CoalNavigatorProtocol?
   public var config: LoginConfig?
   
-  @EnvironmentObject public var coalEnvironment: CoalEnvironment
   @State private var isToastVisible: Bool = false
+  @State private var toastType: ToastType = .genericError
   
   public init(
     navigator: CoalNavigatorProtocol? = nil,
@@ -36,7 +36,7 @@ public struct LoginView: View {
       backgroundColor: backgroundColor,
       isLoading: viewModel.isLoading,
       isToastVisible: $isToastVisible,
-      toastType: .registerSuccess
+      toastType: toastType
     ) {
       VStack(spacing: 40) {
         headerImage

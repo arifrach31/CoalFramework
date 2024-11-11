@@ -10,6 +10,7 @@ import Foundation
 public enum ToastType {
   case registerSuccess
   case registerFailure
+  case resetPasswordSuccess
   case genericError
   case custom(title: String, subtitle: String, isError: Bool)
   
@@ -26,6 +27,12 @@ public enum ToastType {
         title: CoalString.registerFailureTitle,
         subtitle: CoalString.registerFailureSubtitle,
         isError: true
+      )
+    case .resetPasswordSuccess:
+      return ToastModel(
+        title: CoalString.resetPasswordSuccessTitle,
+        subtitle: CoalString.resetPasswordSuccessSubtitle,
+        isError: false
       )
     case .genericError:
       return ToastModel(

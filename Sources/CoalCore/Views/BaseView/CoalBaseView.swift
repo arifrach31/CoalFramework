@@ -17,8 +17,8 @@ public struct CoalBaseView<Content: View>: View {
   private let isShowNavBar: Bool
   private let isLoading: Bool
   private let bottomSheetContent: AnyView?
-  private var toastModel: ToastModel
   
+  @State private var toastModel: ToastModel
   @Binding private var isShowingBottomSheet: Bool
   @Binding private var isToastVisible: Bool
   @EnvironmentObject private var coalEnvironment: CoalEnvironment
@@ -47,7 +47,7 @@ public struct CoalBaseView<Content: View>: View {
     self._isShowingBottomSheet = isShowingBottomSheet
     self.bottomSheetContent = bottomSheetContent
     self._isToastVisible = isToastVisible
-    self.toastModel = toastType.getToastModel()
+    self._toastModel = State(initialValue: toastType.getToastModel())
     self.content = content()
   }
   
@@ -64,11 +64,13 @@ public struct CoalBaseView<Content: View>: View {
       toastView
     }
     .navigationBarHidden(true)
-    .onReceive(coalEnvironment.$isRegisteredsuccessful) { isRegisteredsuccessful in
-      if isRegisteredsuccessful != nil {
+    .onReceive(coalEnvironment.$toastType) { toastType in
+      if let toastType = toastType {
+        toastModel = toastType.getToastModel()
         isToastVisible = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
           isToastVisible = false
+          coalEnvironment.toastType = nil
         }
       }
     }

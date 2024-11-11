@@ -44,3 +44,5 @@
 "forgot_password_error" = "Email or mobile number not registered";
 "error_title" = "Error";
 "error_subtitle" = "Something went wrong. Please try again.";
+"reset_password_success_title" = "Reset Password Success";
+"reset_password_success_subtitle" = "Login to continue the process";

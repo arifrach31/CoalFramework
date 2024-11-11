@@ -15,7 +15,6 @@ public struct RegisterView: View {
   public var navigator: CoalNavigatorProtocol?
   public var config: RegisterConfig?
   
-  @EnvironmentObject public var coalEnvironment: CoalEnvironment
   @State private var isToastVisible: Bool = false
   @State private var toastType: ToastType = .registerFailure
   
@@ -154,10 +153,10 @@ private struct ButtonView: View {
     viewModel.register { result in
       switch result {
       case .success:
-        coalEnvironment.isRegisteredsuccessful = true
+        coalEnvironment.toastType = .registerSuccess
         navigator?.goTo(.login)
       case .failure:
-        coalEnvironment.isRegisteredsuccessful = false
+        coalEnvironment.toastType = .registerFailure
       }
     }
   }
