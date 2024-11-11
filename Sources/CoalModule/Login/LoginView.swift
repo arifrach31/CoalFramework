@@ -16,9 +16,6 @@ public struct LoginView: View {
   public var navigator: CoalNavigatorProtocol?
   public var config: LoginConfig?
   
-  @State private var isToastVisible: Bool = false
-  @State private var toastType: ToastType = .genericError
-  
   public init(
     navigator: CoalNavigatorProtocol? = nil,
     config: LoginConfig? = nil
@@ -34,9 +31,7 @@ public struct LoginView: View {
     CoalBaseView(
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isLoading: viewModel.isLoading,
-      isToastVisible: $isToastVisible,
-      toastType: toastType
+      isLoading: viewModel.isLoading
     ) {
       VStack(spacing: 40) {
         headerImage

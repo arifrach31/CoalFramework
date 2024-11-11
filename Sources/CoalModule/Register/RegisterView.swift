@@ -15,9 +15,6 @@ public struct RegisterView: View {
   public var navigator: CoalNavigatorProtocol?
   public var config: RegisterConfig?
   
-  @State private var isToastVisible: Bool = false
-  @State private var toastType: ToastType = .registerFailure
-  
   public init(navigator: CoalNavigatorProtocol? = nil, config: RegisterConfig? = nil) {
     _viewModel = StateObject(wrappedValue: RegisterViewModel(config: config))
     self.navigator = navigator
@@ -30,9 +27,7 @@ public struct RegisterView: View {
     CoalBaseView(
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isLoading: viewModel.isLoading,
-      isToastVisible: $isToastVisible,
-      toastType: toastType
+      isLoading: viewModel.isLoading
     ) {
       Spacer()
       bottomSheetView

@@ -18,10 +18,10 @@ public struct CoalBaseView<Content: View>: View {
   private let isLoading: Bool
   private let bottomSheetContent: AnyView?
   
-  @State private var toastModel: ToastModel
-  @Binding private var isShowingBottomSheet: Bool
-  @Binding private var isToastVisible: Bool
   @EnvironmentObject private var coalEnvironment: CoalEnvironment
+  @State private var isToastVisible: Bool = false
+  @State private var toastModel: ToastModel = ToastModel()
+  @Binding private var isShowingBottomSheet: Bool
   
   public init(
     pageType: PageType? = nil,
@@ -32,8 +32,6 @@ public struct CoalBaseView<Content: View>: View {
     isShowNavBar: Bool = true,
     isLoading: Bool = false,
     isShowingBottomSheet: Binding<Bool> = .constant(false),
-    isToastVisible: Binding<Bool> = .constant(false),
-    toastType: ToastType = .genericError,
     bottomSheetContent: AnyView? = nil,
     @ViewBuilder content: @escaping () -> Content
   ) {
@@ -46,8 +44,6 @@ public struct CoalBaseView<Content: View>: View {
     self.isLoading = isLoading
     self._isShowingBottomSheet = isShowingBottomSheet
     self.bottomSheetContent = bottomSheetContent
-    self._isToastVisible = isToastVisible
-    self._toastModel = State(initialValue: toastType.getToastModel())
     self.content = content()
   }
   
