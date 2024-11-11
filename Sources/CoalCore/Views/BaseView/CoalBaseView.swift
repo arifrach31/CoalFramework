@@ -133,7 +133,11 @@ public struct CoalBaseView<Content: View>: View {
           isVisible: $isToastVisible,
           title: toastModel.title,
           subTitle: toastModel.subtitle,
-          isError: toastModel.isError
+          isError: toastModel.isError,
+          onDismiss: {
+            isToastVisible = false
+            coalEnvironment.toastType = nil
+          }
         )
       }
     }

@@ -14,12 +14,20 @@ public struct ToastView: View {
   var title: String?
   var subTitle: String?
   var isError: Bool
+  var onDismiss: (() -> Void)?
   
-  public init(isVisible: Binding<Bool>, title: String? = "", subTitle: String? = "", isError: Bool = false) {
+  public init(
+    isVisible: Binding<Bool>,
+    title: String? = "",
+    subTitle: String? = "",
+    isError: Bool = false,
+    onDismiss: (() -> Void)? = nil
+  ) {
     self._isVisible = isVisible
     self.title = title
     self.subTitle = subTitle
     self.isError = isError
+    self.onDismiss = onDismiss
   }
   
   public var body: some View {
@@ -31,6 +39,9 @@ public struct ToastView: View {
           action: ""
         )
         .theme(variant: isError ? .error : .success)
+        .onDismissed {
+          onDismiss?()
+        }
       }
       Spacer()
     }
