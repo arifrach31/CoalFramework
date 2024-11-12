@@ -16,7 +16,7 @@ class MenuProvider: MenuConfigProvider {
         MenuTabItem(
           title: "About",
           icon: "folder.fill",
-          actionScreen: AnyView(ClientViewController())
+          actionScreen: AnyView(ClientView())
         )
       ]
     )

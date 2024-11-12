@@ -21,10 +21,11 @@ import CoalWebView
 public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
   public static let shared = CoalNavigator()
   
-  @Published private var tabManager = CoalTabManager()
   private var rootViewManager: CoalRootViewProtocol?
   private var config: CoalConfig?
   private var coalEnvironment = CoalEnvironment()
+  
+  @Published private var tabManager = CoalTabManager()
   
   public var windowScene: UIWindowScene? {
     didSet {
@@ -54,13 +55,10 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
         actionScreen: AnyView(accountView)
       )
     ]
-    
-    tabItems.forEach { tabManager.addTab($0) }
+    tabManager.addTab(tabItems)
     
     if let customTabs = config?.menuConfig?.addTabItems {
-      for customTab in customTabs {
-        tabManager.addTab(customTab)
-      }
+      tabManager.addTab(customTabs)
     }
     
     return CoalTabBarView(tabManager: tabManager)

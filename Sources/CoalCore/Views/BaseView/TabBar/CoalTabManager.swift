@@ -14,8 +14,10 @@ public class CoalTabManager: ObservableObject {
   
   public init() {}
   
-  public func addTab(_ item: MenuTabItem) {
-    tabs.append(item)
+  public func addTab(_ items: [MenuTabItem]) {
+    items.enumerated().forEach { _, item in
+      tabs.append(item)
+    }
   }
   
   public func removeTab(at index: Int) {
