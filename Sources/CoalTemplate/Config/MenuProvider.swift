@@ -5,6 +5,7 @@
 //  Created by ArifRachman on 05/10/24.
 //
 
+import SwiftUI
 import CoalCore
 
 class MenuProvider: MenuConfigProvider {
@@ -15,7 +16,7 @@ class MenuProvider: MenuConfigProvider {
         MenuTabItem(
           title: "About",
           icon: "folder.fill",
-          actionScreen: .uiKitViewController(AboutViewController())
+          actionScreen: AnyView(ClientViewController())
         )
       ]
     )

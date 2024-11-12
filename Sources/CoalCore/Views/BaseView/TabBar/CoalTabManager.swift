@@ -5,66 +5,36 @@
 //  Created by ArifRachman on 02/10/24.
 //
 
-import UIKit
 import SwiftUI
 
-public class CoalTabManager: CoalTabProtocol {
-  private weak var tabBarController: CoalTabBarController?
-  private var coalEnvironment: CoalEnvironment
+public class CoalTabManager: ObservableObject {
+  @Published public var tabs: [MenuTabItem] = []
+  @Published public var selectedTab: Int = 0
+  @Published public var isTabBarVisible: Bool = true
   
-  public init(tabBarController: CoalTabBarController, coalEnvironment: CoalEnvironment) {
-    self.tabBarController = tabBarController
-    self.coalEnvironment = coalEnvironment
-  }
+  public init() {}
   
-  public func addNewTab(_ items: [MenuTabItem]) {
-    let startIndex = tabBarController?.viewControllers?.count ?? 0
-    items.enumerated().forEach { index, item in
-      addTab(item, at: startIndex + index)
-    }
-  }
-  
-  public func addTabs(_ items: [MenuTabItem]) {
-    items.enumerated().forEach { index, item in
-      addTab(item, at: index)
-    }
-  }
-  
-  public func addTab(_ item: MenuTabItem, at index: Int) {
-    let iconImage = UIImage.loadImage(item.icon)
-    
-    switch item.actionScreen {
-    case .swiftUIView(let swiftUIView):
-      let hostingController = UIHostingController(rootView: swiftUIView.environmentObject(coalEnvironment))
-      tabBarController?.addTab(viewController: hostingController, title: item.title, icon: iconImage, atIndex: index)
-    case .uiKitViewController(let viewController):
-      tabBarController?.addTab(viewController: viewController, title: item.title, icon: iconImage, atIndex: index)
-    }
+  public func addTab(_ item: MenuTabItem) {
+    tabs.append(item)
   }
   
   public func removeTab(at index: Int) {
-    tabBarController?.removeTab(atIndex: index)
+    guard index >= 0 && index < tabs.count else { return }
+    tabs.remove(at: index)
   }
   
-  public func updateTab(at index: Int, title: String?, icon: UIImage?) {
-    tabBarController?.updateTab(atIndex: index, withTitle: title, image: icon)
+  public func updateTab(at index: Int, withTitle title: String?, icon: String?) {
+    guard index >= 0 && index < tabs.count else { return }
+    tabs[index].title = title ?? tabs[index].title
+    tabs[index].icon = icon ?? tabs[index].icon
   }
   
   public func navigateToTab(at index: Int) {
-    guard let tabBarController = tabBarController else {
-      print("TabBarController not found")
-      return
-    }
-    
-    guard index >= 0 && index < (tabBarController.viewControllers?.count ?? 0) else {
-      print("Index is out of bounds.")
-      return
-    }
-    
-    tabBarController.selectedIndex = index
+    guard index >= 0 && index < tabs.count else { return }
+    selectedTab = index
   }
   
-  public func setShowTabBar(isShowTab: Bool = false) {
-    tabBarController?.setTabBar(isShow: isShowTab)
+  public func setShowTabBar(_ isShow: Bool) {
+    isTabBarVisible = isShow
   }
 }

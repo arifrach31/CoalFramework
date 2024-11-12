@@ -18,10 +18,10 @@ import CoalForgot
 import CoalChangePassword
 import CoalWebView
 
-public class CoalNavigator: CoalNavigatorProtocol {
+public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
   public static let shared = CoalNavigator()
   
-  private var tabManager: CoalTabProtocol?
+  @Published private var tabManager = CoalTabManager()
   private var rootViewManager: CoalRootViewProtocol?
   private var config: CoalConfig?
   private var coalEnvironment = CoalEnvironment()
@@ -38,19 +38,7 @@ public class CoalNavigator: CoalNavigatorProtocol {
     self.config = config
   }
   
-  private func setupTabBarController(_ tabBarController: CoalTabBarController) {
-    rootViewManager?.setRootViewController(tabBarController)
-
-    tabManager = CoalTabManager(tabBarController: tabBarController, coalEnvironment: coalEnvironment)
-    tabManager?.setShowTabBar(isShowTab: config?.menuConfig?.isShowTabBar ?? false)
-    addDefaultTabs()
-    
-    if let additionalTabs = config?.menuConfig?.addTabItems {
-      tabManager?.addNewTab(additionalTabs)
-    }
-  }
-  
-  private func addDefaultTabs() {
+  public func setupTabs() -> some View {
     let homeView = HomeView(navigator: self, config: config?.homeConfig)
     let accountView = AccountView(navigator: self)
     
@@ -58,16 +46,24 @@ public class CoalNavigator: CoalNavigatorProtocol {
       MenuTabItem(
         title: homeView.coalTabInfo().title,
         icon: homeView.coalTabInfo().icon,
-        actionScreen: .swiftUIView(AnyView(homeView))
+        actionScreen: AnyView(homeView)
       ),
       MenuTabItem(
         title: accountView.coalTabInfo().title,
         icon: accountView.coalTabInfo().icon,
-        actionScreen: .swiftUIView(AnyView(accountView))
+        actionScreen: AnyView(accountView)
       )
     ]
     
-    tabManager?.addTabs(tabItems)
+    tabItems.forEach { tabManager.addTab($0) }
+    
+    if let customTabs = config?.menuConfig?.addTabItems {
+      for customTab in customTabs {
+        tabManager.addTab(customTab)
+      }
+    }
+    
+    return CoalTabBarView(tabManager: tabManager)
   }
   
   public func pushToViewController<Content: View>(_ swiftUIView: Content) {
@@ -102,10 +98,9 @@ public class CoalNavigator: CoalNavigatorProtocol {
                                       config: config?.registerConfig)
       view = AnyView(registerView)
     case .home:
-      setupTabBarController(CoalTabBarController())
-      return
+      view = AnyView(setupTabs())
     case .account:
-      tabManager?.navigateToTab(at: 1)
+      tabManager.navigateToTab(at: 1)
       return
     case .verificationMethod:
       guard let showMethod = config?.verificationConfig?.showVerificationMethod, showMethod else {
