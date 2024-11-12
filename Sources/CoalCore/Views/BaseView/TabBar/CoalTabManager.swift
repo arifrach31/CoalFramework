@@ -11,8 +11,11 @@ public class CoalTabManager: ObservableObject {
   @Published public var tabs: [MenuTabItem] = []
   @Published public var selectedTab: Int = 0
   @Published public var isTabBarVisible: Bool = true
+  @ObservedObject public var coalEnvironment: CoalEnvironment
   
-  public init() {}
+  public init(coalEnvironment: CoalEnvironment) {
+    self.coalEnvironment = coalEnvironment
+  }
   
   public func addTab(_ items: [MenuTabItem]) {
     items.enumerated().forEach { _, item in

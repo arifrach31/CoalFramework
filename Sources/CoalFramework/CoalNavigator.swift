@@ -25,7 +25,11 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
   private var config: CoalConfig?
   private var coalEnvironment = CoalEnvironment()
   
-  @Published private var tabManager = CoalTabManager()
+  @Published private var tabManager: CoalTabManager
+  
+  public init() {
+    tabManager = CoalTabManager(coalEnvironment: coalEnvironment)
+  }
   
   public var windowScene: UIWindowScene? {
     didSet {
@@ -47,12 +51,12 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
       MenuTabItem(
         title: homeView.coalTabInfo().title,
         icon: homeView.coalTabInfo().icon,
-        actionScreen: AnyView(homeView)
+        actionScreen: .swiftUIView(AnyView(homeView))
       ),
       MenuTabItem(
         title: accountView.coalTabInfo().title,
         icon: accountView.coalTabInfo().icon,
-        actionScreen: AnyView(accountView)
+        actionScreen: .swiftUIView(AnyView(accountView))
       )
     ]
     tabManager.addTab(tabItems)

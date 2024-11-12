@@ -59,3 +59,13 @@ public class CoalRootView: CoalRootViewProtocol {
     currentViewController?.navigationController?.popViewController(animated: animated)
   }
 }
+
+public struct UIViewControllerWrapper: UIViewControllerRepresentable {
+  let viewController: UIViewController
+  
+  public func makeUIViewController(context: Context) -> UIViewController {
+    viewController
+  }
+  
+  public func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}

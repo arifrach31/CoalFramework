@@ -33,7 +33,7 @@ public struct CoalTabBarView: View {
       if tabManager.isTabBarVisible {
         TabView(selection: $tabManager.selectedTab) {
           ForEach(0..<tabManager.tabs.count, id: \.self) { index in
-            tabManager.tabs[index].actionScreen
+            tabItemView(for: tabManager.tabs[index].actionScreen)
               .tabItem {
                 VStack {
                   if let iconName = tabManager.tabs[index].icon,
@@ -49,6 +49,16 @@ public struct CoalTabBarView: View {
           }
         }
       }
+    }
+  }
+  
+  @ViewBuilder
+  private func tabItemView(for screen: ScreenType) -> some View {
+    switch screen {
+    case .swiftUIView(let swiftUIView):
+      swiftUIView
+    case .uiKitViewController(let viewController):
+      UIViewControllerWrapper(viewController: viewController)
     }
   }
 }
