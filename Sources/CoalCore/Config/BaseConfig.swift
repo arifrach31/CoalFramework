@@ -5,7 +5,6 @@
 //  Created by ArifRachman on 15/10/24.
 //
 
-import Foundation
 import SwiftUI
 
 public class BaseConfig {

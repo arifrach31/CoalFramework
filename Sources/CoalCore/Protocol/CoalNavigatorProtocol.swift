@@ -5,7 +5,6 @@
 //  Created by ArifRachman on 17/09/24.
 //
 
-import UIKit
 import SwiftUI
 
 public protocol CoalNavigatorProtocol {
@@ -13,5 +12,5 @@ public protocol CoalNavigatorProtocol {
   func popToPreviousView()
   
   func showInitialPage(isLoggedIn: Bool)
-  func goTo(_ screen: CoalScreen)
+  func goTo(_ screen: CoalScreenType)
 }

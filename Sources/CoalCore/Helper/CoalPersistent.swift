@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum PersistentKey: String {
+public enum PersistentType: String {
   case generalUser
   case coalFramework
 }
@@ -20,26 +20,26 @@ public struct CoalPersistent {
   
   private init() {}
   
-  public func set(key: PersistentKey, value: String) {
+  public func set(key: PersistentType, value: String) {
     userDefaults.set(value, forKey: key.rawValue)
   }
   
-  public func get(key: PersistentKey) -> String? {
+  public func get(key: PersistentType) -> String? {
     return userDefaults.string(forKey: key.rawValue)
   }
   
-  public func delete(key: PersistentKey) {
+  public func delete(key: PersistentType) {
     userDefaults.removeObject(forKey: key.rawValue)
   }
   
-  public func setCodable<T: Codable>(key: PersistentKey, value: T) {
+  public func setCodable<T: Codable>(key: PersistentType, value: T) {
     let encoder = JSONEncoder()
     if let data = try? encoder.encode(value) {
       userDefaults.set(data, forKey: key.rawValue)
     }
   }
   
-  public func getCodable<T: Codable>(key: PersistentKey, type: T.Type) -> T? {
+  public func getCodable<T: Codable>(key: PersistentType, type: T.Type) -> T? {
     if let data = userDefaults.data(forKey: key.rawValue) {
       let decoder = JSONDecoder()
       return try? decoder.decode(T.self, from: data)

@@ -11,14 +11,14 @@ import ThemeLGN
 
 struct CoalCatalogView: View {
   let catalog: ProductListModel
-  var layout: LayoutDirection
+  var layout: LayoutDirectionType
   var didSelectItem: (ProductListModel) -> Void
   var imgSize: CGFloat
   var cardSize: CGFloat
   
   public init(
     catalog: ProductListModel,
-    layout: LayoutDirection,
+    layout: LayoutDirectionType,
     didSelectItem: @escaping (ProductListModel) -> Void = {_ in},
     imgSize: CGFloat = 120,
     cardSize: CGFloat = 240

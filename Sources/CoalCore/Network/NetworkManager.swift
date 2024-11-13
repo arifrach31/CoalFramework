@@ -25,7 +25,7 @@ public class NetworkManager {
   public func request<T: Decodable>(
     endpoint: CoalAPI,
     responseType: T.Type,
-    completion: @escaping (Result<T, ApiError>) -> Void
+    completion: @escaping (Result<T, ApiErrorType>) -> Void
   ) {
     do {
       let request = try endpoint.urlRequest(using: networkConfigProvider)
@@ -37,7 +37,7 @@ public class NetworkManager {
   
   private func executeRequest<T: Decodable>(
     _ request: URLRequest,
-    completion: @escaping (Result<T, ApiError>) -> Void
+    completion: @escaping (Result<T, ApiErrorType>) -> Void
   ) {
     NetworkLogger.shared.logRequest(request)
     

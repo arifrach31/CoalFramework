@@ -7,13 +7,13 @@
 
 import Foundation
 
-public enum CoalScreen {
+public enum CoalScreenType {
   case splash
   case login
   case register
   case home
   case verificationMethod
-  case verificationCode(journey: VerificationJourney?, methodField: ConfigField?)
+  case verificationCode(journey: VerificationType?, methodField: ConfigField?)
   case account
   case forgot
   case changePassword

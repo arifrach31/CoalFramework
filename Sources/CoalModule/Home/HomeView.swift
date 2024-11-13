@@ -40,7 +40,7 @@ public struct HomeView: View {
   }
   
   @ViewBuilder
-  private func sectionView(for section: HomeSection) -> some View {
+  private func sectionView(for section: HomeSectionType) -> some View {
     switch section {
     case .carousel:
       let carouselConfig = config?.carouselConfig

@@ -92,7 +92,7 @@ class RegisterViewModel: ObservableObject {
     return true
   }
   
-  func register(completion: @escaping (Result<Void, ApiError>) -> Void) {
+  func register(completion: @escaping (Result<Void, ApiErrorType>) -> Void) {
     guard let fullName = getFieldValue(for: .text),
           let email = getFieldValue(for: .email),
           let phone = getFieldValue(for: .phone).map({ CoalString.zonePhone + $0 }),

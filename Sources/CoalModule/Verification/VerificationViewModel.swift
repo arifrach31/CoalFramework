@@ -87,7 +87,7 @@ public class VerificationViewModel: ObservableObject {
     ]
   }
   
-  func sendOTP(method: ConfigField, completion: @escaping (Result<Void, ApiError>) -> Void) {
+  func sendOTP(method: ConfigField, completion: @escaping (Result<Void, ApiErrorType>) -> Void) {
     guard let sendTo = method.label else {
       completion(.failure(.connectionError))
       return
@@ -134,7 +134,7 @@ public class VerificationViewModel: ObservableObject {
     }
   }
   
-  func verifyOTP(sendTo: String?, completion: @escaping (Result<Void, ApiError>) -> Void) {
+  func verifyOTP(sendTo: String?, completion: @escaping (Result<Void, ApiErrorType>) -> Void) {
     guard let sendTo = sendTo else {
       completion(.failure(.connectionError))
       return
@@ -164,7 +164,7 @@ public class VerificationViewModel: ObservableObject {
     }
   }
   
-  func verifyPassword(email: String?, completion: @escaping (Result<Void, ApiError>) -> Void) {
+  func verifyPassword(email: String?, completion: @escaping (Result<Void, ApiErrorType>) -> Void) {
     guard let email = email else {
       completion(.failure(.connectionError))
       return

@@ -11,7 +11,7 @@ import ThemeLGN
 
 public struct CoalGridCategoryView: View {
   public let categories: [CategoryModel]
-  public var layoutType: LayoutDirection
+  public var layoutType: LayoutDirectionType
   public var gridRows: Int
   public var iconSize: CGFloat
   public var cardSize: CGFloat
@@ -22,7 +22,7 @@ public struct CoalGridCategoryView: View {
   
   public init(
     categories: [CategoryModel],
-    layoutType: LayoutDirection,
+    layoutType: LayoutDirectionType,
     gridRows: Int,
     title: String,
     actionTitle: String = CoalString.seeAll,

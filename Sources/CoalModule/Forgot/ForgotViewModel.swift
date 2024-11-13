@@ -32,7 +32,7 @@ class ForgotViewModel: ObservableObject {
     return Validator(email, type: .text, minLength: 10)
   }
   
-  private func handleForgotError(error: ApiError) {
+  private func handleForgotError(error: ApiErrorType) {
     if let emailField = formFields.first(where: { $0.type == .text }) {
       setError(for: emailField, message: CoalString.forgotPasswordError)
     }
@@ -76,7 +76,7 @@ class ForgotViewModel: ObservableObject {
     }
   }
   
-  func forgotPassword(completion: @escaping (Result<Void, ApiError>) -> Void) {
+  func forgotPassword(completion: @escaping (Result<Void, ApiErrorType>) -> Void) {
     guard let email = getFieldValue(for: .text) else {
       completion(.failure(.connectionError))
       return

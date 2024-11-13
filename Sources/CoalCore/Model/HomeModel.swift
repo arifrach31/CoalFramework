@@ -12,7 +12,7 @@ public protocol HomeSectionProvider {
   func getCategories() -> [CategoryModel]
   func getProductList() -> [ProductListModel]
 }
-public enum HomeSection: Identifiable {
+public enum HomeSectionType: Identifiable {
   case carousel
   case category
   case productList

@@ -30,7 +30,7 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
     return homeConfig
   }
   
-  private func getHomeSections() -> [HomeSection] {
+  private func getHomeSections() -> [HomeSectionType] {
     return [.carousel, .category, .productList]
   }
   

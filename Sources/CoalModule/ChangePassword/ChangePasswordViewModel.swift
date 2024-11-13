@@ -83,7 +83,7 @@ class ChangePasswordViewModel: ObservableObject {
     }
   }
   
-  func changePassword(completion: @escaping (Result<Void, ApiError>) -> Void) {
+  func changePassword(completion: @escaping (Result<Void, ApiErrorType>) -> Void) {
     guard let password = getFieldValue(for: .password),
           let confirmPassword = getFieldValue(for: .confirmPassword) else {
       completion(.failure(.connectionError))

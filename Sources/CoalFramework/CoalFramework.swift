@@ -43,11 +43,11 @@ public class CoalFramework {
     }
   }
   
-  private func fetchConfig(completion: @escaping (Result<ConfigModel, ApiError>) -> Void) {
+  private func fetchConfig(completion: @escaping (Result<ConfigModel, ApiErrorType>) -> Void) {
     networkManager.request(endpoint: CoalAPI.getConfig, responseType: ConfigModel.self, completion: completion)
   }
   
-  private func handleConfigFetchResult(_ result: Result<ConfigModel, ApiError>) {
+  private func handleConfigFetchResult(_ result: Result<ConfigModel, ApiErrorType>) {
     switch result {
     case .success(let config):
       updateConfig(with: config)
@@ -61,7 +61,7 @@ public class CoalFramework {
     config.save()
   }
   
-  private func handleFetchError(_ error: ApiError) {
+  private func handleFetchError(_ error: ApiErrorType) {
     print("Error fetching config: \(error.localizedDescription)")
   }
   

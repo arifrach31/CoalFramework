@@ -80,7 +80,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
     isLoggedIn ? self.goTo(.home) : self.goTo(.login)
   }
   
-  public func goTo(_ screen: CoalScreen) {
+  public func goTo(_ screen: CoalScreenType) {
     let view: AnyView
     
     switch screen {
@@ -122,7 +122,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
         navigator: self,
         config: config?.verificationConfig,
         methodField: methodField,
-        journey: journey
+        verificationType: journey
       )
       view = AnyView(verifView)
     case .forgot:

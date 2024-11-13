@@ -37,7 +37,7 @@ public class LoginViewModel: ObservableObject {
     return field.flatMap { formValues[$0.label ?? ""] }
   }
   
-  private func handleLoginError(error: ApiError) {
+  private func handleLoginError(error: ApiErrorType) {
     if let emailField = formFields.first(where: { $0.type == .email }) {
       setError(for: emailField, message: CoalString.emailError)
     }
@@ -80,7 +80,7 @@ public class LoginViewModel: ObservableObject {
     formValues["password"] = ""
   }
   
-  func login(completion: @escaping (Result<Void, ApiError>) -> Void) {
+  func login(completion: @escaping (Result<Void, ApiErrorType>) -> Void) {
     guard let email = getFieldValue(for: .email),
           let password = getFieldValue(for: .password) else {
       completion(.failure(.connectionError))

@@ -9,13 +9,13 @@ import SwiftUI
 import LegionUI
 import ThemeLGN
 
-public enum LayoutDirection {
+public enum LayoutDirectionType {
   case horizontal
   case vertical
 }
 
 public struct CoalGridView<Content: View>: View {
-  var layoutType: LayoutDirection
+  var layoutType: LayoutDirectionType
   var gridRows: Int
   var spacing: CGFloat
   var content: () -> Content
@@ -25,7 +25,7 @@ public struct CoalGridView<Content: View>: View {
   }
   
   public init(
-    layoutType: LayoutDirection,
+    layoutType: LayoutDirectionType,
     gridRows: Int,
     spacing: CGFloat = 16,
     @ViewBuilder content: @escaping () -> Content

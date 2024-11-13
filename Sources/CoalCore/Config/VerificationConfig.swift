@@ -11,7 +11,7 @@ public protocol VerificationConfigProvider {
   func getConfig() -> VerificationConfig
 }
 
-public enum VerificationJourney {
+public enum VerificationType {
   case login
   case forgot
 }

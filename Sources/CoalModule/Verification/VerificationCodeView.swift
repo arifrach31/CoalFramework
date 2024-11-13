@@ -14,19 +14,19 @@ public struct VerificationCodeView: View {
   private let navigator: CoalNavigatorProtocol?
   private let config: VerificationConfig?
   private let methodField: ConfigField?
-  private let journey: VerificationJourney?
+  private let verificationType: VerificationType?
   
   public init(
     navigator: CoalNavigatorProtocol? = nil, 
     config: VerificationConfig? = nil,
     methodField: ConfigField? = nil,
-    journey: VerificationJourney? = .login
+    verificationType: VerificationType? = .login
   ) {
     _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
     self.navigator = navigator
     self.config = config
     self.methodField = methodField
-    self.journey = journey
+    self.verificationType = verificationType
   }
   
   public var body: some View {
@@ -72,9 +72,9 @@ public struct VerificationCodeView: View {
         field: viewModel.buttonVerifyCode,
         isDisabled: !viewModel.isOTPComplete || viewModel.isError
       ) {
-        self.journey == .login ?
-        self.handleVerifyOTP(sendTo: methodField?.label) :
-        self.handleVerifyPassword(email: methodField?.label)
+        self.verificationType == .login ?
+          self.handleVerifyOTP(sendTo: methodField?.label) :
+            self.handleVerifyPassword(email: methodField?.label)
       }
       
       Spacer()

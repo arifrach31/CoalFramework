@@ -5,7 +5,6 @@
 //  Created by ArifRachman on 22/08/24.
 //
 
-import Foundation
 import SwiftUI
 
 public struct ConfigModel: Codable {

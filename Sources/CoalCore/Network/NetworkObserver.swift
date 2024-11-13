@@ -8,10 +8,10 @@
 import Network
 
 protocol NetworkObserverDelegate: AnyObject {
-  func networkStatusDidChange(status: NetworkStatus)
+  func networkStatusDidChange(status: NetworkStatusType)
 }
 
-enum NetworkStatus {
+enum NetworkStatusType {
   case connected(ConnectionType)
   case notConnected
   case poorConnection

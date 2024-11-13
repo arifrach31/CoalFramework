@@ -5,7 +5,6 @@
 //  Created by ArifRachman on 05/09/24.
 //
 
-import UIKit
 import SwiftUI
 import CoalCore
 import LegionUI

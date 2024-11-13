@@ -17,7 +17,7 @@ public struct CoalTextFieldView: View {
   public var isError: Bool
   public var errorMessage: String?
   @FocusState private var isEmailFieldFocused: Bool
-  public var additionalButtonAction: (CoalScreen) -> Void
+  public var additionalButtonAction: (CoalScreenType) -> Void
   
   public init(
     field: ConfigField,
@@ -26,7 +26,7 @@ public struct CoalTextFieldView: View {
     additionalButtonConfig: AdditionalButtonConfig? = nil,
     isError: Bool = false,
     errorMessage: String? = nil,
-    additionalButtonAction: @escaping (CoalScreen) -> Void = { _ in }
+    additionalButtonAction: @escaping (CoalScreenType) -> Void = { _ in }
   ) {
     self.field = field
     self._value = value

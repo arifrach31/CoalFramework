@@ -11,7 +11,7 @@ import ThemeLGN
 
 public struct CoalGridCatalogView: View {
   public let catalog: [ProductListModel]
-  public var layoutType: LayoutDirection
+  public var layoutType: LayoutDirectionType
   public var gridRows: Int
   public var imgSize: CGFloat
   public var cardSize: CGFloat
@@ -22,7 +22,7 @@ public struct CoalGridCatalogView: View {
   
   public init(
     catalog: [ProductListModel],
-    layoutType: LayoutDirection,
+    layoutType: LayoutDirectionType,
     gridRows: Int,
     imgSize: CGFloat = 120,
     cardSize: CGFloat = 240,

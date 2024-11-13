@@ -12,7 +12,7 @@ public protocol HomeConfigProvider {
 }
 
 public class HomeConfig {
-  public var sections: [HomeSection]?
+  public var sections: [HomeSectionType]?
   public var isShowNavBar: Bool?
   public var carouselConfig: CoalCarouselView?
   public var categoryConfig: CoalGridCategoryView?
@@ -20,7 +20,7 @@ public class HomeConfig {
   
   public init(
     isShowNavBar: Bool? = false,
-    sections: [HomeSection]? = [],
+    sections: [HomeSectionType]? = [],
     carouselConfig: CoalCarouselView? = nil,
     categoryConfig: CoalGridCategoryView? = nil,
     catalogConfig: CoalGridCatalogView? = nil

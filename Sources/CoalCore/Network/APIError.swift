@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ApiError: Error {
+public enum ApiErrorType: Error {
   case connectionError
   case invalidJSONError
   case middlewareError(data: [String: Any]? = nil, code: Int, message: String?)

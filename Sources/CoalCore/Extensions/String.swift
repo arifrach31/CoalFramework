@@ -16,7 +16,7 @@ public extension String {
     return false
   }
   
-  func hmac(algorithm: HMACAlgorithm, key: String) -> String {
+  func hmac(algorithm: HMACType, key: String) -> String {
     if let cKey = key.cString(using: .utf8), let cData = self.cString(using: .utf8) {
       var result = [CUnsignedChar](repeating: 0, count: algorithm.digestLength())
       CCHmac(algorithm.toCCHmacAlgorithm(), cKey, strlen(cKey), cData, strlen(cData), &result)
@@ -90,7 +90,7 @@ public extension String {
   }
 }
 
-public enum HMACAlgorithm {
+public enum HMACType {
   case MD5, SHA1, SHA224, SHA256, SHA384, SHA512
   
   public func toCCHmacAlgorithm() -> CCHmacAlgorithm {
