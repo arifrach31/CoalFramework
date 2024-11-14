@@ -18,7 +18,8 @@ class LoginProvider: LoginConfigProvider {
         isVisible: true,
         text: "Forgot Username & Password?",
         actionScreen: .forgot
-      )
+      ),
+      loginButtonAction: .swiftui(ClientView())
     )
   }
 }
