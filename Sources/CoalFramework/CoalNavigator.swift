@@ -51,12 +51,12 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
       MenuTabItem(
         title: homeView.coalTabInfo().title,
         icon: homeView.coalTabInfo().icon,
-        actionScreen: .swiftUIView(AnyView(homeView))
+        actionScreen: .swiftui(AnyView(homeView))
       ),
       MenuTabItem(
         title: accountView.coalTabInfo().title,
         icon: accountView.coalTabInfo().icon,
-        actionScreen: .swiftUIView(AnyView(accountView))
+        actionScreen: .swiftui(AnyView(accountView))
       )
     ]
     tabManager.addTab(tabItems)
@@ -80,10 +80,19 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
     isLoggedIn ? self.goTo(.home) : self.goTo(.login)
   }
   
-  public func goTo(_ screen: CoalScreenType) {
+  public func navigate(_ destination: ViewScreenType) {
+    switch destination {
+    case .swiftui(let swiftUIView):
+      rootViewManager?.pushViewController(swiftUIView)
+    case .uikit(let viewController):
+      rootViewManager?.pushViewController(viewController)
+    }
+  }
+
+  public func goTo(_ destination: CoalScreenType) {
     let view: AnyView
     
-    switch screen {
+    switch destination {
     case .splash:
       let splashView = SplashView(navigator: self,
                                   config: config?.splashConfig)

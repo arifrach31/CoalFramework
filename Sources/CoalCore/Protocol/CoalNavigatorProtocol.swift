@@ -12,5 +12,6 @@ public protocol CoalNavigatorProtocol {
   func popToPreviousView()
   
   func showInitialPage(isLoggedIn: Bool)
-  func goTo(_ screen: CoalScreenType)
+  func goTo(_ destination: CoalScreenType)
+  func navigate(_ destination: ViewScreenType)
 }

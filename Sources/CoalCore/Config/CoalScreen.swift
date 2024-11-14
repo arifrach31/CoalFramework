@@ -5,7 +5,13 @@
 //  Created by ArifRachman on 28/10/24.
 //
 
-import Foundation
+import UIKit
+import SwiftUI
+
+public enum ViewScreenType {
+  case swiftui(any View)
+  case uikit(UIViewController)
+}
 
 public enum CoalScreenType {
   case splash

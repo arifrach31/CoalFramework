@@ -13,6 +13,7 @@ public protocol CoalRootViewProtocol {
   func setRootViewController(_ viewController: UIViewController)
   func setSwiftUIView<Content: View>(_ swiftUIView: Content)
   func pushViewController<Content: View>(_ swiftUIView: Content)
+  func pushViewController(_ viewController: UIViewController)
   func popViewController(animated: Bool)
 }
 
@@ -55,13 +56,25 @@ public class CoalRootView: CoalRootViewProtocol {
     navigationController.pushViewController(viewController, animated: false)
   }
   
+  public func pushViewController(_ viewController: UIViewController) {
+    guard let navigationController = currentViewController?.navigationController else {
+      print("NavigationController not found.")
+      return
+    }
+    navigationController.pushViewController(viewController, animated: false)
+  }
+  
   public func popViewController(animated: Bool) {
     currentViewController?.navigationController?.popViewController(animated: animated)
   }
 }
 
 public struct UIViewControllerWrapper: UIViewControllerRepresentable {
-  let viewController: UIViewController
+  public let viewController: UIViewController
+  
+  public init(viewController: UIViewController) {
+    self.viewController = viewController
+  }
   
   public func makeUIViewController(context: Context) -> UIViewController {
     viewController

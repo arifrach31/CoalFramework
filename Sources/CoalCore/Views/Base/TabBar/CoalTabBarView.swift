@@ -53,11 +53,11 @@ public struct CoalTabBarView: View {
   }
   
   @ViewBuilder
-  private func tabItemView(for screen: ScreenType) -> some View {
+  private func tabItemView(for screen: ViewScreenType) -> some View {
     switch screen {
-    case .swiftUIView(let swiftUIView):
-      swiftUIView
-    case .uiKitViewController(let viewController):
+    case .swiftui(let swiftUIView):
+      AnyView(swiftUIView)
+    case .uikit(let viewController):
       UIViewControllerWrapper(viewController: viewController)
     }
   }

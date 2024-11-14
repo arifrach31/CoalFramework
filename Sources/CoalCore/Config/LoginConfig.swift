@@ -15,6 +15,7 @@ public class LoginConfig: BaseConfig {
   public var header: ConfigHeader? = nil
   public var fields: [ConfigField]? = nil
   public var additionalButtonConfig: AdditionalButtonConfig?
+  public var loginButtonAction: ViewScreenType?
   
   private var loginConfig: ConfigPage? {
     ConfigModel.currentConfig?.pages?.login
@@ -25,11 +26,13 @@ public class LoginConfig: BaseConfig {
     backgroundColor: String? = nil,
     header: ConfigHeader? = nil,
     fields: [ConfigField]? = nil,
-    additionalButtonConfig: AdditionalButtonConfig? = nil
+    additionalButtonConfig: AdditionalButtonConfig? = nil,
+    loginButtonAction: ViewScreenType? = nil
   ) {
     super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
     self.header = header ?? loginConfig?.header
     self.fields = fields ?? loginConfig?.fields
     self.additionalButtonConfig = additionalButtonConfig
+    self.loginButtonAction = loginButtonAction
   }
 }
