@@ -17,20 +17,22 @@ public struct SplashView: View {
     self.config = config
   }
   
-  private var backgroundImage: Image? {
-    if let imageName = config?.backgroundImageName, Image.exists(imageName) {
-      return Image(imageName)
-    } else if config?.backgroundColor == nil {
-      return Image.mainBackground
+  public var body: some View {
+    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    
+    CoalBaseView(
+      backgroundImage: backgroundImage,
+      backgroundColor: backgroundColor
+    ) {
+      logo
+    }.onAppear {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        navigator?.showInitialPage(isLoggedIn: false)
+      }
     }
-    return nil
   }
   
-  private var backgroundColor: Color {
-    return Color(hex: config?.backgroundColor ?? "#000000")
-  }
-  
-  private func loadLogo() -> some View {
+  private var logo: some View {
     if let logoName = config?.logoImage {
       return AnyView(
         CoalImageView(imageURL: logoName, width: 200, height: 200)
@@ -42,28 +44,8 @@ public struct SplashView: View {
       )
     }
   }
-  
-  public init(config: SplashConfig? = nil) {
-    self.config = config
-  }
-  
-  public var body: some View {
-    CoalBaseView(
-      backgroundImage: backgroundImage,
-      backgroundColor: backgroundColor,
-      content: {
-        loadLogo()
-      }
-    ).onAppear {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-        navigator?.showInitialPage(isLoggedIn: false)
-      }
-    }
-  }
 }
 
-struct SplashView_Previews: PreviewProvider {
-  static var previews: some View {
-    SplashView()
-  }
+#Preview {
+  SplashView()
 }

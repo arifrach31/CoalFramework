@@ -88,10 +88,8 @@ public struct HomeView: View {
   }
 }
 
-struct HomeView_Previews: PreviewProvider {
-  static var previews: some View {
-    HomeView(config: HomeConfig())
-  }
+#Preview {
+  HomeView(config: HomeConfig())
 }
 
 extension HomeView: CoalTabInfoProviding {

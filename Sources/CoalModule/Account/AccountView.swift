@@ -22,10 +22,8 @@ public struct AccountView: View {
   }
 }
 
-struct AccountView_Previews: PreviewProvider {
-  static var previews: some View {
-    AccountView()
-  }
+#Preview {
+  AccountView()
 }
 
 extension AccountView: CoalTabInfoProviding {
