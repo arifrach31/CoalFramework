@@ -109,9 +109,9 @@ public struct ConfigField: Codable, Identifiable {
   public var titleVerification: String {
     switch type {
     case .email:
-      return CoalString.localized(forKey: "email_to", maskingAccount(label ?? "", type: .email))
+      return CoalString.localized(forKey: "email_to", maskingField(label ?? "", type: .email))
     case .phone:
-      return CoalString.localized(forKey: "sms_to", maskingAccount(label ?? "", type: .phone))
+      return CoalString.localized(forKey: "sms_to", maskingField(label ?? "", type: .phone))
     default:
       return label ?? "-"
     }

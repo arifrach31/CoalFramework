@@ -128,9 +128,9 @@ public class VerificationViewModel: ObservableObject {
     if let showMethod = config?.showVerificationMethod,
        showMethod == false {
       let sendVerificationTo = config?.verificationCodeFields?.sendVerificationCodeTo
-      return maskingAccount(sendVerificationTo?.label ?? "", type: (sendVerificationTo?.type ?? .email))
+      return maskingField(sendVerificationTo?.label ?? "", type: (sendVerificationTo?.type ?? .email))
     } else {
-      return maskingAccount((methodField?.label ?? config?.verificationCodeFields?.sendVerificationCodeTo?.label) ?? "", type: methodField?.type ?? .email)
+      return maskingField((methodField?.label ?? config?.verificationCodeFields?.sendVerificationCodeTo?.label) ?? "", type: methodField?.type ?? .email)
     }
   }
   

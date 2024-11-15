@@ -30,8 +30,8 @@ public struct BasicAuthConfig {
   public var username: String
   public var password: String
   
-  public init(username: String = "microsservice-user", 
-              password: String = "0b7a0c3d38cfeed158e210cf235594d129e8f8e38") {
+  public init(username: String = "",
+              password: String = "") {
     self.username = username
     self.password = password
   }

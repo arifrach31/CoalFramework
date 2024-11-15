@@ -18,8 +18,6 @@ public struct CoalPersistent {
   
   private let userDefaults = UserDefaults.standard
   
-  private init() {}
-  
   public func set(key: PersistentType, value: String) {
     userDefaults.set(value, forKey: key.rawValue)
   }

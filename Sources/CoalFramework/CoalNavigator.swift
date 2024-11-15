@@ -66,7 +66,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
     }
     
     return CoalTabBarView(tabManager: tabManager)
-}
+  }
   
   public func pushToViewController<Content: View>(_ swiftUIView: Content) {
     rootViewManager?.pushViewController(swiftUIView)
@@ -88,7 +88,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
       rootViewManager?.pushViewController(viewController)
     }
   }
-
+  
   public func goTo(_ destination: CoalScreenType) {
     let view: any View
     
@@ -105,7 +105,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
       )
     case .register:
       view = RegisterView(navigator: self,
-                                      config: config?.registerConfig)
+                          config: config?.registerConfig)
     case .home:
       view = setupTabs()
     case .account:
@@ -122,7 +122,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
         return
       }
       view = VerificationMethodView(navigator: self,
-                                             config: config?.verificationConfig)
+                                    config: config?.verificationConfig)
     case .verificationCode(let journey, let methodField):
       view = VerificationCodeView(
         navigator: self,

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public func maskingAccount(_ input: String, type: ConfigFieldType) -> String {
+public func maskingField(_ input: String, type: ConfigFieldType) -> String {
   switch type {
   case .email:
     let emailPattern = #"(^.)(.*?)(.@.)(.*)(..)(.*)$"#
