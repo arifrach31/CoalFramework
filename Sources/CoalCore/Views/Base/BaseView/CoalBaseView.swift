@@ -16,7 +16,7 @@ public struct CoalBaseView<Content: View>: View {
   private let content: Content
   private let isShowNavBar: Bool
   private let isLoading: Bool
-  private let bottomSheetContent: AnyView?
+  private let bottomSheetContent: any View
   
   @EnvironmentObject private var coalEnvironment: CoalEnvironment
   @State private var isToastVisible: Bool = false
@@ -32,7 +32,7 @@ public struct CoalBaseView<Content: View>: View {
     isShowNavBar: Bool = true,
     isLoading: Bool = false,
     isShowingBottomSheet: Binding<Bool> = .constant(false),
-    bottomSheetContent: AnyView? = nil,
+    bottomSheetContent: any View = EmptyView(),
     @ViewBuilder content: @escaping () -> Content
   ) {
     self.pageType = pageType
@@ -115,11 +115,11 @@ public struct CoalBaseView<Content: View>: View {
   
   private var bottomSheetView: some View {
     Group {
-      if isShowingBottomSheet, let content = bottomSheetContent {
+      if isShowingBottomSheet {
         VStack {
           Spacer()
           BottomSheetView(isShowing: $isShowingBottomSheet, dragable: true) {
-            content
+            AnyView(bottomSheetContent)
           }
         }
       }

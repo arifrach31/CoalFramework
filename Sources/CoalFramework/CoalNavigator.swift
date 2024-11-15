@@ -51,12 +51,12 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
       MenuTabItem(
         title: homeView.coalTabInfo().title,
         icon: homeView.coalTabInfo().icon,
-        actionScreen: .swiftui(AnyView(homeView))
+        actionScreen: .swiftui(homeView)
       ),
       MenuTabItem(
         title: accountView.coalTabInfo().title,
         icon: accountView.coalTabInfo().icon,
-        actionScreen: .swiftui(AnyView(accountView))
+        actionScreen: .swiftui(accountView)
       )
     ]
     tabManager.addTab(tabItems)
@@ -66,7 +66,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
     }
     
     return CoalTabBarView(tabManager: tabManager)
-  }
+}
   
   public func pushToViewController<Content: View>(_ swiftUIView: Content) {
     rootViewManager?.pushViewController(swiftUIView)
@@ -90,7 +90,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
   }
 
   public func goTo(_ destination: CoalScreenType) {
-    let view: AnyView
+    let view: any View
     
     switch destination {
     case .splash:
@@ -99,17 +99,15 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
       rootViewManager?.setSwiftUIView(splashView)
       return
     case .login:
-      let loginView = LoginView(
+      view =  LoginView(
         navigator: self,
         config: config?.loginConfig
       )
-      view = AnyView(loginView)
     case .register:
-      let registerView = RegisterView(navigator: self,
+      view = RegisterView(navigator: self,
                                       config: config?.registerConfig)
-      view = AnyView(registerView)
     case .home:
-      view = AnyView(setupTabs())
+      view = setupTabs()
     case .account:
       tabManager.navigateToTab(at: 1)
       return
@@ -123,32 +121,27 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
         )
         return
       }
-      let verifView = VerificationMethodView(navigator: self,
+      view = VerificationMethodView(navigator: self,
                                              config: config?.verificationConfig)
-      view = AnyView(verifView)
     case .verificationCode(let journey, let methodField):
-      let verifView = VerificationCodeView(
+      view = VerificationCodeView(
         navigator: self,
         config: config?.verificationConfig,
         methodField: methodField,
         verificationType: journey
       )
-      view = AnyView(verifView)
     case .forgot:
-      let forgotView = ForgotView(
+      view = ForgotView(
         navigator: self,
         config: config?.forgotConfig)
-      view = AnyView(forgotView)
     case .changePassword:
-      let changePasswordView = ChangePasswordView(
+      view = ChangePasswordView(
         navigator: self,
         config: config?.changePasswordConfig)
-      view = AnyView(changePasswordView)
     case .webview(let model):
-      let webView = WebView(
+      view = WebView(
         navigator: self,
         config: model)
-      view = AnyView(webView)
     }
     
     rootViewManager?.pushViewController(view)

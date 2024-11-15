@@ -31,7 +31,7 @@ public struct ForgotView: View {
       backgroundColor: backgroundColor,
       isLoading: viewModel.isLoading,
       isShowingBottomSheet: $viewModel.isShowingBottomSheet,
-      bottomSheetContent: AnyView(bottomSheetConfirmation)
+      bottomSheetContent: bottomSheetConfirmation
     ) {
       VStack(spacing: 40) {
         headerImage
