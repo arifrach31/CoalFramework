@@ -17,7 +17,7 @@ public class ForgotConfig: BaseConfig {
   public var actionScreen: CoalScreenType = .changePassword
   
   public init(
-    backgroundImageName: String? = nil,
+    backgroundImage: String? = nil,
     backgroundColor: String? = nil,
     header: ConfigHeader? = nil,
     fields: [ConfigField]? = ConfigDefault.forgotFields,
@@ -26,6 +26,6 @@ public class ForgotConfig: BaseConfig {
     self.header = header
     self.fields = fields
     self.actionScreen = actionScreen
-    super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
+    super.init(backgroundImage: backgroundImage, backgroundColor: backgroundColor)
   }
 }

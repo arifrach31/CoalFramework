@@ -16,12 +16,12 @@ public class SplashConfig: BaseConfig {
   public var delay: TimeInterval
   
   public init(
-    backgroundImageName: String? = nil,
+    backgroundImage: String? = nil,
     backgroundColor: String? = nil,
     logoImage: String? = nil,
     delay: TimeInterval = 2.0) {
       self.logoImage = logoImage
       self.delay = delay
-      super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
+      super.init(backgroundImage: backgroundImage, backgroundColor: backgroundColor)
     }
 }

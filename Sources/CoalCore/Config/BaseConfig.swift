@@ -8,23 +8,23 @@
 import SwiftUI
 
 public class BaseConfig {
-  public var backgroundImageName: String?
+  public var backgroundImage: String?
   public var backgroundColor: String?
   
-  public init(backgroundImageName: String? = nil, backgroundColor: String? = nil) {
-    self.backgroundImageName = backgroundImageName
+  public init(backgroundImage: String? = nil, backgroundColor: String? = nil) {
+    self.backgroundImage = backgroundImage
     self.backgroundColor = backgroundColor
   }
 }
 
 extension BaseConfig {
   public func getBackground() -> (Image, Color) {
-    let backgroundImageName = backgroundImageName ?? ""
+    let backgroundImage = backgroundImage ?? ""
     let backgroundColorHex = backgroundColor ?? ""
     
-    let backgroundImage: Image = backgroundImageName.isEmpty ? Image.mainBackground : Image(backgroundImageName)
+    let backgroundName: Image = backgroundImage.isEmpty ? Image.mainBackground : Image(backgroundImage)
     let backgroundColor: Color = backgroundColorHex.isEmpty ? Color.white : Color(hex: backgroundColorHex)
     
-    return (backgroundImage, backgroundColor)
+    return (backgroundName, backgroundColor)
   }
 }

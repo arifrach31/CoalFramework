@@ -16,12 +16,12 @@ public class ChangePasswordConfig: BaseConfig {
   public var fields: [ConfigField]? = ConfigDefault.changePasswordFields
   
   public init(
-    backgroundImageName: String? = nil,
+    backgroundImage: String? = nil,
     backgroundColor: String? = nil,
     header: ConfigHeader? = nil,
     fields: [ConfigField]? = ConfigDefault.changePasswordFields
   ) {
-    super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
+    super.init(backgroundImage: backgroundImage, backgroundColor: backgroundColor)
     self.header = header
     self.fields = fields
   }

@@ -31,14 +31,14 @@ public class VerificationConfig: BaseConfig {
   }
   
   public init(
-    backgroundImageName: String? = nil,
+    backgroundImage: String? = nil,
     backgroundColor: String? = nil,
     verificationMethodHeader: ConfigHeader? = nil,
     verificationCodeHeader: ConfigHeader? = nil,
     showVerificationMethod: Bool? = true,
     verificationCodeFields: ConfigVerificationCodeField? = nil
   ) {
-    super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
+    super.init(backgroundImage: backgroundImage, backgroundColor: backgroundColor)
     self.showVerificationMethod = showVerificationMethod
     self.verificationMethodHeader = verificationMethodHeader ?? verificationConfig?.header
     self.verificationCodeHeader = verificationCodeHeader ?? verificationCodeConfig?.header
