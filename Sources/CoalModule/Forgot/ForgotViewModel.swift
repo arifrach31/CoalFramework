@@ -12,18 +12,18 @@ import CoalCore
 class ForgotViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
-  @Published var formFields: [ConfigField]
+  @Published var formFields: [ConfigField]?
   @Published var fieldErrors: [String: Bool] = [:]
   @Published var fieldErrorMessages: [String: String] = [:]
   @Published var isLoading: Bool = false
   @Published var isShowingBottomSheet = false
   
-  public init(config: ForgotConfig?) {
-    self.formFields = config?.fields ?? []
-  }
-  
   var isFormValid: Bool {
     validateFields()
+  }
+  
+  func configure(with config: ForgotConfig?) {
+    self.formFields = config?.fields ?? []
   }
   
   private func validateFields() -> Bool {
@@ -33,13 +33,13 @@ class ForgotViewModel: ObservableObject {
   }
   
   private func handleForgotError(error: ApiErrorType) {
-    if let emailField = formFields.first(where: { $0.type == .text }) {
+    if let emailField = formFields?.first(where: { $0.type == .text }) {
       setError(for: emailField, message: CoalString.forgotPasswordError)
     }
   }
   
   public func getFieldValue(for type: ConfigFieldType) -> String? {
-    let field = formFields.first { $0.type == type }
+    let field = formFields?.first { $0.type == type }
     return field.flatMap { formValues[$0.label ?? ""] }
   }
   
@@ -71,8 +71,10 @@ class ForgotViewModel: ObservableObject {
   }
   
   func clearAllErrors() {
-    for field in formFields {
-      clearErrors(for: field)
+    if let form = formFields {
+      for field in form {
+        clearErrors(for: field)
+      }
     }
   }
   

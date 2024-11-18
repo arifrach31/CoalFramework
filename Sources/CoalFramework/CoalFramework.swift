@@ -8,6 +8,10 @@
 import UIKit
 import CoalCore
 
+public protocol CoalConfigDelegate {
+  func initCoalConfig() -> CoalConfig?
+}
+
 public class CoalFramework {
   public static let shared = CoalFramework()
   
@@ -76,7 +80,6 @@ public class CoalFramework {
   }
   
   private func configNavigator(windowScene: UIWindowScene?, from frameworkConfig: CoalConfig?) {
-    coalNavigator.windowScene = windowScene
-    coalNavigator.configure(frameworkConfig)
+    coalNavigator.configure(frameworkConfig, windowScene: windowScene)
   }
 }

@@ -11,18 +11,17 @@ import LegionUI
 import ThemeLGN
 
 public struct ForgotView: View {
+  @EnvironmentObject var config: CoalConfig
   @StateObject private var viewModel: ForgotViewModel
   private let navigator: CoalNavigatorProtocol?
-  private let config: ForgotConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: ForgotConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: ForgotViewModel(config: config))
+  public init(navigator: CoalNavigatorProtocol? = nil) {
+    _viewModel = StateObject(wrappedValue: ForgotViewModel())
     self.navigator = navigator
-    self.config = config
   }
   
   public var body: some View {
-    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    let (backgroundImage, backgroundColor) = config.forgotConfig?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
       pageType: .back,
@@ -38,6 +37,8 @@ public struct ForgotView: View {
         Spacer()
         bottomSheetView
       }
+    }.onAppear {
+      viewModel.configure(with: config.forgotConfig)
     }
   }
   
@@ -59,7 +60,7 @@ public struct ForgotView: View {
   }
   
   private var headerImage: some View {
-    CoalImageView(imageURL: config?.header?.image ?? "")
+    CoalImageView(imageURL: config.forgotConfig?.header?.image ?? "")
       .scaledToFill()
       .frame(width: 125, height: 125)
       .padding(.top, -8)
@@ -67,12 +68,12 @@ public struct ForgotView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config?.header)
-      if let form = config?.fields {
+      AuthenticationHeaderView(configHeader: config.forgotConfig?.header)
+      if let form = config.forgotConfig?.fields {
         FormView(
           viewModel: viewModel,
           form: form,
-          config: config,
+          config: config.forgotConfig,
           navigator: navigator
         )
         
@@ -80,7 +81,7 @@ public struct ForgotView: View {
           viewModel: viewModel,
           form: form,
           navigator: navigator,
-          config: config
+          config: config.forgotConfig
         )
       }
       Spacer()

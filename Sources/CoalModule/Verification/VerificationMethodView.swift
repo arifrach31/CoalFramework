@@ -11,18 +11,17 @@ import LegionUI
 import ThemeLGN
 
 public struct VerificationMethodView: View {
+  @EnvironmentObject var config: CoalConfig
   @StateObject private var viewModel: VerificationViewModel
   private let navigator: CoalNavigatorProtocol?
-  private let config: VerificationConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: VerificationConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
+  public init(navigator: CoalNavigatorProtocol? = nil) {
+    _viewModel = StateObject(wrappedValue: VerificationViewModel())
     self.navigator = navigator
-    self.config = config
   }
   
   public var body: some View {
-    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    let (backgroundImage, backgroundColor) = config.verificationConfig?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
       pageType: .verificationMethod,
@@ -36,11 +35,13 @@ public struct VerificationMethodView: View {
         Spacer()
         bottomSheetView
       }
+    }.onAppear {
+      viewModel.configure(with: config.verificationConfig)
     }
   }
   
   private var headerImage: some View {
-    CoalImageView(imageURL: config?.verificationMethodHeader?.image ?? "")
+    CoalImageView(imageURL: config.verificationConfig?.verificationMethodHeader?.image ?? "")
       .scaledToFill()
       .frame(width: 125, height: 125)
       .padding(.top, -8)
@@ -48,7 +49,7 @@ public struct VerificationMethodView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config?.verificationMethodHeader)
+      AuthenticationHeaderView(configHeader: config.verificationConfig?.verificationMethodHeader)
       if let verificationMethods = viewModel.sendTo {
         VerificationButtonView(viewModel: viewModel, methods: verificationMethods, navigator: navigator)
       }

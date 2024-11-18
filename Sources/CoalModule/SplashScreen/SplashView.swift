@@ -9,39 +9,41 @@ import SwiftUI
 import CoalCore
 
 public struct SplashView: View {
+  @EnvironmentObject var config: CoalConfig
   public var navigator: CoalNavigatorProtocol?
-  public let config: SplashConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: SplashConfig? = nil) {
+  public init(navigator: CoalNavigatorProtocol? = nil) {
     self.navigator = navigator
-    self.config = config
   }
   
   public var body: some View {
-    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    let splashConfig = config.splashConfig
+    let (backgroundImage, backgroundColor) = splashConfig?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor
     ) {
-      logo
+      AnyView(logoView(for: splashConfig))
     }.onAppear {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-        navigator?.showInitialPage(isLoggedIn: false)
-      }
+      navigateToInitialPage()
     }
   }
   
-  private var logo: some View {
-    if let logoName = config?.logoImage {
-      return AnyView(
-        CoalImageView(imageURL: logoName, width: 200, height: 200)
-      )
+  private func logoView(for splashConfig: SplashConfig?) -> any View {
+    if let logoName = splashConfig?.logoImage {
+      return CoalImageView(imageURL: logoName, width: 200, height: 200)
+    } else if let defaultLogo = UIImage.coalLogo?.imageName {
+      return CoalImageView(imageURL: defaultLogo, width: 200, height: 200)
     } else {
-      return AnyView(
-        Text("Logo not available")
-          .foregroundColor(.gray)
-      )
+      return Text("Logo not available")
+        .foregroundColor(.gray)
+    }
+  }
+  
+  private func navigateToInitialPage() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+      navigator?.showInitialPage(isLoggedIn: false)
     }
   }
 }

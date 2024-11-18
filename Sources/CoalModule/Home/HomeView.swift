@@ -9,27 +9,26 @@ import SwiftUI
 import CoalCore
 
 public struct HomeView: View {
+  @EnvironmentObject var config: CoalConfig
   @StateObject private var viewModel: HomeViewModel
   public var navigator: CoalNavigatorProtocol?
-  public let config: HomeConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: HomeConfig?) {
+  public init(navigator: CoalNavigatorProtocol? = nil) {
     _viewModel = StateObject(wrappedValue: HomeViewModel())
     self.navigator = navigator
-    self.config = config
   }
   
   public var body: some View {
     CoalBaseView(
-      pageType: .home, 
+      pageType: .home,
       rightAction: {
         self.navigator?.goTo(.login)
       },
-      isShowNavBar: config?.isShowNavBar ?? false
+      isShowNavBar: config.homeConfig?.isShowNavBar ?? false
     ) {
       ScrollView {
         VStack(alignment: .center) {
-          if let homeSection = config?.sections {
+          if let homeSection = config.homeConfig?.sections {
             ForEach(homeSection, id: \.id) { section in
               sectionView(for: section)
             }
@@ -43,7 +42,7 @@ public struct HomeView: View {
   private func sectionView(for section: HomeSectionType) -> some View {
     switch section {
     case .carousel:
-      let carouselConfig = config?.carouselConfig
+      let carouselConfig = config.homeConfig?.carouselConfig
       GeometryReader { geometry in
         CoalCarouselView(
           currentIndex: $viewModel.currentIndexCarousel,
@@ -58,7 +57,7 @@ public struct HomeView: View {
       .padding(.vertical, 50)
       
     case .category:
-      let categoryConfig = config?.categoryConfig
+      let categoryConfig = config.homeConfig?.categoryConfig
       CoalGridCategoryView(
         categories: categoryConfig?.categories ?? [],
         layoutType: categoryConfig?.layoutType ?? .horizontal,
@@ -72,7 +71,7 @@ public struct HomeView: View {
       )
       
     case .productList:
-      let catalogConfig = config?.catalogConfig
+      let catalogConfig = config.homeConfig?.catalogConfig
       CoalGridCatalogView(
         catalog: catalogConfig?.catalog ?? [],
         layoutType: catalogConfig?.layoutType ?? .vertical,
@@ -89,7 +88,7 @@ public struct HomeView: View {
 }
 
 #Preview {
-  HomeView(config: HomeConfig())
+  HomeView()
 }
 
 extension HomeView: CoalTabInfoProviding {

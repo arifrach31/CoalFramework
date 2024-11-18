@@ -21,14 +21,20 @@ public class CoalRootView: CoalRootViewProtocol {
   private var windowScene: UIWindowScene
   private var window: UIWindow?
   private var coalEnvironment: CoalEnvironment
+  private var coalConfig: CoalConfig
   
   public var currentViewController: UIViewController? {
     return (window?.rootViewController as? UINavigationController)?.topViewController
   }
   
-  public init(windowScene: UIWindowScene, coalEnvironment: CoalEnvironment) {
+  public init(
+    windowScene: UIWindowScene,
+    coalEnvironment: CoalEnvironment,
+    coalConfig: CoalConfig
+  ) {
     self.windowScene = windowScene
     self.coalEnvironment = coalEnvironment
+    self.coalConfig = coalConfig
   }
   
   public func setRootViewController(_ viewController: UIViewController) {
@@ -43,7 +49,10 @@ public class CoalRootView: CoalRootViewProtocol {
   }
   
   public func setSwiftUIView<Content: View>(_ swiftUIView: Content) {
-    let hostingController = UIHostingController(rootView: swiftUIView.environmentObject(coalEnvironment))
+    let hostingController = UIHostingController(rootView: swiftUIView
+      .environmentObject(coalEnvironment)
+      .environmentObject(coalConfig)
+    )
     setRootViewController(hostingController)
   }
   
@@ -52,7 +61,10 @@ public class CoalRootView: CoalRootViewProtocol {
       print("NavigationController not found.")
       return
     }
-    let viewController = UIHostingController(rootView: swiftUIView.environmentObject(coalEnvironment))
+    let viewController = UIHostingController(rootView: swiftUIView
+      .environmentObject(coalEnvironment)
+      .environmentObject(coalConfig)
+    )
     navigationController.pushViewController(viewController, animated: false)
   }
   

@@ -11,18 +11,17 @@ import LegionUI
 import ThemeLGN
 
 public struct RegisterView: View {
+  @EnvironmentObject var config: CoalConfig
   @StateObject private var viewModel: RegisterViewModel
   public var navigator: CoalNavigatorProtocol?
-  public var config: RegisterConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: RegisterConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: RegisterViewModel(config: config))
+  public init(navigator: CoalNavigatorProtocol? = nil) {
+    _viewModel = StateObject(wrappedValue: RegisterViewModel())
     self.navigator = navigator
-    self.config = config
   }
   
   public var body: some View {
-    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    let (backgroundImage, backgroundColor) = config.registerConfig?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
       backgroundImage: backgroundImage,
@@ -31,14 +30,16 @@ public struct RegisterView: View {
     ) {
       Spacer()
       bottomSheetView
+    }.onAppear {
+      viewModel.configure(with: config.registerConfig)
     }
   }
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config?.header)
+      AuthenticationHeaderView(configHeader: config.registerConfig?.header)
       
-      if let form = config?.fields {
+      if let form = config.registerConfig?.fields {
         FormView(
           viewModel: viewModel, 
           form: form
@@ -46,7 +47,7 @@ public struct RegisterView: View {
         ButtonView(
           viewModel: viewModel, 
           navigator: navigator,
-          config: config,
+          config: config.registerConfig,
           form: form
         )
       }

@@ -23,10 +23,17 @@ public protocol CoalTabInfoProviding {
 
 public struct CoalTabBarView: View {
   @ObservedObject var tabManager: CoalTabManager
+  private var coalEnvironment: CoalEnvironment
+  private var coalConfig: CoalConfig
   
-  public init(tabManager: CoalTabManager) {
-    self.tabManager = tabManager
-  }
+  public init(
+    tabManager: CoalTabManager,
+    coalEnvironment: CoalEnvironment,
+    coalConfig: CoalConfig) {
+      self.tabManager = tabManager
+      self.coalEnvironment = coalEnvironment
+      self.coalConfig = coalConfig
+    }
   
   public var body: some View {
     VStack {
@@ -56,7 +63,9 @@ public struct CoalTabBarView: View {
   private func tabItemView(for screen: ViewScreenType) -> some View {
     switch screen {
     case .swiftui(let swiftUIView):
-      AnyView(swiftUIView)
+      AnyView(swiftUIView
+        .environmentObject(coalEnvironment)
+        .environmentObject(coalConfig))
     case .uikit(let viewController):
       UIViewControllerWrapper(viewController: viewController)
     }

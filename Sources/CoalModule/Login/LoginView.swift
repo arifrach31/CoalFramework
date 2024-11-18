@@ -11,21 +11,17 @@ import LegionUI
 import ThemeLGN
 
 public struct LoginView: View {
+  @EnvironmentObject var config: CoalConfig
   @StateObject private var viewModel: LoginViewModel
   public var navigator: CoalNavigatorProtocol?
-  public var config: LoginConfig?
   
-  public init(
-    navigator: CoalNavigatorProtocol? = nil,
-    config: LoginConfig? = nil
-  ) {
-    _viewModel = StateObject(wrappedValue: LoginViewModel(config: config))
+  public init(navigator: CoalNavigatorProtocol? = nil) {
+    _viewModel = StateObject(wrappedValue: LoginViewModel())
     self.navigator = navigator
-    self.config = config
   }
   
   public var body: some View {
-    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    let (backgroundImage, backgroundColor) = config.loginConfig?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
       backgroundImage: backgroundImage,
@@ -37,11 +33,13 @@ public struct LoginView: View {
         Spacer()
         bottomSheetView
       }
+    }.onAppear {
+      viewModel.configure(with: config.loginConfig)
     }
   }
   
   private var headerImage: some View {
-    CoalImageView(imageURL: config?.header?.image ?? "")
+    CoalImageView(imageURL: config.loginConfig?.header?.image ?? "")
       .scaledToFill()
       .frame(width: 125, height: 125)
       .padding(.top, 60)
@@ -49,19 +47,19 @@ public struct LoginView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config?.header)
-      if let form = config?.fields {
+      AuthenticationHeaderView(configHeader: config.loginConfig?.header)
+      if let form = config.loginConfig?.fields {
         FormView(
           viewModel: viewModel,
           form: form,
-          config: config,
+          config: config.loginConfig,
           navigator: navigator
         )
         ButtonView(
           viewModel: viewModel,
           form: form,
           navigator: navigator,
-          config: config
+          config: config.loginConfig
         )
       }
       Spacer()

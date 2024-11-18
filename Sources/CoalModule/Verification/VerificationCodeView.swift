@@ -9,28 +9,26 @@ import SwiftUI
 import CoalCore
 
 public struct VerificationCodeView: View {
+  @EnvironmentObject var config: CoalConfig
   @StateObject private var viewModel: VerificationViewModel
   
   private let navigator: CoalNavigatorProtocol?
-  private let config: VerificationConfig?
   private let methodField: ConfigField?
   private let verificationType: VerificationType?
   
   public init(
-    navigator: CoalNavigatorProtocol? = nil, 
-    config: VerificationConfig? = nil,
+    navigator: CoalNavigatorProtocol? = nil,
     methodField: ConfigField? = nil,
     verificationType: VerificationType? = .login
   ) {
-    _viewModel = StateObject(wrappedValue: VerificationViewModel(config: config))
+    _viewModel = StateObject(wrappedValue: VerificationViewModel())
     self.navigator = navigator
-    self.config = config
     self.methodField = methodField
     self.verificationType = verificationType
   }
   
   public var body: some View {
-    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    let (backgroundImage, backgroundColor) = config.verificationConfig?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
       pageType: .verificationCode,
@@ -43,13 +41,15 @@ public struct VerificationCodeView: View {
       VStack(spacing: 20) {
         bottomSheetView
       }
+    }.onAppear {
+      viewModel.configure(with: config.verificationConfig)
     }
   }
   
   private var bottomSheetView: some View {
     BottomSheetView {
       AuthenticationHeaderView(
-        configHeader: config?.verificationCodeHeader,
+        configHeader: config.verificationConfig?.verificationCodeHeader,
         additionalText: viewModel.getSendToMasking(methodField: methodField),
         alignment: .center
       )
@@ -88,7 +88,11 @@ public struct VerificationCodeView: View {
     viewModel.verifyOTP(sendTo: sendTo) { result in
       switch result {
       case .success:
-        navigator?.goTo(.home)
+        if let destination = config.loginConfig?.loginButtonAction {
+          navigator?.navigate(destination)
+        } else {
+          navigator?.goTo(.home)
+        }
       case .failure:
         break
       }

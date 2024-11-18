@@ -5,11 +5,7 @@
 //  Created by ArifRachman on 04/10/24.
 //
 
-import CoalCore
-
-public protocol CoalConfigDelegate {
-  func initCoalConfig() -> CoalConfig?
-}
+import Foundation
 
 public protocol CoalAppProvider {
   var splashProvider: SplashConfigProvider? { get }
@@ -25,18 +21,18 @@ public protocol CoalAppProvider {
   func getConfig() -> CoalConfig?
 }
 
-public struct CoalConfig {
+public class CoalConfig: ObservableObject {
   public static let shared = CoalConfig()
   
-  public let splashConfig: SplashConfig?
-  public let loginConfig: LoginConfig?
-  public let registerConfig: RegisterConfig?
-  public let verificationConfig: VerificationConfig?
-  public let menuConfig: MenuConfig?
-  public let homeConfig: HomeConfig?
-  public let networkConfig: NetworkConfig?
-  public let forgotConfig: ForgotConfig?
-  public let changePasswordConfig: ChangePasswordConfig?
+  @Published public var splashConfig: SplashConfig?
+  @Published public var loginConfig: LoginConfig?
+  @Published public var registerConfig: RegisterConfig?
+  @Published public var verificationConfig: VerificationConfig?
+  @Published public var menuConfig: MenuConfig?
+  @Published public var homeConfig: HomeConfig?
+  @Published public var networkConfig: NetworkConfig?
+  @Published public var forgotConfig: ForgotConfig?
+  @Published public var changePasswordConfig: ChangePasswordConfig?
   
   public init(splashConfig: SplashConfig? = nil,
               loginConfig: LoginConfig? = nil,

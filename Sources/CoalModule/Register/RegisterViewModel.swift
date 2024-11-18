@@ -14,17 +14,17 @@ class RegisterViewModel: ObservableObject {
   @Published var isSecured: [String: Bool] = [:]
   @Published var config: ConfigModel?
   
-  @Published var formFields: [ConfigField]
+  @Published var formFields: [ConfigField]?
   @Published var fieldErrors: [String: Bool] = [:]
   @Published var fieldErrorMessages: [String: String] = [:]
   @Published var isLoading: Bool = false
   
-  public init(config: RegisterConfig?) {
-    self.formFields = config?.fields ?? []
-  }
-  
   var isFormValid: Bool {
     validateFields()
+  }
+  
+  func configure(with config: RegisterConfig?) {
+    self.formFields = config?.fields ?? []
   }
   
   private func validateFields() -> Bool {
@@ -40,7 +40,7 @@ class RegisterViewModel: ObservableObject {
     let isPasswordValid = Validator(password, type: .password)
     let isConfirmPasswordValid = Validator(confirmPassword, type: .confirmPassword, passwordToMatch: password)
     
-    if let confirmPasswordField = formFields.first(where: { $0.type == .confirmPassword }) {
+    if let confirmPasswordField = formFields?.first(where: { $0.type == .confirmPassword }) {
       DispatchQueue.main.async {
         if !confirmPassword.isEmpty && password != confirmPassword {
           self.setError(for: confirmPasswordField, message: CoalString.confirmPasswordError)
@@ -54,7 +54,7 @@ class RegisterViewModel: ObservableObject {
   }
   
   private func getFieldValue(for type: ConfigFieldType) -> String? {
-    let field = formFields.first { $0.type == type }
+    let field = formFields?.first { $0.type == type }
     return field.flatMap { formValues[$0.label ?? ""] }
   }
   
@@ -83,8 +83,10 @@ class RegisterViewModel: ObservableObject {
   }
   
   func clearAllErrors() {
-    for field in formFields {
-      clearErrors(for: field)
+    if let form = formFields {
+      for field in form {
+        clearErrors(for: field)
+      }
     }
   }
   

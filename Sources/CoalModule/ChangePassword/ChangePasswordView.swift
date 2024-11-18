@@ -11,18 +11,17 @@ import LegionUI
 import ThemeLGN
 
 public struct ChangePasswordView: View {
+  @EnvironmentObject var config: CoalConfig
   @StateObject private var viewModel: ChangePasswordViewModel
   private let navigator: CoalNavigatorProtocol?
-  private let config: ChangePasswordConfig?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: ChangePasswordConfig? = nil) {
-    _viewModel = StateObject(wrappedValue: ChangePasswordViewModel(config: config))
+  public init(navigator: CoalNavigatorProtocol? = nil) {
+    _viewModel = StateObject(wrappedValue: ChangePasswordViewModel())
     self.navigator = navigator
-    self.config = config
   }
   
   public var body: some View {
-    let (backgroundImage, backgroundColor) = config?.getBackground() ?? (nil, nil)
+    let (backgroundImage, backgroundColor) = config.changePasswordConfig?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
       pageType: .back,
@@ -36,11 +35,13 @@ public struct ChangePasswordView: View {
         Spacer()
         bottomSheetView
       }
+    }.onAppear {
+      viewModel.configure(with: config.changePasswordConfig)
     }
   }
   
   private var headerImage: some View {
-    CoalImageView(imageURL: config?.header?.image ?? "")
+    CoalImageView(imageURL: config.changePasswordConfig?.header?.image ?? "")
       .scaledToFill()
       .frame(width: 125, height: 125)
       .padding(.top, -8)
@@ -48,12 +49,12 @@ public struct ChangePasswordView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config?.header)
-      if let form = config?.fields {
+      AuthenticationHeaderView(configHeader: config.changePasswordConfig?.header)
+      if let form = config.changePasswordConfig?.fields {
         FormView(
           viewModel: viewModel,
           form: form,
-          config: config,
+          config: config.changePasswordConfig,
           navigator: navigator
         )
         

@@ -18,8 +18,12 @@ public class VerificationViewModel: ObservableObject {
   
   private var timer: AnyCancellable?
   public let correctOTP = "0000"
-  public var sendTo: [ConfigField]?
   public var config: VerificationConfig?
+  public var sendTo: [ConfigField]? {
+    didSet {
+      objectWillChange.send()
+    }
+  }
   
   var buttonVerifyCode: ConfigField {
     config?.verificationCodeFields?.buttonVerificationCode ?? ConfigField(
@@ -32,7 +36,7 @@ public class VerificationViewModel: ObservableObject {
     code.allSatisfy { $0.count == 1 }
   }
   
-  public init(config: VerificationConfig?) {
+  func configure(with config: VerificationConfig?) {
     self.config = config
     setupSendTo()
   }

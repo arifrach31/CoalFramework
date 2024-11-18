@@ -31,20 +31,19 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
     tabManager = CoalTabManager(coalEnvironment: coalEnvironment)
   }
   
-  public var windowScene: UIWindowScene? {
-    didSet {
-      if oldValue == nil, let windowScene = windowScene {
-        rootViewManager = CoalRootView(windowScene: windowScene, coalEnvironment: coalEnvironment)
-      }
+  public func configure(_ config: CoalConfig?, windowScene: UIWindowScene?) {
+    self.config = config
+    if let windowScene = windowScene, let config = self.config {
+      rootViewManager = CoalRootView(
+        windowScene: windowScene,
+        coalEnvironment: coalEnvironment,
+        coalConfig: config
+      )
     }
   }
   
-  public func configure(_ config: CoalConfig?) {
-    self.config = config
-  }
-  
   public func setupTabs() -> some View {
-    let homeView = HomeView(navigator: self, config: config?.homeConfig)
+    let homeView = HomeView(navigator: self)
     let accountView = AccountView(navigator: self)
     
     let tabItems: [MenuTabItem] = [
@@ -65,7 +64,11 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
       tabManager.addTab(customTabs)
     }
     
-    return CoalTabBarView(tabManager: tabManager)
+    return CoalTabBarView(
+      tabManager: tabManager,
+      coalEnvironment: coalEnvironment,
+      coalConfig: config ?? CoalConfig()
+    )
   }
   
   public func pushToViewController<Content: View>(_ swiftUIView: Content) {
@@ -94,18 +97,13 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
     
     switch destination {
     case .splash:
-      let splashView = SplashView(navigator: self,
-                                  config: config?.splashConfig)
+      let splashView = SplashView(navigator: self)
       rootViewManager?.setSwiftUIView(splashView)
       return
     case .login:
-      view =  LoginView(
-        navigator: self,
-        config: config?.loginConfig
-      )
+      view =  LoginView(navigator: self)
     case .register:
-      view = RegisterView(navigator: self,
-                          config: config?.registerConfig)
+      view = RegisterView(navigator: self)
     case .home:
       view = setupTabs()
     case .account:
@@ -121,23 +119,17 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
         )
         return
       }
-      view = VerificationMethodView(navigator: self,
-                                    config: config?.verificationConfig)
+      view = VerificationMethodView(navigator: self)
     case .verificationCode(let journey, let methodField):
       view = VerificationCodeView(
         navigator: self,
-        config: config?.verificationConfig,
         methodField: methodField,
         verificationType: journey
       )
     case .forgot:
-      view = ForgotView(
-        navigator: self,
-        config: config?.forgotConfig)
+      view = ForgotView(navigator: self)
     case .changePassword:
-      view = ChangePasswordView(
-        navigator: self,
-        config: config?.changePasswordConfig)
+      view = ChangePasswordView(navigator: self)
     case .webview(let model):
       view = WebView(
         navigator: self,

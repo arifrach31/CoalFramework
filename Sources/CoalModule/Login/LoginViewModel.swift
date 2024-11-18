@@ -12,17 +12,17 @@ import CoalCore
 public class LoginViewModel: ObservableObject {
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
-  @Published var formFields: [ConfigField]
+  @Published var formFields: [ConfigField]?
   @Published var fieldErrors: [String: Bool] = [:]
   @Published var fieldErrorMessages: [String: String] = [:]
   @Published var isLoading: Bool = false
   
-  public init(config: LoginConfig?) {
-    self.formFields = config?.fields ?? []
-  }
-  
   var isFormValid: Bool {
     validateFields()
+  }
+  
+  func configure(with config: LoginConfig?) {
+    self.formFields = config?.fields ?? []
   }
   
   private func validateFields() -> Bool {
@@ -33,12 +33,12 @@ public class LoginViewModel: ObservableObject {
   }
   
   private func getFieldValue(for type: ConfigFieldType) -> String? {
-    let field = formFields.first { $0.type == type }
+    let field = formFields?.first { $0.type == type }
     return field.flatMap { formValues[$0.label ?? ""] }
   }
   
   private func handleLoginError(error: ApiErrorType) {
-    if let emailField = formFields.first(where: { $0.type == .email }) {
+    if let emailField = formFields?.first(where: { $0.type == .email }) {
       setError(for: emailField, message: CoalString.emailError)
     }
   }
@@ -71,8 +71,10 @@ public class LoginViewModel: ObservableObject {
   }
   
   func clearAllErrors() {
-    for field in formFields {
-      clearErrors(for: field)
+    if let form = formFields {
+      for field in form {
+        clearErrors(for: field)
+      }
     }
   }
   
