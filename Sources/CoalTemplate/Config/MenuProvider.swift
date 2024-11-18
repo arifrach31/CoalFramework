@@ -5,20 +5,22 @@
 //  Created by ArifRachman on 05/10/24.
 //
 
-import SwiftUI
 import CoalCore
 
 class MenuProvider: MenuConfigProvider {
   func getConfig() -> MenuConfig {
     return MenuConfig(
-      isShowTabBar: true,
+      resetDefaultTab: false,
+      isTabBarVisible: true,
       addTabItems: [
         MenuTabItem(
           title: "About",
           icon: "folder.fill",
-          actionScreen: .swiftui(ClientView())
+          viewScreen: .swiftui(ClientView())
         )
-      ]
+      ],
+      normalTabColor: .black,
+      activeTabColor: .red
     )
   }
 }

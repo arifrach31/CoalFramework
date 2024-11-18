@@ -10,12 +10,8 @@ import SwiftUI
 public class CoalTabManager: ObservableObject {
   @Published public var tabs: [MenuTabItem] = []
   @Published public var selectedTab: Int = 0
-  @Published public var isTabBarVisible: Bool = true
-  @ObservedObject public var coalEnvironment: CoalEnvironment
   
-  public init(coalEnvironment: CoalEnvironment) {
-    self.coalEnvironment = coalEnvironment
-  }
+  public init() {}
   
   public func addTab(_ items: [MenuTabItem]) {
     items.enumerated().forEach { _, item in
@@ -37,9 +33,5 @@ public class CoalTabManager: ObservableObject {
   public func navigateToTab(at index: Int) {
     guard index >= 0 && index < tabs.count else { return }
     selectedTab = index
-  }
-  
-  public func setShowTabBar(_ isShow: Bool) {
-    isTabBarVisible = isShow
   }
 }

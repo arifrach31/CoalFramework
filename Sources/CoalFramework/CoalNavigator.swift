@@ -28,7 +28,7 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
   @Published private var tabManager: CoalTabManager
   
   public init() {
-    tabManager = CoalTabManager(coalEnvironment: coalEnvironment)
+    tabManager = CoalTabManager()
   }
   
   public func configure(_ config: CoalConfig?, windowScene: UIWindowScene?) {
@@ -46,19 +46,21 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
     let homeView = HomeView(navigator: self)
     let accountView = AccountView(navigator: self)
     
-    let tabItems: [MenuTabItem] = [
-      MenuTabItem(
-        title: homeView.coalTabInfo().title,
-        icon: homeView.coalTabInfo().icon,
-        actionScreen: .swiftui(homeView)
-      ),
-      MenuTabItem(
-        title: accountView.coalTabInfo().title,
-        icon: accountView.coalTabInfo().icon,
-        actionScreen: .swiftui(accountView)
-      )
-    ]
-    tabManager.addTab(tabItems)
+    if config?.menuConfig?.resetDefaultTab != true {
+      let tabItems: [MenuTabItem] = [
+        MenuTabItem(
+          title: homeView.coalTabInfo().title,
+          icon: homeView.coalTabInfo().icon,
+          viewScreen: .swiftui(homeView)
+        ),
+        MenuTabItem(
+          title: accountView.coalTabInfo().title,
+          icon: accountView.coalTabInfo().icon,
+          viewScreen: .swiftui(accountView)
+        )
+      ]
+      tabManager.addTab(tabItems)
+    }
     
     if let customTabs = config?.menuConfig?.addTabItems {
       tabManager.addTab(customTabs)

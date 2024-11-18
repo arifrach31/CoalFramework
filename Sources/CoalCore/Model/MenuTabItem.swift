@@ -11,11 +11,15 @@ import UIKit
 public struct MenuTabItem {
   public var title: String?
   public var icon: String?
-  public var actionScreen: ViewScreenType
+  public var viewScreen: ViewScreenType
   
-  public init(title: String? = nil, icon: String? = nil, actionScreen: ViewScreenType) {
+  public init(
+    title: String? = nil,
+    icon: String? = nil,
+    viewScreen: ViewScreenType
+  ) {
     self.title = title
     self.icon = icon
-    self.actionScreen = actionScreen
+    self.viewScreen = viewScreen
   }
 }

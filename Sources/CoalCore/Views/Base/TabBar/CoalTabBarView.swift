@@ -29,18 +29,23 @@ public struct CoalTabBarView: View {
   public init(
     tabManager: CoalTabManager,
     coalEnvironment: CoalEnvironment,
-    coalConfig: CoalConfig) {
-      self.tabManager = tabManager
-      self.coalEnvironment = coalEnvironment
-      self.coalConfig = coalConfig
-    }
+    coalConfig: CoalConfig
+  ) {
+    self.tabManager = tabManager
+    self.coalEnvironment = coalEnvironment
+    self.coalConfig = coalConfig
+    
+    UITabBar.appearance().unselectedItemTintColor = coalConfig.menuConfig?.normalTabColor ?? UIColor.gray
+  }
   
   public var body: some View {
+    let menuConfig = coalConfig.menuConfig
     VStack {
-      if tabManager.isTabBarVisible {
+      if let isTabBarVisible = menuConfig?.isTabBarVisible,
+         isTabBarVisible {
         TabView(selection: $tabManager.selectedTab) {
           ForEach(0..<tabManager.tabs.count, id: \.self) { index in
-            tabItemView(for: tabManager.tabs[index].actionScreen)
+            tabItemView(for: tabManager.tabs[index].viewScreen)
               .tabItem {
                 VStack {
                   if let iconName = tabManager.tabs[index].icon,
@@ -54,7 +59,7 @@ public struct CoalTabBarView: View {
               }
               .tag(index)
           }
-        }
+        }.tint(Color(menuConfig?.activeTabColor ?? .blue))
       }
     }
   }
