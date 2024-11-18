@@ -26,7 +26,7 @@ public struct SplashView: View {
     ) {
       AnyView(logoView(for: splashConfig))
     }.onAppear {
-      navigateToInitialPage()
+      navigateToInitialPage(delay: splashConfig?.delay ?? 2.0)
     }
   }
   
@@ -41,8 +41,8 @@ public struct SplashView: View {
     }
   }
   
-  private func navigateToInitialPage() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+  private func navigateToInitialPage(delay: TimeInterval) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
       navigator?.showInitialPage(isLoggedIn: false)
     }
   }

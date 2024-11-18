@@ -13,9 +13,15 @@ public protocol SplashConfigProvider {
 
 public class SplashConfig: BaseConfig {
   public var logoImage: String?
+  public var delay: TimeInterval
   
-  public init(backgroundImageName: String? = nil, backgroundColor: String? = nil, logoImage: String? = nil) {
-    self.logoImage = logoImage
-    super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
-  }
+  public init(
+    backgroundImageName: String? = nil,
+    backgroundColor: String? = nil,
+    logoImage: String? = nil,
+    delay: TimeInterval = 2.0) {
+      self.logoImage = logoImage
+      self.delay = delay
+      super.init(backgroundImageName: backgroundImageName, backgroundColor: backgroundColor)
+    }
 }
