@@ -9,7 +9,7 @@ import SwiftUI
 import UIKit
 
 public extension Image {
-  static let logo = Image("imgLogo", bundle: .module)
+  static let defaultLogo = Image("imgLogo", bundle: .module)
   static let eyeOn = Image("icEyeOn", bundle: .module)
   static let eyeOff = Image("icEyeOff", bundle: .module)
   static let icInfo = Image(systemName: "info.circle")

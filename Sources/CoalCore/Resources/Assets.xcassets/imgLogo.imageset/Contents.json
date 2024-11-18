@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "CoalLogo.png",
+      "filename" : "Telkom.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "CoalLogo 1.png",
+      "filename" : "Telkom@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "CoalLogo 2.png",
+      "filename" : "Telkom@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

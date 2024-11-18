@@ -33,11 +33,8 @@ public struct SplashView: View {
   private func logoView(for splashConfig: SplashConfig?) -> any View {
     if let logoName = splashConfig?.logoImage {
       return CoalImageView(imageURL: logoName, width: 200, height: 200)
-    } else if let defaultLogo = UIImage.coalLogo?.imageName {
-      return CoalImageView(imageURL: defaultLogo, width: 200, height: 200)
     } else {
-      return Text("Logo not available")
-        .foregroundColor(.gray)
+      return CoalImageView(imageURL: "imgLogo", width: 250, height: 180)
     }
   }
   

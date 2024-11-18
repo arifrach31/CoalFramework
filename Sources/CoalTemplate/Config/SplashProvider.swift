@@ -11,6 +11,8 @@ class SplashProvider: SplashConfigProvider {
   func getConfig() -> SplashConfig {
     return SplashConfig(
       backgroundImageName: "background",
-      logoImage: "garuda")
+      backgroundColor: "#00a1dd",
+      logoImage: "garuda",
+      delay: 2.0)
   }
 }
