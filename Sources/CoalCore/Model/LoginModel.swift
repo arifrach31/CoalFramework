@@ -15,16 +15,14 @@ public enum LoginType: String, Codable {
 
 public struct LoginModel {}
 
-public struct AdditionalButtonConfig {
+public struct ForgotButton {
   public var isVisible: Bool?
   public var text: String?
-  public var actionScreen: CoalScreenType
+  public var actionScreen: CoalScreenType = .forgot
   
   public init(isVisible: Bool? = true,
-              text: String? = nil,
-              actionScreen: CoalScreenType = .forgot) {
+              text: String? = nil) {
     self.isVisible = isVisible
     self.text = text
-    self.actionScreen = actionScreen
   }
 }

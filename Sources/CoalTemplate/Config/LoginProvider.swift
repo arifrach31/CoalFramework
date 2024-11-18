@@ -10,14 +10,13 @@ import CoalCore
 class LoginProvider: LoginConfigProvider {
   func getConfig() -> LoginConfig {
     return LoginConfig(
-      header: ConfigHeader(title: "Login",
+      header: ConfigHeader(title: "Login yaa",
                            description: "Login Description",
                            image: "garuda"),
       fields: ConfigDefault.loginFields(for: .email),
-      additionalButtonConfig: AdditionalButtonConfig(
+      forgotButton: ForgotButton(
         isVisible: true,
-        text: "Forgot Username & Password?",
-        actionScreen: .forgot
+        text: "Forgot Username & Password?"
       ),
       loginButtonAction: .swiftui(ClientView())
     )

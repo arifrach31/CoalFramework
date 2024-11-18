@@ -82,10 +82,10 @@ private struct FormView: View {
           field: field,
           value: viewModel.binding(for: field),
           isSecure: viewModel.bindingSecure(for: field),
-          additionalButtonConfig: index == formFields.count - 1 ? config?.additionalButtonConfig : nil,
-          isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
+          isError: viewModel.fieldErrors[field.label ?? ""] ?? false, 
           errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? "",
-          additionalButtonAction: { screen in
+          forgotButton: index == formFields.count - 1 ? config?.forgotButton : nil,
+          forgotButtonAction: { screen in
             navigator?.goTo(screen)
           }
         )

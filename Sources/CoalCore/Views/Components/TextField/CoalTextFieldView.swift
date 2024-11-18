@@ -11,30 +11,30 @@ import ThemeLGN
 
 public struct CoalTextFieldView: View {
   public let field: ConfigField
+  @FocusState private var isEmailFieldFocused: Bool
   @Binding public var value: String
   @Binding public var isSecure: Bool
-  public var additionalButtonConfig: AdditionalButtonConfig?
   public var isError: Bool
   public var errorMessage: String?
-  @FocusState private var isEmailFieldFocused: Bool
-  public var additionalButtonAction: (CoalScreenType) -> Void
+  public var forgotButton: ForgotButton?
+  public var forgotButtonAction: (CoalScreenType) -> Void
   
   public init(
     field: ConfigField,
     value: Binding<String>,
     isSecure: Binding<Bool>,
-    additionalButtonConfig: AdditionalButtonConfig? = nil,
     isError: Bool = false,
     errorMessage: String? = nil,
-    additionalButtonAction: @escaping (CoalScreenType) -> Void = { _ in }
+    forgotButton: ForgotButton? = nil,
+    forgotButtonAction: @escaping (CoalScreenType) -> Void = { _ in }
   ) {
     self.field = field
     self._value = value
     self._isSecure = isSecure
-    self.additionalButtonConfig = additionalButtonConfig
+    self.forgotButton = forgotButton
     self.isError = isError
     self.errorMessage = errorMessage
-    self.additionalButtonAction = additionalButtonAction
+    self.forgotButtonAction = forgotButtonAction
   }
   
   private var isPasswordField: Bool {
@@ -87,12 +87,12 @@ public struct CoalTextFieldView: View {
         .padding(.top, 2)
       }
       
-      if additionalButtonConfig?.isVisible == true {
-        if let additionalText = additionalButtonConfig?.text {
+      if forgotButton?.isVisible == true {
+        if let forgotText = forgotButton?.text {
           HStack {
-            AnchorText(title: additionalText, tintColor: Color.LGNTheme.secondary500) {
-              if let actionScreen = additionalButtonConfig?.actionScreen {
-                additionalButtonAction(actionScreen)
+            AnchorText(title: forgotText, tintColor: Color.LGNTheme.secondary500) {
+              if let actionScreen = forgotButton?.actionScreen {
+                forgotButtonAction(actionScreen)
               }
             }.variant(size: .small)
             Spacer()
