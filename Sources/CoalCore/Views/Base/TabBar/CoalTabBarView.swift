@@ -22,9 +22,9 @@ public protocol CoalTabInfoProviding {
 }
 
 public struct CoalTabBarView: View {
-  @ObservedObject var tabManager: CoalTabManager
-  private var coalEnvironment: CoalEnvironment
-  private var coalConfig: CoalConfig
+  @ObservedObject private var tabManager: CoalTabManager
+  private let coalEnvironment: CoalEnvironment
+  private let coalConfig: CoalConfig
   
   public init(
     tabManager: CoalTabManager,
@@ -35,42 +35,58 @@ public struct CoalTabBarView: View {
     self.coalEnvironment = coalEnvironment
     self.coalConfig = coalConfig
     
-    UITabBar.appearance().unselectedItemTintColor = coalConfig.menuConfig?.normalTabColor ?? UIColor.gray
+    configureTabBarAppearance()
   }
   
   public var body: some View {
-    let menuConfig = coalConfig.menuConfig
     VStack {
-      if let isTabBarVisible = menuConfig?.isTabBarVisible,
-         isTabBarVisible {
+      if isTabBarVisible {
         TabView(selection: $tabManager.selectedTab) {
-          ForEach(0..<tabManager.tabs.count, id: \.self) { index in
-            tabItemView(for: tabManager.tabs[index].viewScreen)
-              .tabItem {
-                VStack {
-                  if let iconName = tabManager.tabs[index].icon,
-                     let uiImage = UIImage.loadImage(iconName) {
-                    if let resizedImage = uiImage.resize(to: CGSize(width: 20, height: 20)) {
-                      Image(uiImage: resizedImage)
-                    }
-                  }
-                  Text(tabManager.tabs[index].title ?? "")
-                }
-              }
+          ForEach(tabManager.tabs.indices, id: \.self) { index in
+            createTabItem(for: tabManager.tabs[index])
               .tag(index)
           }
-        }.tint(Color(menuConfig?.activeTabColor ?? .blue))
+        }
+        .tint(activeTabColor)
       }
     }
+  }
+  
+  private var isTabBarVisible: Bool {
+    coalConfig.menuConfig?.isTabBarVisible ?? true
+  }
+  
+  private var activeTabColor: Color {
+    Color(coalConfig.menuConfig?.activeTabColor ?? .blue)
+  }
+  
+  private func configureTabBarAppearance() {
+    UITabBar.appearance().unselectedItemTintColor = coalConfig.menuConfig?.normalTabColor ?? .gray
+  }
+  
+  @ViewBuilder
+  private func createTabItem(for tab: MenuTabItem) -> some View {
+    tabItemView(for: tab.viewScreen)
+      .tabItem {
+        VStack {
+          if let iconName = tab.icon,
+             let uiImage = UIImage.loadImage(iconName) {
+            Image(uiImage: uiImage.resize(to: CGSize(width: 20, height: 20))!)
+          }
+          Text(tab.title ?? "")
+        }
+      }
   }
   
   @ViewBuilder
   private func tabItemView(for screen: ViewScreenType) -> some View {
     switch screen {
     case .swiftui(let swiftUIView):
-      AnyView(swiftUIView
-        .environmentObject(coalEnvironment)
-        .environmentObject(coalConfig))
+      AnyView(
+        swiftUIView
+          .environmentObject(coalEnvironment)
+          .environmentObject(coalConfig)
+      )
     case .uikit(let viewController):
       UIViewControllerWrapper(viewController: viewController)
     }
