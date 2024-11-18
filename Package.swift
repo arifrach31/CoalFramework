@@ -73,7 +73,7 @@ let package = Package(
     .target(
       name: "CoalSplashScreen",
       dependencies: ["CoalCore"],
-      path: "Sources/CoalModule/SplashScreen"
+      path: "Sources/CoalModule/Splash"
     ),
     .target(
       name: "CoalLogin",
