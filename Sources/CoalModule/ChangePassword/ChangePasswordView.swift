@@ -53,9 +53,7 @@ public struct ChangePasswordView: View {
       if let form = config.changePasswordConfig?.fields {
         FormView(
           viewModel: viewModel,
-          form: form,
-          config: config.changePasswordConfig,
-          navigator: navigator
+          form: form
         )
         
         ButtonView(
@@ -72,8 +70,6 @@ public struct ChangePasswordView: View {
 private struct FormView: View {
   @ObservedObject var viewModel: ChangePasswordViewModel
   let form: [ConfigField]
-  var config: ChangePasswordConfig?
-  var navigator: CoalNavigatorProtocol?
   
   var body: some View {
     VStack(spacing: 16) {

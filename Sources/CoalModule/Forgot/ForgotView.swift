@@ -72,9 +72,7 @@ public struct ForgotView: View {
       if let form = config.forgotConfig?.fields {
         FormView(
           viewModel: viewModel,
-          form: form,
-          config: config.forgotConfig,
-          navigator: navigator
+          form: form
         )
         
         ButtonView(
@@ -92,8 +90,6 @@ public struct ForgotView: View {
 private struct FormView: View {
   @ObservedObject var viewModel: ForgotViewModel
   let form: [ConfigField]
-  var config: ForgotConfig?
-  var navigator: CoalNavigatorProtocol?
   
   var body: some View {
     VStack() {
