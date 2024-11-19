@@ -91,8 +91,8 @@ public struct CoalTextFieldView: View {
         if let forgotText = forgotButton?.text {
           HStack {
             AnchorText(title: forgotText, tintColor: Color.LGNTheme.secondary500) {
-              if let actionScreen = forgotButton?.actionScreen {
-                forgotButtonAction(actionScreen)
+              if let coalScreen = forgotButton?.coalScreen {
+                forgotButtonAction(coalScreen)
               }
             }.variant(size: .small)
             Spacer()

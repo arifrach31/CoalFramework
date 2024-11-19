@@ -18,7 +18,7 @@ public struct LoginModel {}
 public struct ForgotButton {
   public var isVisible: Bool?
   public var text: String?
-  public var actionScreen: CoalScreenType = .forgot
+  public var coalScreen: CoalScreenType? = .forgot
   
   public init(isVisible: Bool? = true,
               text: String? = nil) {
