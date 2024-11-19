@@ -33,7 +33,8 @@ public struct LoginView: View {
         Spacer()
         bottomSheetView
       }
-    }.onAppear {
+    }
+    .onAppear {
       viewModel.configure(with: config.loginConfig)
     }
   }
@@ -49,17 +50,23 @@ public struct LoginView: View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config.loginConfig?.header)
       if let form = config.loginConfig?.fields {
+        let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
+        
         FormView(
           viewModel: viewModel,
-          form: form,
-          config: config.loginConfig,
-          navigator: navigator
+          formFields: formFields,
+          forgotButton: config.loginConfig?.forgotButton,
+          forgotButtonAction: {
+            if let screen = config.loginConfig?.forgotButton?.coalScreen {
+              navigator?.goTo(screen)
+            }
+          }
         )
+        
         ButtonView(
           viewModel: viewModel,
           form: form,
-          navigator: navigator,
-          config: config.loginConfig
+          navigator: navigator
         )
       }
       Spacer()
@@ -67,39 +74,10 @@ public struct LoginView: View {
   }
 }
 
-private struct FormView: View {
-  @ObservedObject var viewModel: LoginViewModel
-  let form: [ConfigField]
-  var config: LoginConfig?
-  var navigator: CoalNavigatorProtocol?
-  
-  var body: some View {
-    VStack(spacing: 12) {
-      let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
-      ForEach(formFields.indices, id: \.self) { index in
-        let field = formFields[index]
-        CoalTextFieldView(
-          field: field,
-          value: viewModel.binding(for: field),
-          isSecure: viewModel.bindingSecure(for: field),
-          isError: viewModel.fieldErrors[field.label ?? ""] ?? false, 
-          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? "",
-          forgotButton: index == formFields.count - 1 ? config?.forgotButton : nil,
-          forgotButtonAction: { screen in
-            navigator?.goTo(screen)
-          }
-        )
-      }
-    }
-    .padding(.vertical, 10)
-  }
-}
-
 private struct ButtonView: View {
   @ObservedObject var viewModel: LoginViewModel
   let form: [ConfigField]
   var navigator: CoalNavigatorProtocol?
-  var config: LoginConfig?
   
   var body: some View {
     VStack(spacing: 10) {

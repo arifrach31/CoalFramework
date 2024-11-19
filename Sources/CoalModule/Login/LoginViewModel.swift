@@ -9,16 +9,33 @@ import SwiftUI
 import Combine
 import CoalCore
 
-public class LoginViewModel: ObservableObject {
+public class LoginViewModel: FormViewModelProtocol, ObservableObject {
+  @Published public var isLoading: Bool = false
+  @Published public var fieldErrors: [String: Bool] = [:]
+  @Published public var fieldErrorMessages: [String: String] = [:]
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
   @Published var formFields: [ConfigField]?
-  @Published var fieldErrors: [String: Bool] = [:]
-  @Published var fieldErrorMessages: [String: String] = [:]
-  @Published var isLoading: Bool = false
   
-  var isFormValid: Bool {
+  public var isFormValid: Bool {
     validateFields()
+  }
+  
+  public func binding(for field: ConfigField) -> Binding<String> {
+    Binding<String>(
+      get: { self.formValues[field.label ?? ""] ?? "" },
+      set: { newValue in
+        self.formValues[field.label ?? ""] = newValue
+        self.clearErrors(for: field)
+      }
+    )
+  }
+  
+  public func bindingSecure(for field: ConfigField) -> Binding<Bool> {
+    Binding<Bool>(
+      get: { self.isSecured[field.label ?? ""] ?? (field.type == .password) },
+      set: { self.isSecured[field.label ?? ""] = $0 }
+    )
   }
   
   func configure(with config: LoginConfig?) {
@@ -41,23 +58,6 @@ public class LoginViewModel: ObservableObject {
     if let emailField = formFields?.first(where: { $0.type == .email }) {
       setError(for: emailField, message: CoalString.emailError)
     }
-  }
-  
-  func binding(for field: ConfigField) -> Binding<String> {
-    Binding<String>(
-      get: { self.formValues[field.label ?? ""] ?? "" },
-      set: { newValue in
-        self.formValues[field.label ?? ""] = newValue
-        self.clearErrors(for: field)
-      }
-    )
-  }
-  
-  func bindingSecure(for field: ConfigField) -> Binding<Bool> {
-    Binding<Bool>(
-      get: { self.isSecured[field.label ?? ""] ?? (field.type == .password) },
-      set: { self.isSecured[field.label ?? ""] = $0 }
-    )
   }
   
   func setError(for field: ConfigField, message: String) {
