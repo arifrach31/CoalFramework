@@ -70,59 +70,24 @@ public struct ForgotView: View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config.forgotConfig?.header)
       if let form = config.forgotConfig?.fields {
+        let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
+        
         FormView(
           viewModel: viewModel,
-          form: form
+          formFields: formFields
         )
         
         ButtonView(
           viewModel: viewModel,
           form: form,
+          isFormValid: viewModel.isFormValid,
           navigator: navigator,
-          config: config.forgotConfig
+          buttonAction: {
+            handleForgotPassword()
+          }
         )
       }
       Spacer()
-    }
-  }
-}
-
-private struct FormView: View {
-  @ObservedObject var viewModel: ForgotViewModel
-  let form: [ConfigField]
-  
-  var body: some View {
-    VStack() {
-      let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
-      ForEach(formFields.indices, id: \.self) { index in
-        let field = formFields[index]
-        CoalTextFieldView(
-          field: field,
-          value: viewModel.binding(for: field),
-          isSecure: viewModel.bindingSecure(for: field),
-          isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
-          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? ""
-        )
-      }
-    }
-    .padding(.vertical, 24)
-  }
-}
-
-private struct ButtonView: View {
-  @ObservedObject var viewModel: ForgotViewModel
-  let form: [ConfigField]
-  var navigator: CoalNavigatorProtocol?
-  var config: ForgotConfig?
-  
-  var body: some View {
-    VStack(spacing: 10) {
-      ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
-          handleForgotPassword()
-        }
-        .padding(.vertical, 10)
-      }
     }
   }
   
@@ -131,8 +96,7 @@ private struct ButtonView: View {
       switch result {
       case .success:
         viewModel.isShowingBottomSheet.toggle()
-      case .failure:
-        break
+      case .failure: break
       }
     }
   }
