@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import CoalCore
 
-class ChangePasswordViewModel: ObservableObject {
+class ChangePasswordViewModel: FormViewModelProtocol, ObservableObject {
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
   @Published var formFields: [ConfigField]?

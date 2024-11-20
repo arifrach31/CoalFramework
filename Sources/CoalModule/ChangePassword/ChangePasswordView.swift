@@ -12,6 +12,7 @@ import ThemeLGN
 
 public struct ChangePasswordView: View {
   @EnvironmentObject var config: CoalConfig
+  @EnvironmentObject public var coalEnvironment: CoalEnvironment
   @StateObject private var viewModel: ChangePasswordViewModel
   private let navigator: CoalNavigatorProtocol?
   
@@ -51,62 +52,27 @@ public struct ChangePasswordView: View {
     BottomSheetView {
       AuthenticationHeaderView(configHeader: config.changePasswordConfig?.header)
       if let form = config.changePasswordConfig?.fields {
+        let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
         FormView(
           viewModel: viewModel,
-          form: form
+          formFields: formFields
         )
         
         ButtonView(
           viewModel: viewModel,
           form: form,
-          navigator: navigator
+          isFormValid: viewModel.isFormValid,
+          navigator: navigator,
+          buttonAction: {
+            handleChangePassword()
+          }
         )
       }
       Spacer()
     }
   }
-}
-
-private struct FormView: View {
-  @ObservedObject var viewModel: ChangePasswordViewModel
-  let form: [ConfigField]
   
-  var body: some View {
-    VStack(spacing: 16) {
-      let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
-      ForEach(formFields.indices, id: \.self) { index in
-        let field = formFields[index]
-        CoalTextFieldView(
-          field: field,
-          value: viewModel.binding(for: field),
-          isSecure: viewModel.bindingSecure(for: field),
-          isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
-          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? ""
-        )
-      }
-    }
-    .padding(.vertical, 24)
-  }
-}
-
-private struct ButtonView: View {
-  @ObservedObject var viewModel: ChangePasswordViewModel
-  let form: [ConfigField]
-  var navigator: CoalNavigatorProtocol?
-  @EnvironmentObject private var coalEnvironment: CoalEnvironment
-  
-  var body: some View {
-    VStack(spacing: 10) {
-      ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
-          handleChangePassword()
-        }
-        .padding(.vertical, 10)
-      }
-    }
-  }
-  
-  private func handleChangePassword() {
+  func handleChangePassword() {
     viewModel.changePassword { result in
       switch result {
       case .success:
