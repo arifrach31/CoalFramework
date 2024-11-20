@@ -54,7 +54,7 @@ public struct ForgotView: View {
   private func handleForgot() {
     if let emailFieldValue = viewModel.getFieldValue(for: .text) {
       let field = ConfigField(type: .text, label: emailFieldValue)
-      navigator?.goTo(.verificationCode(journey: .forgot, methodField: field))
+      navigator?.goTo(.verificationCode(type: .forgot, methodField: field))
       viewModel.isShowingBottomSheet.toggle()
     }
   }

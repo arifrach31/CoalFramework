@@ -81,7 +81,7 @@ private struct VerificationButtonView: View {
       case .success:
         navigator?.goTo(
           .verificationCode(
-            journey: .login,
+            type: .login,
             methodField: field
           )
         )

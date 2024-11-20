@@ -115,18 +115,18 @@ public class CoalNavigator: CoalNavigatorProtocol, ObservableObject {
       guard let showMethod = config?.verificationConfig?.showVerificationMethod, showMethod else {
         goTo(
           .verificationCode(
-            journey: .login,
+            type: .login,
             methodField: nil
           )
         )
         return
       }
       view = VerificationMethodView(navigator: self)
-    case .verificationCode(let journey, let methodField):
+    case .verificationCode(let type, let methodField):
       view = VerificationCodeView(
         navigator: self,
         methodField: methodField,
-        verificationType: journey
+        verificationType: type
       )
     case .forgot:
       view = ForgotView(navigator: self)
