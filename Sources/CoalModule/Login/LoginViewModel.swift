@@ -9,19 +9,19 @@ import SwiftUI
 import Combine
 import CoalCore
 
-public class LoginViewModel: FormViewModelProtocol, ObservableObject {
-  @Published public var isLoading: Bool = false
-  @Published public var fieldErrors: [String: Bool] = [:]
-  @Published public var fieldErrorMessages: [String: String] = [:]
+class LoginViewModel: FormViewModelProtocol, ObservableObject {
+  @Published var isLoading: Bool = false
+  @Published var fieldErrors: [String: Bool] = [:]
+  @Published var fieldErrorMessages: [String: String] = [:]
   @Published var formValues: [String: String] = [:]
   @Published var isSecured: [String: Bool] = [:]
   @Published var formFields: [ConfigField]?
   
-  public var isFormValid: Bool {
+  var isFormValid: Bool {
     validateFields()
   }
   
-  public func binding(for field: ConfigField) -> Binding<String> {
+  func binding(for field: ConfigField) -> Binding<String> {
     Binding<String>(
       get: { self.formValues[field.label ?? ""] ?? "" },
       set: { newValue in
@@ -31,7 +31,7 @@ public class LoginViewModel: FormViewModelProtocol, ObservableObject {
     )
   }
   
-  public func bindingSecure(for field: ConfigField) -> Binding<Bool> {
+  func bindingSecure(for field: ConfigField) -> Binding<Bool> {
     Binding<Bool>(
       get: { self.isSecured[field.label ?? ""] ?? (field.type == .password) },
       set: { self.isSecured[field.label ?? ""] = $0 }

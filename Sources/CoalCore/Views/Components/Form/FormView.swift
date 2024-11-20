@@ -8,8 +8,6 @@
 import SwiftUI
 
 public protocol FormViewModelProtocol: ObservableObject {
-  var isLoading: Bool { get }
-  var isFormValid: Bool { get }
   var fieldErrors: [String: Bool] { get }
   var fieldErrorMessages: [String: String] { get }
   
