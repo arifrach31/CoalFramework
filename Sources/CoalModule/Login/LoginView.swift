@@ -68,6 +68,11 @@ public struct LoginView: View {
           form: form,
           isFormValid: viewModel.isFormValid,
           navigator: navigator,
+          additionalAchorText: AdditionalAchorText(
+            text: CoalString.doNotHaveAccount,
+            achorText: CoalString.register,
+            coalScreen: .register
+          ),
           buttonAction: {
             handleLogin()
           }

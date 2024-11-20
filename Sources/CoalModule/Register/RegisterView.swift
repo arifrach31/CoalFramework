@@ -43,17 +43,25 @@ public struct RegisterView: View {
       
       if let form = config.registerConfig?.fields {
         let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
+        
         FormView(viewModel: viewModel, formFields: formFields)
+        
         AgreementView(
           navigator: navigator,
           config: config.registerConfig,
           isAgreed: $viewModel.isAgreed
         )
+        
         ButtonView(
           viewModel: viewModel,
           form: form,
           isFormValid: viewModel.isFormEnabled,
           navigator: navigator,
+          additionalAchorText: AdditionalAchorText(
+            text: CoalString.alreadyHaveAccount,
+            achorText: CoalString.loginTitle,
+            coalScreen: .login
+          ),
           buttonAction: {
             handleRegister()
           }
