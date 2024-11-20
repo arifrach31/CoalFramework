@@ -12,6 +12,7 @@ import ThemeLGN
 
 public struct RegisterView: View {
   @EnvironmentObject var config: CoalConfig
+  @EnvironmentObject public var coalEnvironment: CoalEnvironment
   @StateObject private var viewModel: RegisterViewModel
   public var navigator: CoalNavigatorProtocol?
   
@@ -30,7 +31,8 @@ public struct RegisterView: View {
     ) {
       Spacer()
       bottomSheetView
-    }.onAppear {
+    }
+    .onAppear {
       viewModel.configure(with: config.registerConfig)
     }
   }
@@ -40,42 +42,37 @@ public struct RegisterView: View {
       AuthenticationHeaderView(configHeader: config.registerConfig?.header)
       
       if let form = config.registerConfig?.fields {
-        FormView(
-          viewModel: viewModel, 
-          form: form
-        )
-        ButtonView(
-          viewModel: viewModel, 
+        let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
+        FormView(viewModel: viewModel, formFields: formFields)
+        AgreementView(
           navigator: navigator,
           config: config.registerConfig,
-          form: form
+          isAgreed: $viewModel.isAgreed
+        )
+        ButtonView(
+          viewModel: viewModel,
+          form: form,
+          isFormValid: viewModel.isFormEnabled,
+          navigator: navigator,
+          buttonAction: {
+            handleRegister()
+          }
         )
       }
       Spacer()
-      RegisterFooterView(navigator: navigator)
     }
   }
-}
-
-private struct FormView: View {
-  @ObservedObject var viewModel: RegisterViewModel
-  let form: [ConfigField]
   
-  var body: some View {
-    VStack(spacing: 12) {
-      let formFields = form.filter { $0.type != .submit }
-      ForEach(formFields.indices, id: \.self) { index in
-        let field = formFields[index]
-        CoalTextFieldView(
-          field: field,
-          value: viewModel.binding(for: field),
-          isSecure: viewModel.bindingSecure(for: field),
-          isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
-          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? ""
-        )
+  func handleRegister() {
+    viewModel.register { result in
+      switch result {
+      case .success:
+        coalEnvironment.toastType = .registerSuccess
+        navigator?.goTo(.login)
+      case .failure:
+        coalEnvironment.toastType = .registerFailure
       }
     }
-    .padding(.vertical, 10)
   }
 }
 
@@ -89,23 +86,24 @@ private struct AgreementView: View {
       Checkbox(
         defaultIsChecked: isAgreed,
         size: .medium,
-        onToggleChange: { isChecked in
-          isAgreed = isChecked
-        }
+        onToggleChange: { isAgreed = $0 }
       )
       .padding(.trailing, 4)
       
       Text(CoalString.agreement)
         .LGNBodySmall(color: LGNColor.tertiary500)
         .padding(.trailing, 2)
+      
       AnchorText(title: CoalString.termCondition, tintColor: Color.LGNTheme.secondary500) {
         navigator?.goTo(.webview(model: config?.termCondition))
       }
       .variant(size: .small)
       .underlined()
+      
       Text(CoalString.and)
         .LGNBodySmall(color: LGNColor.tertiary500)
         .padding(.horizontal, 2)
+      
       AnchorText(title: CoalString.privacyPolicy, tintColor: Color.LGNTheme.secondary500) {
         navigator?.goTo(.webview(model: config?.privacyPolicy))
       }
@@ -113,68 +111,6 @@ private struct AgreementView: View {
       .underlined()
     }
     .padding(.horizontal, 10)
-  }
-}
-
-private struct ButtonView: View {
-  @ObservedObject var viewModel: RegisterViewModel
-  var navigator: CoalNavigatorProtocol?
-  var config: RegisterConfig?
-  let form: [ConfigField]
-  @State private var isAgreed = false
-  @EnvironmentObject public var coalEnvironment: CoalEnvironment
-  
-  private var isEnabled: Bool {
-    return viewModel.isFormValid && isAgreed
-  }
-  
-  var body: some View {
-    VStack(spacing: 10) {
-      AgreementView(
-        navigator: navigator,
-        config: config,
-        isAgreed: $isAgreed
-      )
-      
-      ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonPrimary(field: field, isDisabled: !isEnabled)  {
-          verifyRegister()
-        }
-        .padding(.vertical, 10)
-      }
-    }
-  }
-  
-  func verifyRegister() {
-    viewModel.register { result in
-      switch result {
-      case .success:
-        coalEnvironment.toastType = .registerSuccess
-        navigator?.goTo(.login)
-      case .failure:
-        coalEnvironment.toastType = .registerFailure
-      }
-    }
-  }
-}
-
-private struct RegisterFooterView: View {
-  var navigator: CoalNavigatorProtocol?
-  
-  var body: some View {
-    VStack {
-      Spacer()
-      HStack(spacing: 0) {
-        Spacer()
-        Text(CoalString.alreadyHaveAccount)
-          .LGNBodySmall(color: LGNColor.tertiary500)
-        AnchorText(title: CoalString.loginTitle, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.goTo(.login)
-        }.variant(size: .small)
-        Spacer()
-      }
-      .padding(.bottom, 24)
-    }
   }
 }
 

@@ -9,18 +9,35 @@ import SwiftUI
 import Combine
 import CoalCore
 
-class RegisterViewModel: ObservableObject {
-  @Published var formValues: [String: String] = [:]
-  @Published var isSecured: [String: Bool] = [:]
-  @Published var config: ConfigModel?
-  
-  @Published var formFields: [ConfigField]?
+class RegisterViewModel: FormViewModelProtocol, ObservableObject {
+  @Published var isLoading: Bool = false
   @Published var fieldErrors: [String: Bool] = [:]
   @Published var fieldErrorMessages: [String: String] = [:]
-  @Published var isLoading: Bool = false
+  @Published var formValues: [String: String] = [:]
+  @Published var isSecured: [String: Bool] = [:]
+  @Published var formFields: [ConfigField]?
+  @Published var isAgreed: Bool = false 
   
   var isFormValid: Bool {
     validateFields()
+  }
+  
+  var isFormEnabled: Bool {
+    isFormValid && isAgreed
+  }
+  
+  func binding(for field: ConfigField) -> Binding<String> {
+    Binding<String>(
+      get: { self.formValues[field.label ?? ""] ?? "" },
+      set: { self.formValues[field.label ?? ""] = $0 }
+    )
+  }
+  
+  func bindingSecure(for field: ConfigField) -> Binding<Bool> {
+    Binding<Bool>(
+      get: { self.isSecured[field.label ?? ""] ?? (field.type == .password || field.type == .confirmPassword) },
+      set: { self.isSecured[field.label ?? ""] = $0 }
+    )
   }
   
   func configure(with config: RegisterConfig?) {
@@ -56,20 +73,6 @@ class RegisterViewModel: ObservableObject {
   private func getFieldValue(for type: ConfigFieldType) -> String? {
     let field = formFields?.first { $0.type == type }
     return field.flatMap { formValues[$0.label ?? ""] }
-  }
-  
-  func binding(for field: ConfigField) -> Binding<String> {
-    Binding<String>(
-      get: { self.formValues[field.label ?? ""] ?? "" },
-      set: { self.formValues[field.label ?? ""] = $0 }
-    )
-  }
-  
-  func bindingSecure(for field: ConfigField) -> Binding<Bool> {
-    Binding<Bool>(
-      get: { self.isSecured[field.label ?? ""] ?? (field.type == .password || field.type == .confirmPassword) },
-      set: { self.isSecured[field.label ?? ""] = $0 }
-    )
   }
   
   func setError(for field: ConfigField, message: String) {
