@@ -66,36 +66,14 @@ public struct LoginView: View {
         ButtonView(
           viewModel: viewModel,
           form: form,
-          navigator: navigator
+          isFormValid: viewModel.isFormValid,
+          navigator: navigator,
+          buttonAction: {
+            handleLogin()
+          }
         )
       }
       Spacer()
-    }
-  }
-}
-
-private struct ButtonView: View {
-  @ObservedObject var viewModel: LoginViewModel
-  let form: [ConfigField]
-  var navigator: CoalNavigatorProtocol?
-  
-  var body: some View {
-    VStack(spacing: 10) {
-      ForEach(form.filter { $0.type == .submit }) { field in
-        CoalButtonPrimary(field: field, isDisabled: !viewModel.isFormValid) {
-          handleLogin()
-        }
-        .padding(.vertical, 10)
-      }
-      
-      HStack(spacing: 0) {
-        Text(CoalString.doNotHaveAccount)
-          .LGNBodySmall(color: LGNColor.tertiary500)
-        AnchorText(title: CoalString.register, tintColor: Color.LGNTheme.secondary500) {
-          navigator?.goTo(.register)
-        }.variant(size: .small)
-      }
-      .padding(.vertical, 10)
     }
   }
   
@@ -104,8 +82,7 @@ private struct ButtonView: View {
       switch result {
       case .success:
         navigator?.goTo(.verificationMethod)
-      case .failure:
-        break
+      case .failure: break
       }
     }
   }
