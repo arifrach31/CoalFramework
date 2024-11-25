@@ -22,17 +22,14 @@ public struct HomeView: View {
     CoalBaseView(
       pageType: .home,
       rightAction: {
-        self.navigator?.goTo(.login)
+        navigator?.goTo(.login)
       },
-      isShowNavBar: config.homeConfig?.isShowNavBar ?? false
+      isShowNavBar: config.homeConfig?.isShowNavBar ?? false,
+      isScrollView: true
     ) {
-      ScrollView {
-        VStack(alignment: .center) {
-          if let homeSection = config.homeConfig?.sections {
-            ForEach(homeSection, id: \.id) { section in
-              sectionView(for: section)
-            }
-          }
+      if let homeSection = config.homeConfig?.sections {
+        ForEach(homeSection, id: \.id) { section in
+          sectionView(for: section)
         }
       }
     }
@@ -43,18 +40,11 @@ public struct HomeView: View {
     switch section {
     case .carousel:
       let carouselConfig = config.homeConfig?.carouselConfig
-      GeometryReader { geometry in
-        CoalCarouselView(
-          currentIndex: $viewModel.currentIndexCarousel,
-          cards: carouselConfig?.cards ?? [],
-          geometry: carouselConfig?.geometry ?? geometry,
-          cardHeight: carouselConfig?.cardHeight ?? 188,
-          action: carouselConfig?.action ?? {}
-        )
-      }
-      .padding(.horizontal, 16)
-      .frame(minHeight: 150, maxHeight: 190)
-      .padding(.vertical, 50)
+      CoalCarouselView(
+        cards: carouselConfig?.cards,
+        cardHeight: carouselConfig?.cardHeight,
+        didSelectItem: carouselConfig?.didSelectItem
+      )
       
     case .category:
       let categoryConfig = config.homeConfig?.categoryConfig

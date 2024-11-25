@@ -16,6 +16,7 @@ public struct CoalBaseView<Content: View>: View {
   private let content: Content
   private let isShowNavBar: Bool
   private let isLoading: Bool
+  private let isScrollView: Bool
   private let bottomSheetContent: any View
   
   @EnvironmentObject private var coalEnvironment: CoalEnvironment
@@ -32,6 +33,7 @@ public struct CoalBaseView<Content: View>: View {
     isShowNavBar: Bool = true,
     isLoading: Bool = false,
     isShowingBottomSheet: Binding<Bool> = .constant(false),
+    isScrollView: Bool = false,
     bottomSheetContent: any View = EmptyView(),
     @ViewBuilder content: @escaping () -> Content
   ) {
@@ -43,6 +45,7 @@ public struct CoalBaseView<Content: View>: View {
     self.isShowNavBar = isShowNavBar
     self.isLoading = isLoading
     self._isShowingBottomSheet = isShowingBottomSheet
+    self.isScrollView = isScrollView
     self.bottomSheetContent = bottomSheetContent
     self.content = content()
   }
@@ -52,7 +55,7 @@ public struct CoalBaseView<Content: View>: View {
       backgroundView
       VStack {
         navbarView
-        content
+        contentView
       }
       .blur(radius: (isLoading || isShowingBottomSheet) ? 3 : 0)
       loadingOverlay
@@ -84,6 +87,18 @@ public struct CoalBaseView<Content: View>: View {
     }
   }
   
+  private var contentView: some View {
+    Group {
+      if isScrollView {
+        ScrollView(showsIndicators: false) {
+          content
+        }
+      } else {
+        content
+      }
+    }
+  }
+
   private var backgroundView: some View {
     Group {
       if let image = backgroundImage {
