@@ -27,6 +27,8 @@ public enum PageType {
       return customTitle
     case .verificationCode:
       return CoalString.accountVerification
+    case .verificationMethod:
+      return CoalString.verification
     default:
       return nil
     }

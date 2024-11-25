@@ -28,11 +28,10 @@ public struct VerificationMethodView: View {
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
+      isShowNavBar: true,
       isLoading: viewModel.isLoading
     ) {
-      VStack(spacing: 40) {
-        headerImage
-        Spacer()
+      VStack(spacing: 20) {
         bottomSheetView
       }
     }.onAppear {
@@ -40,16 +39,15 @@ public struct VerificationMethodView: View {
     }
   }
   
-  private var headerImage: some View {
-    CoalImageView(imageURL: config.verificationConfig?.verificationMethodHeader?.image ?? "")
-      .scaledToFill()
-      .frame(width: 125, height: 125)
-      .padding(.top, -8)
-  }
-  
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config.verificationConfig?.verificationMethodHeader)
+      AuthenticationHeaderView(
+        configHeader: config.verificationConfig?.verificationMethodHeader,
+        alignment: .center
+      )
+      .padding(.top, 20)
+      .frame(maxWidth: .infinity)
+      
       if let verificationMethods = viewModel.sendTo {
         VerificationButtonView(viewModel: viewModel, methods: verificationMethods, navigator: navigator)
       }
