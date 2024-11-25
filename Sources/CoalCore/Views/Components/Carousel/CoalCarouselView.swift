@@ -8,49 +8,59 @@
 import SwiftUI
 
 public struct CoalCarouselView: View {
-  @Binding public var currentIndex: Int
-  public let cards: [CarouselModel]
-  public let geometry: GeometryProxy?
-  public let cardHeight: CGFloat
-  public let action: () -> Void
+  @State private var currentIndex: Int = 0
+  public let cards: [CarouselModel]?
+  public let cardHeight: CGFloat?
+  public let didSelectItem: (() -> Void)?
   
-  public init(currentIndex: Binding<Int> = .constant(0), 
-              cards: [CarouselModel],
-              geometry: GeometryProxy? = nil,
-              cardHeight: CGFloat = 188,
-              action: @escaping () -> Void = {}) {
-    self._currentIndex = currentIndex
+  public init(cards: [CarouselModel]? = nil,
+              cardHeight: CGFloat? = 188,
+              didSelectItem: (() -> Void)? = nil) {
     self.cards = cards
-    self.geometry = geometry
     self.cardHeight = cardHeight
-    self.action = action
+    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
     GeometryReader { proxy in
-      let actualGeometry = geometry ?? proxy
+      let actualGeometry = proxy
       VStack {
-        ZStack {
-          ForEach(Array(cards.enumerated()), id: \.offset) { index, card in
-            CoalCardView(card: card, currentIndex: $currentIndex, geometry: actualGeometry, cardHeight: cardHeight, index: index, action: action) {
+        if let cards = cards, !cards.isEmpty {
+          ZStack {
+            ForEach(cards.indices, id: \.self) { index in
+              CoalCardView(
+                card: cards[index],
+                currentIndex: $currentIndex,
+                geometry: actualGeometry,
+                cardHeight: cardHeight ?? 0,
+                index: index,
+                didSelectItem: didSelectItem
+              )
+              .offset(x: CGFloat(index - currentIndex) * (actualGeometry.size.width * 0.72))
             }
-            .offset(x: CGFloat(index - currentIndex) * (actualGeometry.size.width * 0.72))
           }
-        }
-        .gesture(
-          DragGesture()
-            .onEnded { value in
-              handleDragGesture(value: value, geometry: actualGeometry)
-            }
-        )
-        PageControl(index: $currentIndex, maxIndex: cards.count > 1 ? (cards.count - 1) : 0)
+          .gesture(
+            DragGesture()
+              .onEnded { value in
+                handleDragGesture(value: value, geometry: actualGeometry)
+              }
+          )
+          PageControl(
+            index: $currentIndex,
+            maxIndex: cards.count > 1 ? (cards.count - 1) : 0
+          )
           .padding(.top, -35)
-        
+        }
       }
     }
+    .padding(.horizontal, 16)
+    .frame(minHeight: 150, maxHeight: 190)
+    .padding(.bottom, 50)
   }
   
   private func handleDragGesture(value: DragGesture.Value, geometry: GeometryProxy) {
+    guard let cards = cards, !cards.isEmpty else { return }
+    
     let cardWidth = geometry.size.width * 0.2
     let offset = value.translation.width / cardWidth
     

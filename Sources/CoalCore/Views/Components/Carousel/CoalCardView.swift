@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-public struct CoalCardView<Content: View>: View {
+public struct CoalCardView: View {
   @Binding var currentIndex: Int
   let card: CarouselModel
-  let content: Content
   let geometry: GeometryProxy
   let cardHeight: CGFloat
-  let action: () -> Void
   let index: Int
+  let didSelectItem: (() -> Void)?
   
   private var cardWidth: CGFloat {
     geometry.size.width * 0.97
@@ -26,36 +25,38 @@ public struct CoalCardView<Content: View>: View {
     return CGFloat(index - currentIndex) * baseOffset
   }
   
-  public init(card: CarouselModel, 
+  public init(card: CarouselModel,
               currentIndex: Binding<Int>,
               geometry: GeometryProxy,
               cardHeight: CGFloat = 188,
               index: Int,
-              action: @escaping () -> Void = {},
-              @ViewBuilder content: () -> Content) {
+              didSelectItem: (() -> Void)? = nil) {
     self.card = card
     self._currentIndex = currentIndex
     self.geometry = geometry
     self.cardHeight = cardHeight
-    self.action = action
     self.index = index
-    self.content = content()
+    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
     ZStack {
-      cardBackground
-      content
+      cardImage
         .padding(.all, 16)
     }
     .frame(width: cardWidth, height: cardHeight)
     .offset(x: cardOffset)
     .onTapGesture {
-      action()
+      didSelectItem?()
     }
   }
   
-  private var cardBackground: some View {
-    CoalImageView(imageURL: card.image, cornerRadius: 16, width: cardWidth, height: cardHeight)
+  private var cardImage: some View {
+    CoalImageView(
+      imageURL: card.image,
+      cornerRadius: 16,
+      width: cardWidth,
+      height: cardHeight
+    )
   }
 }
