@@ -10,9 +10,13 @@ import CoalCore
 class LoginProvider: LoginConfigProvider {
   func getConfig() -> LoginConfig {
     return LoginConfig(
-      header: ConfigHeader(title: "Login yaa",
-                           description: "Login Description",
-                           image: "garuda"),
+      backgroundImage: "background",
+      backgroundColor: "#00a1dd",
+      header: ConfigHeader(
+        title: "Login yaa",
+        description: "Login Description",
+        image: "garuda"
+      ),
       fields: ConfigDefault.loginFields(for: .email),
       forgotButton: ForgotButton(
         isVisible: true,
