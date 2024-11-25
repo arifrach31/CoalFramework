@@ -31,6 +31,7 @@ public struct AuthenticationHeaderView: View {
       
       Text(configHeader?.description ?? CoalString.loginDescription)
         .lgnBodySmallRegular(color: LGNColor.tertiary500)
+        .multilineTextAlignment(alignment == .center ? .center : (alignment == .trailing ? .trailing : .leading))
       
       if !additionalText.isEmpty {
         Text(additionalText)
