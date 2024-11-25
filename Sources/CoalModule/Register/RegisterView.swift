@@ -25,8 +25,11 @@ public struct RegisterView: View {
     let (backgroundImage, backgroundColor) = config.registerConfig?.getBackground() ?? (nil, nil)
     
     CoalBaseView(
+      pageType: .back,
+      leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
+      isShowNavBar: true,
       isLoading: viewModel.isLoading
     ) {
       Spacer()
