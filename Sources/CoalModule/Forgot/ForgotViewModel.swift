@@ -34,7 +34,7 @@ class ForgotViewModel: FormViewModelProtocol, ObservableObject {
   
   private func handleForgotError(error: ApiErrorType) {
     if let emailField = formFields?.first(where: { $0.type == .text }) {
-      setError(for: emailField, message: CoalString.forgotPasswordError)
+      setError(for: emailField)
     }
   }
   
@@ -60,9 +60,9 @@ class ForgotViewModel: FormViewModelProtocol, ObservableObject {
     )
   }
   
-  func setError(for field: ConfigField, message: String) {
-    fieldErrors[field.label ?? ""] = true
-    fieldErrorMessages[field.label ?? ""] = message
+  func setError(for field: ConfigField) {
+    fieldErrors[field.label ?? ""] = field.isShowError
+    fieldErrorMessages[field.label ?? ""] = field.errorMessage
   }
   
   func clearErrors(for field: ConfigField) {

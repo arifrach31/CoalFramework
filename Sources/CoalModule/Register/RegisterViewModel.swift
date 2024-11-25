@@ -60,7 +60,7 @@ class RegisterViewModel: FormViewModelProtocol, ObservableObject {
     if let confirmPasswordField = formFields?.first(where: { $0.type == .confirmPassword }) {
       DispatchQueue.main.async {
         if !confirmPassword.isEmpty && password != confirmPassword {
-          self.setError(for: confirmPasswordField, message: CoalString.confirmPasswordError)
+          self.setError(for: confirmPasswordField)
         } else {
           self.clearErrors(for: confirmPasswordField)
         }
@@ -75,9 +75,9 @@ class RegisterViewModel: FormViewModelProtocol, ObservableObject {
     return field.flatMap { formValues[$0.label ?? ""] }
   }
   
-  func setError(for field: ConfigField, message: String) {
-    fieldErrors[field.label ?? ""] = true
-    fieldErrorMessages[field.label ?? ""] = message
+  func setError(for field: ConfigField) {
+    fieldErrors[field.label ?? ""] = field.isShowError
+    fieldErrorMessages[field.label ?? ""] = field.errorMessage
   }
   
   func clearErrors(for field: ConfigField) {

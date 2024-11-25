@@ -17,12 +17,20 @@ class LoginProvider: LoginConfigProvider {
         description: "Login Description",
         image: "garuda"
       ),
-      fields: ConfigDefault.loginFields(for: .email),
+      fields: loginFields()
       forgotButton: ForgotButton(
         isVisible: true,
         text: "Forgot Username & Password?"
       ),
       loginButtonAction: .swiftui(ClientView())
     )
+  }
+  
+  func loginFields() -> [ConfigField] {
+    return [
+      ConfigField(type: .email, label: "Email", placeholder: "Enter your email", errorMessage: "Oyy, email lu salah tuu!", isShowError: true),
+      ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
+      ConfigField(type: .submit, label: "Login")
+    ]
   }
 }

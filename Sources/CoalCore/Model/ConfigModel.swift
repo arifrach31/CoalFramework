@@ -79,7 +79,7 @@ public struct ConfigField: Codable, Identifiable {
   public let label: String?
   public let placeholder: String?
   public var isShowError: Bool?
-  public let errorMessage: String?
+  public var errorMessage: String?
   public let labelColor: String?
   public let backgroundColor: String?
   public var isRequired: Bool?

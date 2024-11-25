@@ -18,7 +18,7 @@ public struct ConfigDefault {
       ]
     case .email:
       return [
-        ConfigField(type: .email, label: "Your Email", placeholder: "Enter your email"),
+        ConfigField(type: .email, label: "Your Email", placeholder: "Enter your email", errorMessage: CoalString.emailError, isShowError: true),
         ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
         ConfigField(type: .submit, label: "Login")
       ]
@@ -36,14 +36,14 @@ public struct ConfigDefault {
       ConfigField(type: .email, label: "Email Address", placeholder: "Enter your email address"),
       ConfigField(type: .phone, label: "Mobile Number", placeholder: "Enter your mobile number"),
       ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
-      ConfigField(type: .confirmPassword, label: "Confirm Password", placeholder: "Enter your confirm password"),
+      ConfigField(type: .confirmPassword, label: "Confirm Password", placeholder: "Enter your confirm password", errorMessage: CoalString.confirmPasswordError, isShowError: true),
       ConfigField(type: .submit, label: "Register")
     ]
   }
   
   public static var forgotFields: [ConfigField] {
     return [
-      ConfigField(type: .text, label: "Email Address / Mobile Number", placeholder: "Enter registered data"),
+      ConfigField(type: .text, label: "Email Address / Mobile Number", placeholder: "Enter registered data", errorMessage: CoalString.forgotPasswordError, isShowError: true),
       ConfigField(type: .submit, label: "Next")
     ]
   }
@@ -51,7 +51,7 @@ public struct ConfigDefault {
   public static var changePasswordFields: [ConfigField] {
     return [
       ConfigField(type: .password, label: "Password", placeholder: "Enter your password"),
-      ConfigField(type: .confirmPassword, label: "Confirm Password", placeholder: "Enter your confirm password"),
+      ConfigField(type: .confirmPassword, label: "Confirm Password", placeholder: "Enter your confirm password", errorMessage: CoalString.confirmPasswordError, isShowError: true),
       ConfigField(type: .submit, label: "Change Password")
     ]
   }

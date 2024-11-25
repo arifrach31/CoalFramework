@@ -56,13 +56,13 @@ class LoginViewModel: FormViewModelProtocol, ObservableObject {
   
   private func handleLoginError(error: ApiErrorType) {
     if let emailField = formFields?.first(where: { $0.type == .email }) {
-      setError(for: emailField, message: CoalString.emailError)
+      setError(for: emailField)
     }
   }
   
-  func setError(for field: ConfigField, message: String) {
-    fieldErrors[field.label ?? ""] = true
-    fieldErrorMessages[field.label ?? ""] = message
+  func setError(for field: ConfigField) {
+    fieldErrors[field.label ?? ""] = field.isShowError
+    fieldErrorMessages[field.label ?? ""] = field.errorMessage
   }
   
   func clearErrors(for field: ConfigField) {
