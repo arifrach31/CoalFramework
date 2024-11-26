@@ -76,7 +76,7 @@ public struct CoalTextFieldView: View {
       }
       if isError {
         HStack(alignment: .top) {
-          Image(systemName: "exclamationmark.triangle")
+          Image.warningIcon
             .foregroundColor(.red)
           
           Text(errorMessage ?? "")

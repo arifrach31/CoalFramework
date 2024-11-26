@@ -37,7 +37,7 @@ public enum PageType {
   var trailingIcon: Image? {
     switch self {
     case .home:
-      return Image(systemName: "magnifyingglass")
+      return Image.magnifyingIcon
     default:
       return nil
     }
@@ -89,7 +89,7 @@ public struct CoalNavBar: View {
   
   private func leadingButtonView(action: @escaping () -> Void) -> some View {
     Button(action: action) {
-      Image(systemName: "arrow.left")
+      Image.arrowLeftIcon
         .resizable()
         .scaledToFit()
         .frame(width: 20, height: 20)
