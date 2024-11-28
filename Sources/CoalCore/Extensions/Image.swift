@@ -16,7 +16,8 @@ public extension Image {
   static let mainBackground = Image("imgBackground", bundle: .module)
   
   static let emailIcon = Image(systemName: "envelope")
-  static let phoneIcon = Image(systemName: "phone")
+  static let smsIcon = Image(systemName: "ellipsis.bubble")
+  static let waIcon = Image(systemName: "phone.bubble")
   static let unknownIcon = Image(systemName: "questionmark.circle")
 }
 

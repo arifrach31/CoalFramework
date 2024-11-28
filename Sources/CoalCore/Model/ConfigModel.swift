@@ -71,6 +71,8 @@ public enum ConfigFieldType: String, Codable {
   case checkbox
   case submit
   case confirmPassword
+  case wa
+  case sms
 }
 
 public struct ConfigField: Codable, Identifiable {
@@ -110,8 +112,10 @@ public struct ConfigField: Codable, Identifiable {
     switch type {
     case .email:
       return CoalString.localized(forKey: "email_to", maskingField(label ?? "", type: .email))
-    case .phone:
+    case .sms:
       return CoalString.localized(forKey: "sms_to", maskingField(label ?? "", type: .phone))
+    case .wa:
+      return CoalString.localized(forKey: "wa_to", maskingField(label ?? "", type: .phone))
     default:
       return label ?? "-"
     }
@@ -120,7 +124,8 @@ public struct ConfigField: Codable, Identifiable {
   public var iconVerification: Image {
     switch type {
     case .email: return .emailIcon
-    case .phone: return .phoneIcon
+    case .sms: return .smsIcon
+    case .wa: return .waIcon
     default: return .unknownIcon
     }
   }

@@ -85,10 +85,24 @@ public class VerificationViewModel: ObservableObject {
       return
     }
     
-    sendTo = [
-      ConfigField(type: .email, label: userData.email ?? "-"),
-      ConfigField(type: .phone, label: userData.phoneNumber ?? "-")
-    ]
+    if let email = userData.email, let phoneNumber = userData.phoneNumber {
+      sendTo = [
+        ConfigField(type: .email, label: email),
+        ConfigField(type: .sms, label: phoneNumber),
+        ConfigField(type: .wa, label: phoneNumber)
+      ]
+    } else if let email = userData.email {
+      sendTo = [
+        ConfigField(type: .email, label: email)
+      ]
+    } else if let phoneNumber = userData.phoneNumber {
+      sendTo = [
+        ConfigField(type: .sms, label: phoneNumber),
+        ConfigField(type: .wa, label: phoneNumber)
+      ]
+    } else {
+      sendTo = []
+    }
   }
   
   func sendOTP(method: ConfigField, completion: @escaping (Result<Void, ApiErrorType>) -> Void) {

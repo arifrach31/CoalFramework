@@ -47,3 +47,4 @@
 "reset_password_success_title" = "Reset Password Success";
 "reset_password_success_subtitle" = "Login to continue the process";
 "verification" = "Verification";
+"wa_to" = "Whatsapp to %@";
