@@ -29,10 +29,9 @@ public struct RegisterView: View {
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isShowNavBar: true,
-      isLoading: viewModel.isLoading
+      isLoading: viewModel.isLoading,
+      isScrollView: true
     ) {
-      Spacer()
       bottomSheetView
     }
     .onAppear {
