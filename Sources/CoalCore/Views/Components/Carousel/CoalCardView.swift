@@ -8,12 +8,12 @@
 import SwiftUI
 
 public struct CoalCardView: View {
-  @Binding var currentIndex: Int
-  let card: CarouselModel
-  let geometry: GeometryProxy
-  let cardHeight: CGFloat
-  let index: Int
-  let didSelectItem: (() -> Void)?
+  @Binding private var currentIndex: Int
+  private let card: CarouselModel
+  private let geometry: GeometryProxy
+  private let cardHeight: CGFloat
+  private let index: Int
+  private let didSelectItem: (() -> Void)?
   
   private var cardWidth: CGFloat {
     geometry.size.width * 0.97
@@ -25,12 +25,14 @@ public struct CoalCardView: View {
     return CGFloat(index - currentIndex) * baseOffset
   }
   
-  public init(card: CarouselModel,
-              currentIndex: Binding<Int>,
-              geometry: GeometryProxy,
-              cardHeight: CGFloat = 188,
-              index: Int,
-              didSelectItem: (() -> Void)? = nil) {
+  public init(
+    card: CarouselModel,
+    currentIndex: Binding<Int>,
+    geometry: GeometryProxy,
+    cardHeight: CGFloat = 188,
+    index: Int,
+    didSelectItem: (() -> Void)? = nil
+  ) {
     self.card = card
     self._currentIndex = currentIndex
     self.geometry = geometry

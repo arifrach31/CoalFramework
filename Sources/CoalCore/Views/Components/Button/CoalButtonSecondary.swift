@@ -10,10 +10,13 @@ import ThemeLGN
 import LegionUI
 
 public struct CoalButtonSecondary: View {
-  public let field: ConfigField
-  public var action: () -> Void
+  private let field: ConfigField
+  private var action: () -> Void
   
-  public init(field: ConfigField, action: @escaping () -> Void = {}) {
+  public init(
+    field: ConfigField,
+    action: @escaping () -> Void = {}
+  ) {
     self.field = field
     self.action = action
   }

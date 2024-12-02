@@ -54,13 +54,15 @@ public enum PageType {
 }
 
 public struct CoalNavBar: View {
-  var pageType: PageType
-  var leadingAction: (() -> Void)?
-  var trailingAction: (() -> Void)?
+  private let pageType: PageType
+  private let leadingAction: (() -> Void)?
+  private let trailingAction: (() -> Void)?
   
-  public init(pageType: PageType,
-              leadingAction: (() -> Void)? = nil,
-              trailingAction: (() -> Void)? = nil) {
+  public init(
+    pageType: PageType,
+    leadingAction: (() -> Void)? = nil,
+    trailingAction: (() -> Void)? = nil
+  ) {
     self.pageType = pageType
     self.leadingAction = leadingAction
     self.trailingAction = trailingAction
@@ -68,48 +70,50 @@ public struct CoalNavBar: View {
   
   public var body: some View {
     HStack {
-      if let leadingAction = leadingAction {
-        leadingButtonView(action: leadingAction)
-      }
-      
-      if let title = pageType.title {
-        titleView(title: title)
-      }
-      
+      leadingButton
+      titleText
       Spacer()
-      
-      if let trailingAction = trailingAction, let trailingIcon = pageType.trailingIcon {
-        trailingButtonView(action: trailingAction, icon: trailingIcon)
-      }
+      trailingButton
     }
     .padding(.horizontal, 4)
     .frame(height: 60)
     .background(.clear)
   }
   
-  private func leadingButtonView(action: @escaping () -> Void) -> some View {
-    Button(action: action) {
-      Image.arrowLeftIcon
-        .resizable()
-        .scaledToFit()
-        .frame(width: 20, height: 20)
-        .foregroundColor(pageType.tintColor)
-        .padding(12)
+  @ViewBuilder
+  private var leadingButton: some View {
+    if let action = leadingAction {
+      Button(action: action) {
+        Image.arrowLeftIcon
+          .resizable()
+          .scaledToFit()
+          .frame(width: 20, height: 20)
+          .padding(12)
+          .foregroundColor(pageType.tintColor)
+      }
     }
   }
   
-  private func trailingButtonView(action: @escaping () -> Void, icon: Image) -> some View {
-    Button(action: action) {
-      icon
-        .resizable()
-        .frame(width: 24, height: 24)
-        .padding()
-        .foregroundColor(.black)
+  @ViewBuilder
+  private var trailingButton: some View {
+    if let action = trailingAction,
+       let icon = pageType.trailingIcon {
+      Button(action: action) {
+        icon
+          .resizable()
+          .scaledToFit()
+          .frame(width: 24, height: 24)
+          .padding()
+          .foregroundColor(.black)
+      }
     }
   }
   
-  private func titleView(title: String) -> some View {
-    Text(title)
-      .lgnHeading5(color: pageType.tintColor)
+  @ViewBuilder
+  private var titleText: some View {
+    if let title = pageType.title {
+      Text(title)
+        .lgnHeading5(color: pageType.tintColor)
+    }
   }
 }

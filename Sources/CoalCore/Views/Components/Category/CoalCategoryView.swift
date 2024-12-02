@@ -10,10 +10,10 @@ import LegionUI
 import ThemeLGN
 
 public struct CoalCategoryView: View {
-  let category: CategoryModel
-  let didSelectItem: (CategoryModel) -> Void
-  var iconSize: CGFloat
-  var cardSize: CGFloat
+  private let category: CategoryModel
+  private let didSelectItem: (CategoryModel) -> Void
+  private let iconSize: CGFloat
+  private let cardSize: CGFloat
   
   public init(
     category: CategoryModel,
@@ -29,25 +29,31 @@ public struct CoalCategoryView: View {
   
   public var body: some View {
     VStack(spacing: 8) {
-      ZStack {
-        Color(hex: category.background)
-          .frame(width: cardSize, height: cardSize)
-          .cornerRadius(15)
-        
-        icon
-      }
-      
-      Text(category.title)
-        .lgnCaptionSmallRegular(color: LGNColor.tertiary500)
+      categoryIcon
+      categoryTitle
     }
     .onTapGesture {
-      if didSelectItem(category) != {}() {
-        didSelectItem(category)
-      }
+      didSelectItem(category)
     }
   }
   
-  private var icon: some View {
-    CoalImageView(imageURL: category.icon, cornerRadius: 15, width: iconSize, height: iconSize)
+  private var categoryIcon: some View {
+    ZStack {
+      Color(hex: category.background)
+        .frame(width: cardSize, height: cardSize)
+        .cornerRadius(15)
+      
+      CoalImageView(
+        imageURL: category.icon,
+        cornerRadius: 15,
+        width: iconSize,
+        height: iconSize
+      )
+    }
+  }
+  
+  private var categoryTitle: some View {
+    Text(category.title)
+      .lgnCaptionSmallRegular(color: LGNColor.tertiary500)
   }
 }

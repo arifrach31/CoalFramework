@@ -9,25 +9,25 @@ import SwiftUI
 import LegionUI
 import ThemeLGN
 
-struct CoalCatalogView: View {
-  let catalog: ProductListModel
-  var layout: LayoutDirectionType
-  var didSelectItem: (ProductListModel) -> Void
-  var imgSize: CGFloat
-  var cardSize: CGFloat
+public struct CoalCatalogView: View {
+  private let catalog: ProductListModel
+  private let layout: LayoutDirectionType
+  private let imgSize: CGFloat
+  private let cardSize: CGFloat
+  private let didSelectItem: (ProductListModel) -> Void
   
   public init(
     catalog: ProductListModel,
     layout: LayoutDirectionType,
-    didSelectItem: @escaping (ProductListModel) -> Void = {_ in},
     imgSize: CGFloat = 120,
-    cardSize: CGFloat = 240
+    cardSize: CGFloat = 240,
+    didSelectItem: @escaping (ProductListModel) -> Void = { _ in }
   ) {
     self.catalog = catalog
     self.layout = layout
-    self.didSelectItem = didSelectItem
     self.imgSize = imgSize
     self.cardSize = cardSize
+    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
@@ -42,22 +42,14 @@ struct CoalCatalogView: View {
     .cornerRadius(15)
     .shadow(radius: 4)
     .onTapGesture {
-      if didSelectItem(catalog) != {}() {
-        didSelectItem(catalog)
-      }
+      didSelectItem(catalog)
     }
   }
   
   private var thumbnailSection: some View {
     ZStack(alignment: .topLeading) {
       imgThumbnail
-      Text(catalog.category)
-        .lgnCaptionSmallRegular(color: .white)
-        .padding(8)
-        .background(Color.black.opacity(0.7))
-        .cornerRadius(4)
-        .padding(.leading, 16)
-        .padding(.top, 16)
+      categoryChip
     }
   }
   
@@ -77,6 +69,20 @@ struct CoalCatalogView: View {
   }
   
   private var imgThumbnail: some View {
-    CoalImageView(imageURL: catalog.image, cornerRadius: 16, height: imgSize)
+    CoalImageView(
+      imageURL: catalog.image,
+      cornerRadius: 16,
+      height: imgSize
+    )
+  }
+  
+  private var categoryChip: some View {
+    Text(catalog.category)
+      .lgnCaptionSmallRegular(color: .white)
+      .padding(8)
+      .background(Color.black.opacity(0.7))
+      .cornerRadius(900)
+      .padding(.leading, 16)
+      .padding(.top, 16)
   }
 }

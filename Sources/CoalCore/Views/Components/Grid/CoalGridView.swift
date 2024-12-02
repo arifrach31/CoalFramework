@@ -15,13 +15,13 @@ public enum LayoutDirectionType {
 }
 
 public struct CoalGridView<Content: View>: View {
-  var layoutType: LayoutDirectionType
-  var gridRows: Int
-  var spacing: CGFloat
-  var content: () -> Content
+  private let layoutType: LayoutDirectionType
+  private let gridRows: Int
+  private let spacing: CGFloat
+  private let content: Content
   
   private var columns: [GridItem] {
-    return Array(repeating: GridItem(.flexible(), spacing: spacing), count: gridRows)
+    Array(repeating: GridItem(.flexible(), spacing: spacing), count: gridRows)
   }
   
   public init(
@@ -33,22 +33,31 @@ public struct CoalGridView<Content: View>: View {
     self.layoutType = layoutType
     self.gridRows = gridRows
     self.spacing = spacing
-    self.content = content
+    self.content = content()
   }
   
   public var body: some View {
-    ScrollView(layoutType == .horizontal ? .horizontal : .vertical, showsIndicators: false) {
-      if case .horizontal = layoutType {
-        LazyHGrid(rows: columns, spacing: spacing) {
-          content()
-        }
+    ScrollView(scrollAxis, showsIndicators: false) {
+      gridView
         .padding(.horizontal, 20)
-      } else {
-        LazyVGrid(columns: columns, spacing: spacing) {
-          content()
-        }
-        .padding(.horizontal, 20)
+    }
+  }
+  
+  @ViewBuilder
+  private var gridView: some View {
+    switch layoutType {
+    case .horizontal:
+      LazyHGrid(rows: columns, spacing: spacing) {
+        content
+      }
+    case .vertical:
+      LazyVGrid(columns: columns, spacing: spacing) {
+        content
       }
     }
+  }
+  
+  private var scrollAxis: Axis.Set {
+    layoutType == .horizontal ? .horizontal : .vertical
   }
 }

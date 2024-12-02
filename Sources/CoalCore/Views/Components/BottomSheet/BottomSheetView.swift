@@ -10,9 +10,9 @@ import ThemeLGN
 import LegionUI
 
 public struct BottomSheetView<Content: View>: View {
-  @Binding var isShowing: Bool
-  var dragable: Bool? = false
-  let content: Content
+  @Binding private var isShowing: Bool
+  private var dragable: Bool? = false
+  private let content: Content
   
   public init(
     isShowing: Binding<Bool> = .constant(true),
@@ -25,8 +25,14 @@ public struct BottomSheetView<Content: View>: View {
   }
   
   public var body: some View {
-    LGNBottomSheet(isShowing: $isShowing, dragable: dragable ?? false) {
-      VStack(alignment: .leading, spacing: 5) {
+    LGNBottomSheet(
+      isShowing: $isShowing,
+      dragable: dragable ?? false
+    ) {
+      VStack(
+        alignment: .leading,
+        spacing: 5
+      ) {
         content
           .padding(.horizontal, 20)
       }

@@ -10,11 +10,15 @@ import LegionUI
 import ThemeLGN
 
 public struct CoalButtonPrimary: View {
-  public let field: ConfigField
-  public var isDisabled: Bool? = nil
-  public var action: () -> Void
+  private let field: ConfigField
+  private let isDisabled: Bool
+  private let action: () -> Void
   
-  public init(field: ConfigField, isDisabled: Bool? = nil, action: @escaping () -> Void = {}) {
+  public init(
+    field: ConfigField,
+    isDisabled: Bool = false,
+    action: @escaping () -> Void = {}
+  ) {
     self.field = field
     self.isDisabled = isDisabled
     self.action = action
@@ -22,15 +26,27 @@ public struct CoalButtonPrimary: View {
   
   public var body: some View {
     LGNSolidButton(
-      title: field.label ?? "BUTTON",
-      tintBtnColor: Color(hex: field.labelColor ?? Color.white.toHex() ?? ""),
-      defaultBtnColor: Color(hex: field.backgroundColor ?? Color.redButton.toHex() ?? ""),
+      title: buttonTitle,
+      tintBtnColor: buttonTextColor,
+      defaultBtnColor: buttonBackgroundColor,
       cornerRadius: 24
     ) {
       action()
     }
-    .disableInteraction(isDisabled == true)
+    .disableInteraction(isDisabled)
     .variant(size: .medium, responsive: true)
     .padding(.top, 10)
+  }
+  
+  private var buttonTitle: String {
+    field.label ?? ""
+  }
+  
+  private var buttonTextColor: Color {
+    Color(hex: field.labelColor ?? Color.white.toHex() ?? "")
+  }
+  
+  private var buttonBackgroundColor: Color {
+    Color(hex: field.backgroundColor ?? Color.redButton.toHex() ?? "")
   }
 }

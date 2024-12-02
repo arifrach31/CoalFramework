@@ -1,5 +1,5 @@
 //
-//  ButtonView.swift
+//  FormButtonView.swift
 //
 //
 //  Created by ArifRachman on 19/11/24.
@@ -21,13 +21,13 @@ public struct AdditionalAchorText {
   }
 }
 
-public struct ButtonView<ViewModel: ObservableObject>: View {
-  @ObservedObject var viewModel: ViewModel
-  let form: [ConfigField]
-  let isFormValid: Bool
-  let navigator: CoalNavigatorProtocol?
-  let buttonAction: (() -> Void)?
-  let additionalAchorText: AdditionalAchorText?
+public struct FormButtonView<ViewModel: ObservableObject>: View {
+  @ObservedObject private var viewModel: ViewModel
+  private let form: [ConfigField]
+  private let isFormValid: Bool
+  private let navigator: CoalNavigatorProtocol?
+  private let buttonAction: (() -> Void)?
+  private let additionalAchorText: AdditionalAchorText?
   
   public init(
     viewModel: ViewModel,

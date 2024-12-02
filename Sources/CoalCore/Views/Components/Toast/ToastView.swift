@@ -10,16 +10,16 @@ import LegionUI
 import ThemeLGN
 
 public struct ToastView: View {
-  @Binding var isVisible: Bool
-  var title: String?
-  var subTitle: String?
-  var isError: Bool
-  var onDismiss: (() -> Void)?
+  @Binding private var isVisible: Bool
+  private var title: String?
+  private var subTitle: String?
+  private var isError: Bool
+  private var onDismiss: (() -> Void)?
   
   public init(
     isVisible: Binding<Bool>,
-    title: String? = "",
-    subTitle: String? = "",
+    title: String? = nil,
+    subTitle: String? = nil,
     isError: Bool = false,
     onDismiss: (() -> Void)? = nil
   ) {
@@ -31,19 +31,35 @@ public struct ToastView: View {
   }
   
   public var body: some View {
+    if isVisible {
+      ToastContentView(
+        title: title,
+        subTitle: subTitle,
+        isError: isError,
+        onDismiss: onDismiss
+      )
+      .transition(.move(edge: .top))
+    }
+  }
+}
+
+private struct ToastContentView: View {
+  public var title: String?
+  public var subTitle: String?
+  public var isError: Bool
+  public var onDismiss: (() -> Void)?
+  
+  var body: some View {
     VStack {
-      if isVisible {
-        Alert(
-          title: title ?? "",
-          subtitle: subTitle ?? "",
-          action: ""
-        )
-        .theme(variant: isError ? .error : .success)
-        .onDismissed {
-          onDismiss?()
-        }
+      Alert(
+        title: title ?? "",
+        subtitle: subTitle ?? "",
+        action: ""
+      )
+      .theme(variant: isError ? .error : .success)
+      .onDismissed {
+        onDismiss?()
       }
-      Spacer()
     }
     .padding(.top, 16)
     .padding(.horizontal, 16)

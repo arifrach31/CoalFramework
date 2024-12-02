@@ -60,23 +60,23 @@ public struct CoalGridCatalogView: View {
       Spacer()
       
       AnchorText(title: actionTitle, tintColor: Color.LGNTheme.tertiary500) {
-        if didSelectSeeAll() != {}() {
-          didSelectSeeAll()
-        }
-      }.variant(size: .small)
+        didSelectSeeAll()
+      }
+      .variant(size: .small)
     }
-    .padding(EdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 20))
+    .padding(.horizontal, 20)
+    .padding(.vertical, 16)
   }
   
   private var gridView: some View {
     CoalGridView(layoutType: layoutType, gridRows: gridRows) {
-      ForEach(catalog) { catalog in
+      ForEach(catalog) { item in
         CoalCatalogView(
-          catalog: catalog,
+          catalog: item,
           layout: layoutType,
-          didSelectItem: didSelectItem,
           imgSize: imgSize,
-          cardSize: cardSize
+          cardSize: cardSize,
+          didSelectItem: didSelectItem
         )
       }
     }

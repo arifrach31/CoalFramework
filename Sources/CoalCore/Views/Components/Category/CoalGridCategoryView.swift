@@ -61,12 +61,12 @@ public struct CoalGridCategoryView: View {
       Spacer()
       
       AnchorText(title: actionTitle, tintColor: Color.LGNTheme.tertiary500) {
-        if didSelectSeeAll() != {}() {
-          didSelectSeeAll()
-        }
-      }.variant(size: .small)
+        didSelectSeeAll()
+      }
+      .variant(size: .small)
     }
-    .padding(EdgeInsets(top: 16, leading: 20, bottom: 16, trailing: 20))
+    .padding(.horizontal, 20)
+    .padding(.vertical, 16)
     .background(Color(.systemGray6))
   }
   

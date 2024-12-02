@@ -10,14 +10,15 @@ import LegionUI
 import ThemeLGN
 
 public struct CoalTextFieldView: View {
-  public let field: ConfigField
   @FocusState private var isEmailFieldFocused: Bool
-  @Binding public var value: String
-  @Binding public var isSecure: Bool
-  public var isError: Bool
-  public var errorMessage: String?
-  public var forgotButton: ForgotButton?
-  public var forgotButtonAction: (CoalScreenType) -> Void
+  @Binding private var value: String
+  @Binding private var isSecure: Bool
+  
+  private let field: ConfigField
+  private var isError: Bool
+  private var errorMessage: String?
+  private var forgotButton: ForgotButton?
+  private var forgotButtonAction: (CoalScreenType) -> Void
   
   public init(
     field: ConfigField,
@@ -31,9 +32,9 @@ public struct CoalTextFieldView: View {
     self.field = field
     self._value = value
     self._isSecure = isSecure
-    self.forgotButton = forgotButton
     self.isError = isError
     self.errorMessage = errorMessage
+    self.forgotButton = forgotButton
     self.forgotButtonAction = forgotButtonAction
   }
   
@@ -50,56 +51,62 @@ public struct CoalTextFieldView: View {
   }
   
   private var prefix: ContentModel? {
-    if field.type == .phone {
-      return ContentModel(text: CoalString.zonePhone)
-    } else {
-      return nil
-    }
+    field.type == .phone ? ContentModel(text: CoalString.zonePhone) : nil
   }
   
   public var body: some View {
-    VStack(alignment: .leading) {
-      OutlineTxtField(
-        titleKey: LocalizedStringKey(field.placeholder ?? ""),
-        text: $value,
-        label: field.label ?? "",
-        prefix: prefix
-      )
-      .setSecured($isSecure)
-      .setRightView(isPasswordField ? secureButton : nil)
-      .state(isError ? .error : .idle)
-      .focused($isEmailFieldFocused, equals: field.type == .email)
-      .onChange(of: isError) { newValue in
-        if newValue && field.type == .email {
-          isEmailFieldFocused = true 
-        }
+    VStack(alignment: .leading, spacing: 8) {
+      textField
+      errorMessageView
+      forgotButtonView
+    }
+  }
+  
+  @ViewBuilder
+  private var textField: some View {
+    OutlineTxtField(
+      titleKey: LocalizedStringKey(field.placeholder ?? ""),
+      text: $value,
+      label: field.label ?? "",
+      prefix: prefix
+    )
+    .setSecured($isSecure)
+    .setRightView(isPasswordField ? secureButton : nil)
+    .state(isError ? .error : .idle)
+    .focused($isEmailFieldFocused, equals: field.type == .email)
+    .onChange(of: isError) { newValue in
+      if newValue && field.type == .email {
+        isEmailFieldFocused = true
       }
-      if isError {
-        HStack(alignment: .top) {
-          Image.warningIcon
-            .foregroundColor(.red)
-          
-          Text(errorMessage ?? "")
-            .lgnBodySmallRegular(color: Color.redButton)
-            .lineLimit(nil)
-            .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(.top, 2)
+    }
+  }
+  
+  @ViewBuilder
+  private var errorMessageView: some View {
+    if isError, let errorMessage = errorMessage {
+      HStack(alignment: .top, spacing: 8) {
+        Image.warningIcon
+          .foregroundColor(.red)
+        Text(errorMessage)
+          .lgnBodySmallRegular(color: Color.redButton)
+          .lineLimit(nil)
+          .fixedSize(horizontal: false, vertical: true)
       }
-      
-      if forgotButton?.isVisible == true {
-        if let forgotText = forgotButton?.text {
-          HStack {
-            AnchorText(title: forgotText, tintColor: Color.LGNTheme.secondary500) {
-              if let coalScreen = forgotButton?.coalScreen {
-                forgotButtonAction(coalScreen)
-              }
-            }.variant(size: .small)
-            Spacer()
-          }
-          .padding(.top, 5)
+      .padding(.top, 2)
+    }
+  }
+  
+  @ViewBuilder
+  private var forgotButtonView: some View {
+    if forgotButton?.isVisible == true, let forgotText = forgotButton?.text, let coalScreen = forgotButton?.coalScreen {
+      HStack {
+        AnchorText(title: forgotText, tintColor: Color.LGNTheme.secondary500) {
+          forgotButtonAction(coalScreen)
         }
+        .variant(size: .small)
+        Spacer()
       }
+      .padding(.top, 5)
     }
   }
 }

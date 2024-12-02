@@ -16,10 +16,10 @@ public protocol FormViewModelProtocol: ObservableObject {
 }
 
 public struct FormView<FormViewModel: FormViewModelProtocol>: View {
-  @ObservedObject var viewModel: FormViewModel
-  let formFields: [ConfigField]
-  let forgotButton: ForgotButton?
-  let forgotButtonAction: (() -> Void)?
+  @ObservedObject private var viewModel: FormViewModel
+  private let formFields: [ConfigField]
+  private let forgotButton: ForgotButton?
+  private let forgotButtonAction: (() -> Void)?
   
   public init(
     viewModel: FormViewModel,
@@ -36,20 +36,23 @@ public struct FormView<FormViewModel: FormViewModelProtocol>: View {
   public var body: some View {
     VStack(spacing: 12) {
       ForEach(formFields.indices, id: \.self) { index in
-        let field = formFields[index]
-        CoalTextFieldView(
-          field: field,
-          value: viewModel.binding(for: field),
-          isSecure: viewModel.bindingSecure(for: field),
-          isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
-          errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? "",
-          forgotButton: index == formFields.count - 1 ? forgotButton : nil,
-          forgotButtonAction: { _ in
-            forgotButtonAction?()
-          }
-        )
+        fieldView(for: formFields[index], isLast: index == formFields.count - 1)
       }
     }
     .padding(.vertical, 10)
+  }
+  
+  private func fieldView(for field: ConfigField, isLast: Bool) -> some View {
+    CoalTextFieldView(
+      field: field,
+      value: viewModel.binding(for: field),
+      isSecure: viewModel.bindingSecure(for: field),
+      isError: viewModel.fieldErrors[field.label ?? ""] ?? false,
+      errorMessage: viewModel.fieldErrorMessages[field.label ?? ""] ?? "",
+      forgotButton: isLast ? forgotButton : nil,
+      forgotButtonAction: { _ in
+        forgotButtonAction?()
+      }
+    )
   }
 }

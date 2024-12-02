@@ -10,22 +10,22 @@ import ThemeLGN
 import LegionUI
 
 public struct CodeFieldView: View {
-  @Binding var code: [String]
+  @Binding private var code: [String]
   @FocusState private var focusedField: Int?
   
-  var isError: Bool
-  var isTimerActive: Bool
-  var remainingTime: Int
-  var onResetError: () -> Void
-  var onResendCode: () -> Void
+  private var isError: Bool
+  private var isTimerActive: Bool
+  private var remainingTime: Int
+  private var onResetError: () -> Void
+  private var onResendCode: () -> Void
   
-  var errorMessageText: String
-  var timerText: String
-  var resendButtonText: String
-  var errorMessageColor: Color
-  var resendButtonColor: Color
-  var focusedBorderColor: Color
-  var defaultBorderColor: Color
+  private var errorMessageText: String
+  private var timerText: String
+  private var resendButtonText: String
+  private var errorMessageColor: Color
+  private var resendButtonColor: Color
+  private var focusedBorderColor: Color
+  private var defaultBorderColor: Color
   
   public init(
     code: Binding<[String]>,
@@ -117,12 +117,12 @@ public struct CodeFieldView: View {
 }
 
 public struct CodeField: View {
-  @Binding var text: String
+  @Binding public var text: String
   @FocusState private var isFocused: Bool
-  var isError: Bool
-  var errorColor: Color
-  var focusedBorderColor: Color
-  var defaultBorderColor: Color
+  public var isError: Bool
+  public var errorColor: Color
+  public var focusedBorderColor: Color
+  public var defaultBorderColor: Color
   
   public var body: some View {
     TextField("", text: $text)
@@ -146,12 +146,12 @@ public struct CodeField: View {
 }
 
 public struct CodeTimer: View {
-  var isTimerActive: Bool
-  var remainingTime: Int
-  var timerText: String
-  var resendButtonText: String
-  var resendButtonColor: Color
-  let onResend: () -> Void
+  public var isTimerActive: Bool
+  public var remainingTime: Int
+  public var timerText: String
+  public var resendButtonText: String
+  public var resendButtonColor: Color
+  public let onResend: () -> Void
   
   public var body: some View {
     HStack {

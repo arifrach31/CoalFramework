@@ -13,9 +13,11 @@ public struct CoalCarouselView: View {
   public let cardHeight: CGFloat?
   public let didSelectItem: (() -> Void)?
   
-  public init(cards: [CarouselModel]? = nil,
-              cardHeight: CGFloat? = 188,
-              didSelectItem: (() -> Void)? = nil) {
+  public init(
+    cards: [CarouselModel]? = nil,
+    cardHeight: CGFloat? = 188,
+    didSelectItem: (() -> Void)? = nil
+  ) {
     self.cards = cards
     self.cardHeight = cardHeight
     self.didSelectItem = didSelectItem
@@ -23,50 +25,56 @@ public struct CoalCarouselView: View {
   
   public var body: some View {
     GeometryReader { proxy in
-      let actualGeometry = proxy
       VStack {
         if let cards = cards, !cards.isEmpty {
-          ZStack {
-            ForEach(cards.indices, id: \.self) { index in
-              CoalCardView(
-                card: cards[index],
-                currentIndex: $currentIndex,
-                geometry: actualGeometry,
-                cardHeight: cardHeight ?? 0,
-                index: index,
-                didSelectItem: didSelectItem
-              )
-              .offset(x: CGFloat(index - currentIndex) * (actualGeometry.size.width * 0.72))
-            }
-          }
-          .gesture(
-            DragGesture()
-              .onEnded { value in
-                handleDragGesture(value: value, geometry: actualGeometry)
-              }
-          )
-          PageControl(
-            index: $currentIndex,
-            maxIndex: cards.count > 1 ? (cards.count - 1) : 0
-          )
-          .padding(.top, -35)
+          carouselView(cards: cards, geometry: proxy)
+          pageControl(maxIndex: cards.count - 1)
+            .padding(.top, -35)
         }
       }
     }
     .padding(.horizontal, 16)
-    .frame(minHeight: 150, maxHeight: 190)
+    .frame(minHeight: 150, maxHeight: cardHeight ?? 190)
     .padding(.bottom, 50)
   }
   
-  private func handleDragGesture(value: DragGesture.Value, geometry: GeometryProxy) {
-    guard let cards = cards, !cards.isEmpty else { return }
-    
+  @ViewBuilder
+  private func carouselView(cards: [CarouselModel], geometry: GeometryProxy) -> some View {
+    ZStack {
+      ForEach(cards.indices, id: \.self) { index in
+        CoalCardView(
+          card: cards[index],
+          currentIndex: $currentIndex,
+          geometry: geometry,
+          cardHeight: cardHeight ?? 188,
+          index: index,
+          didSelectItem: didSelectItem
+        )
+        .offset(x: CGFloat(index - currentIndex) * (geometry.size.width * 0.72))
+      }
+    }
+    .gesture(
+      DragGesture()
+        .onEnded { value in
+          handleDragGesture(value: value, geometry: geometry, cardCount: cards.count)
+        }
+    )
+  }
+  
+  private func pageControl(maxIndex: Int) -> some View {
+    PageControl(
+      index: $currentIndex,
+      maxIndex: maxIndex
+    )
+  }
+  
+  private func handleDragGesture(value: DragGesture.Value, geometry: GeometryProxy, cardCount: Int) {
     let cardWidth = geometry.size.width * 0.2
     let offset = value.translation.width / cardWidth
     
     withAnimation(.spring()) {
       if value.translation.width < -offset {
-        currentIndex = min(currentIndex + 1, cards.count - 1)
+        currentIndex = min(currentIndex + 1, cardCount - 1)
       } else if value.translation.width > offset {
         currentIndex = max(currentIndex - 1, 0)
       }
@@ -77,6 +85,7 @@ public struct CoalCarouselView: View {
 struct PageControl: View {
   @Binding var index: Int
   let maxIndex: Int
+  
   var body: some View {
     HStack(spacing: 8) {
       ForEach(0...maxIndex, id: \.self) { idx in
