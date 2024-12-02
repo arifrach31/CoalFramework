@@ -41,6 +41,7 @@ public struct FormHeaderView: View {
   private var headerDescription: some View {
     Text(configHeader?.description ?? CoalString.loginDescription)
       .lgnBodySmallRegular(color: LGNColor.tertiary500)
+      .multilineTextAlignment(alignment == .center ? .center : (alignment == .trailing ? .trailing : .leading))
   }
   
   @ViewBuilder
