@@ -60,6 +60,7 @@ private struct ToastContentView: View {
       .onDismissed {
         onDismiss?()
       }
+      Spacer()
     }
     .padding(.top, 16)
     .padding(.horizontal, 16)
