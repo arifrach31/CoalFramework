@@ -42,7 +42,7 @@ public struct RegisterView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config.registerConfig?.header)
+      FormHeaderView(configHeader: config.registerConfig?.header)
       
       if let form = config.registerConfig?.fields {
         let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
@@ -55,7 +55,7 @@ public struct RegisterView: View {
           isAgreed: $viewModel.isAgreed
         )
         
-        ButtonView(
+        FormButtonView(
           viewModel: viewModel,
           form: form,
           isFormValid: viewModel.isFormEnabled,

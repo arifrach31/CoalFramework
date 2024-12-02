@@ -48,7 +48,7 @@ public struct LoginView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config.loginConfig?.header)
+      FormHeaderView(configHeader: config.loginConfig?.header)
       if let form = config.loginConfig?.fields {
         let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
         
@@ -63,7 +63,7 @@ public struct LoginView: View {
           }
         )
         
-        ButtonView(
+        FormButtonView(
           viewModel: viewModel,
           form: form,
           isFormValid: viewModel.isFormValid,

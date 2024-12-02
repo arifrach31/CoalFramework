@@ -48,7 +48,7 @@ public struct VerificationCodeView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(
+      FormHeaderView(
         configHeader: config.verificationConfig?.verificationCodeHeader,
         additionalText: viewModel.getSendToMasking(methodField: methodField),
         alignment: .center

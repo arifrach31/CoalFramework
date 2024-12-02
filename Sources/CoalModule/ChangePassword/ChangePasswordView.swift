@@ -50,7 +50,7 @@ public struct ChangePasswordView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config.changePasswordConfig?.header)
+      FormHeaderView(configHeader: config.changePasswordConfig?.header)
       if let form = config.changePasswordConfig?.fields {
         let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
         FormView(
@@ -58,7 +58,7 @@ public struct ChangePasswordView: View {
           formFields: formFields
         )
         
-        ButtonView(
+        FormButtonView(
           viewModel: viewModel,
           form: form,
           isFormValid: viewModel.isFormValid,

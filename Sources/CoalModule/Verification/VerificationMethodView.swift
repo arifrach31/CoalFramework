@@ -41,7 +41,7 @@ public struct VerificationMethodView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(
+      FormHeaderView(
         configHeader: config.verificationConfig?.verificationMethodHeader,
         alignment: .center
       )

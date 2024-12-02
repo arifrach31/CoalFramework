@@ -68,7 +68,7 @@ public struct ForgotView: View {
   
   private var bottomSheetView: some View {
     BottomSheetView {
-      AuthenticationHeaderView(configHeader: config.forgotConfig?.header)
+      FormHeaderView(configHeader: config.forgotConfig?.header)
       if let form = config.forgotConfig?.fields {
         let formFields = form.filter { $0.type != .checkbox && $0.type != .submit }
         
@@ -77,7 +77,7 @@ public struct ForgotView: View {
           formFields: formFields
         )
         
-        ButtonView(
+        FormButtonView(
           viewModel: viewModel,
           form: form,
           isFormValid: viewModel.isFormValid,
