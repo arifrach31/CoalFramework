@@ -86,7 +86,15 @@ public struct LoginView: View {
     viewModel.login { result in
       switch result {
       case .success:
-        navigator?.goTo(.verificationMethod)
+        if config.loginConfig?.verificationEnabled == true {
+          navigator?.goTo(.verificationMethod)
+        } else {
+          if let destination = config.loginConfig?.loginButtonAction {
+            navigator?.navigate(destination)
+          } else {
+            navigator?.goTo(.home)
+          }
+        }
       case .failure: break
       }
     }

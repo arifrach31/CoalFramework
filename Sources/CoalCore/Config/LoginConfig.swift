@@ -15,6 +15,7 @@ public class LoginConfig: BaseConfig {
   public var header: ConfigHeader? = nil
   public var fields: [ConfigField]? = nil
   public var forgotButton: ForgotButton?
+  public var verificationEnabled: Bool? = true
   public var loginButtonAction: ViewScreenType?
   
   private var loginConfig: ConfigPage? {
@@ -27,12 +28,14 @@ public class LoginConfig: BaseConfig {
     header: ConfigHeader? = nil,
     fields: [ConfigField]? = nil,
     forgotButton: ForgotButton? = nil,
+    verificationEnabled: Bool? = true,
     loginButtonAction: ViewScreenType? = nil
   ) {
     super.init(backgroundImage: backgroundImage, backgroundColor: backgroundColor)
     self.header = header ?? loginConfig?.header
     self.fields = fields ?? loginConfig?.fields
     self.forgotButton = forgotButton
+    self.verificationEnabled = verificationEnabled
     self.loginButtonAction = loginButtonAction
   }
 }
