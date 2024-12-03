@@ -108,6 +108,7 @@ private struct AgreementView: View {
       }
       .variant(size: .small)
       .underlined()
+      .lineLimit(0)
       
       Text(CoalString.and)
         .LGNBodySmall(color: LGNColor.tertiary500)
@@ -118,6 +119,7 @@ private struct AgreementView: View {
       }
       .variant(size: .small)
       .underlined()
+      .lineLimit(0)
     }
     .padding(.horizontal, 10)
   }
