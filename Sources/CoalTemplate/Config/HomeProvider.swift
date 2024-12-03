@@ -8,12 +8,11 @@
 import CoalCore
 
 class HomeProvider: HomeConfigProvider, HomeSectionProvider {
-  
   func getConfig() -> HomeConfig {
     let homeConfig = HomeConfig(
       isShowNavBar: true,
-      sections: getHomeSections(),
-      carouselConfig: CoalCarouselView(cards: getCarouselItems()),
+      section: [.carousel, .category, .productList],
+      carouselConfig: getCarousel(),
       categoryConfig: CoalGridCategoryView(
         categories: getCategories(),
         layoutType: .horizontal,
@@ -30,11 +29,7 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
     return homeConfig
   }
   
-  private func getHomeSections() -> [HomeSectionType] {
-    return [.carousel, .category, .productList]
-  }
-  
-  func getCarouselItems() -> [CarouselModel] {
+  func getCarousel() -> [CarouselModel] {
     return [
       CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/camera/camera__bo5k5tfk6cmu_large_2x.jpg"),
       CarouselModel(image: "https://www.apple.com/v/iphone-15-pro/c/images/overview/camera/pro_lens2__e9qgfxdvjt26_large_2x.jpg"),
@@ -50,7 +45,10 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
       ("briefcase.fill", "Business"),
       ("paintbrush.fill", "Mobile"),
       ("iphone", "Creative"),
-      ("externaldrive.fill", "Unicorn")
+      ("externaldrive.fill", "Unicorn"),
+      ("paintbrush.fill", "Mobile"),
+      ("gearshape.fill", "Landing"),
+      ("paintbrush.fill", "Mobile"),
     ]
     
     return categoryData.map { category in

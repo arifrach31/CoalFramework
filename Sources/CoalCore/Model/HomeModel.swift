@@ -8,10 +8,11 @@
 import Foundation
 
 public protocol HomeSectionProvider {
-  func getCarouselItems() -> [CarouselModel]
+  func getCarousel() -> [CarouselModel]
   func getCategories() -> [CategoryModel]
   func getProductList() -> [ProductListModel]
 }
+
 public enum HomeSectionType: Identifiable {
   case carousel
   case category

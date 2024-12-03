@@ -27,7 +27,7 @@ public struct HomeView: View {
       isShowNavBar: config.homeConfig?.isShowNavBar ?? false,
       isScrollView: true
     ) {
-      if let homeSection = config.homeConfig?.sections {
+      if let homeSection = config.homeConfig?.section {
         ForEach(homeSection, id: \.id) { section in
           sectionView(for: section)
         }
@@ -41,11 +41,8 @@ public struct HomeView: View {
     case .carousel:
       let carouselConfig = config.homeConfig?.carouselConfig
       CoalCarouselView(
-        cards: carouselConfig?.cards,
-        cardHeight: carouselConfig?.cardHeight,
-        didSelectItem: carouselConfig?.didSelectItem
+        cards: carouselConfig
       )
-      
     case .category:
       let categoryConfig = config.homeConfig?.categoryConfig
       CoalGridCategoryView(

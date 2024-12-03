@@ -9,9 +9,9 @@ import SwiftUI
 
 public struct CoalCarouselView: View {
   @State private var currentIndex: Int = 0
-  public let cards: [CarouselModel]?
-  public let cardHeight: CGFloat?
-  public let didSelectItem: (() -> Void)?
+  private let cards: [CarouselModel]?
+  private let cardHeight: CGFloat?
+  private let didSelectItem: (() -> Void)?
   
   public init(
     cards: [CarouselModel]? = nil,
@@ -38,8 +38,10 @@ public struct CoalCarouselView: View {
     .padding(.bottom, 50)
   }
   
-  @ViewBuilder
-  private func carouselView(cards: [CarouselModel], geometry: GeometryProxy) -> some View {
+  private func carouselView(
+    cards: [CarouselModel],
+    geometry: GeometryProxy
+  ) -> some View {
     ZStack {
       ForEach(cards.indices, id: \.self) { index in
         CoalCardView(
@@ -56,7 +58,11 @@ public struct CoalCarouselView: View {
     .gesture(
       DragGesture()
         .onEnded { value in
-          handleDragGesture(value: value, geometry: geometry, cardCount: cards.count)
+          handleDragGesture(
+            value: value,
+            geometry: geometry,
+            cardCount: cards.count
+          )
         }
     )
   }
@@ -68,7 +74,11 @@ public struct CoalCarouselView: View {
     )
   }
   
-  private func handleDragGesture(value: DragGesture.Value, geometry: GeometryProxy, cardCount: Int) {
+  private func handleDragGesture(
+    value: DragGesture.Value,
+    geometry: GeometryProxy,
+    cardCount: Int
+  ) {
     let cardWidth = geometry.size.width * 0.2
     let offset = value.translation.width / cardWidth
     
@@ -82,11 +92,11 @@ public struct CoalCarouselView: View {
   }
 }
 
-struct PageControl: View {
+private struct PageControl: View {
   @Binding var index: Int
   let maxIndex: Int
   
-  var body: some View {
+  public var body: some View {
     HStack(spacing: 8) {
       ForEach(0...maxIndex, id: \.self) { idx in
         if idx == self.index {

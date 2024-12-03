@@ -12,21 +12,21 @@ public protocol HomeConfigProvider {
 }
 
 public class HomeConfig {
-  public var sections: [HomeSectionType]?
+  public var section: [HomeSectionType]?
   public var isShowNavBar: Bool?
-  public var carouselConfig: CoalCarouselView?
+  public var carouselConfig: [CarouselModel]?
   public var categoryConfig: CoalGridCategoryView?
   public var catalogConfig: CoalGridCatalogView?
   
   public init(
     isShowNavBar: Bool? = false,
-    sections: [HomeSectionType]? = [],
-    carouselConfig: CoalCarouselView? = nil,
+    section: [HomeSectionType]? = [],
+    carouselConfig: [CarouselModel]? = nil,
     categoryConfig: CoalGridCategoryView? = nil,
     catalogConfig: CoalGridCatalogView? = nil
   ) {
     self.isShowNavBar = isShowNavBar
-    self.sections = sections
+    self.section = section
     self.carouselConfig = carouselConfig
     self.categoryConfig = categoryConfig
     self.catalogConfig = catalogConfig
