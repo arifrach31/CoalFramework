@@ -85,13 +85,12 @@ public struct CodeFieldView: View {
     }
   }
   
+  @ViewBuilder
   private var errorMessage: some View {
-    Group {
-      if isError {
-        Text(errorMessageText)
-          .lgnCaptionLargeRegular(color: errorMessageColor)
-          .padding(.top, 8)
-      }
+    if isError {
+      Text(errorMessageText)
+        .lgnCaptionLargeRegular(color: errorMessageColor)
+        .padding(.top, 8)
     }
   }
   
@@ -163,18 +162,17 @@ public struct CodeTimer: View {
     .font(.footnote)
   }
   
+  @ViewBuilder
   private var timerMessageView: some View {
-    Group {
-      if isTimerActive {
-        Text("\(timerText) \(resendButtonText) \(remainingTime)s")
+    if isTimerActive {
+      Text("\(timerText) \(resendButtonText) \(remainingTime)s")
+        .foregroundColor(.gray)
+    } else {
+      HStack {
+        Text(timerText)
           .foregroundColor(.gray)
-      } else {
-        HStack {
-          Text(timerText)
-            .foregroundColor(.gray)
-          Button(resendButtonText, action: onResend)
-            .foregroundColor(resendButtonColor)
-        }
+        Button(resendButtonText, action: onResend)
+          .foregroundColor(resendButtonColor)
       }
     }
   }
