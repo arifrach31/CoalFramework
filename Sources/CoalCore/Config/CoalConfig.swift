@@ -8,16 +8,6 @@
 import Foundation
 
 public protocol CoalAppProvider {
-  var splashProvider: SplashConfigProvider? { get }
-  var loginProvider: LoginConfigProvider? { get }
-  var registerProvider: RegisterConfigProvider? { get }
-  var verificationProvider: VerificationConfigProvider? { get }
-  var menuProvider: MenuConfigProvider? { get }
-  var homeProvider: HomeConfigProvider? { get }
-  var networkProvider: NetworkConfigProvider? { get }
-  var forgotProvider: ForgotConfigProvider? { get }
-  var changePasswordProvider: ChangePasswordConfigProvider? { get }
-  
   func getConfig() -> CoalConfig?
 }
 
@@ -34,15 +24,17 @@ public class CoalConfig: ObservableObject {
   @Published public var forgotConfig: ForgotConfig?
   @Published public var changePasswordConfig: ChangePasswordConfig?
   
-  public init(splashConfig: SplashConfig? = nil,
-              loginConfig: LoginConfig? = nil,
-              registerConfig: RegisterConfig? = nil,
-              verificationConfig: VerificationConfig? = nil,
-              menuConfig: MenuConfig? = nil,
-              homeConfig: HomeConfig? = nil,
-              networkConfig: NetworkConfig? = nil,
-              forgotConfig: ForgotConfig? = nil,
-              changePasswordConfig: ChangePasswordConfig? = nil) {
+  public init(
+    splashConfig: SplashConfig? = nil,
+    loginConfig: LoginConfig? = nil,
+    registerConfig: RegisterConfig? = nil,
+    verificationConfig: VerificationConfig? = nil,
+    menuConfig: MenuConfig? = nil,
+    homeConfig: HomeConfig? = nil,
+    networkConfig: NetworkConfig? = nil,
+    forgotConfig: ForgotConfig? = nil,
+    changePasswordConfig: ChangePasswordConfig? = nil
+  ) {
     self.splashConfig = splashConfig
     self.loginConfig = loginConfig
     self.registerConfig = registerConfig

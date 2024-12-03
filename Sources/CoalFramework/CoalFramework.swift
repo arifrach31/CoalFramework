@@ -9,7 +9,7 @@ import UIKit
 import CoalCore
 
 public protocol CoalConfigDelegate {
-  func initCoalConfig() -> CoalConfig?
+  func initConfig() -> CoalConfig?
 }
 
 public class CoalFramework {

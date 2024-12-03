@@ -7,21 +7,13 @@
 
 import UIKit
 import CoalFramework
+import CoalCore
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
   let coalFramework = CoalFramework.shared
-  let appProvider = AppProvider(
-    splashProvider: SplashProvider(),
-    loginProvider: LoginProvider(),
-    registerProvider: RegisterProvider(),
-    verificationProvider: VerificationProvider(),
-    menuProvider: MenuProvider(),
-    homeProvider: HomeProvider(),
-    networkProvider: NetworkProvider(),
-    forgotProvider: ForgotProvider(),
-    changePasswordProvider: ChangePasswordProvider())
+  let appProvider = AppProvider()
   
-  func initCoalConfig() -> CoalConfig? {
+  func initConfig() -> CoalConfig? {
     return appProvider.getConfig()
   }
   
@@ -30,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CoalConfigDelegate {
     
     coalFramework.configure(
       windowScene: windowScene,
-      frameworkConfig: initCoalConfig()
+      frameworkConfig: initConfig()
     )
   }
 }
