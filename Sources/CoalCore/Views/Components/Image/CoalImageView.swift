@@ -30,7 +30,6 @@ public struct CoalImageView: View {
   
   public var body: some View {
     content
-      .frame(width: width, height: height)
       .cornerRadius(cornerRadius)
       .clipped()
   }
@@ -41,8 +40,8 @@ public struct CoalImageView: View {
       asyncImageView(url: url)
     } else if let image = UIImage(named: imageURL) {
       staticImageView(image: Image(uiImage: image))
-    } else if let systemImage = UIImage(systemName: imageURL) {
-      systemImageView(image: Image(uiImage: systemImage))
+    } else if UIImage(systemName: imageURL) != nil {
+      systemImageView(image: Image(systemName: imageURL))
     } else {
       placeholderView
     }
@@ -66,13 +65,14 @@ public struct CoalImageView: View {
   private func staticImageView(image: Image) -> some View {
     image
       .resizable()
-      .scaledToFill()
+      .frame(width: width, height: height)
   }
   
   private func systemImageView(image: Image) -> some View {
     image
       .resizable()
       .scaledToFit()
+      .frame(width: width, height: height)
       .foregroundColor(.white)
   }
   
