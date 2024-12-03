@@ -11,7 +11,10 @@ public class BaseConfig {
   public var backgroundImage: String?
   public var backgroundColor: String?
   
-  public init(backgroundImage: String? = nil, backgroundColor: String? = nil) {
+  public init(
+    backgroundImage: String? = nil,
+    backgroundColor: String? = nil
+  ) {
     self.backgroundImage = backgroundImage
     self.backgroundColor = backgroundColor
   }

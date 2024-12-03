@@ -52,9 +52,11 @@ public struct ConfigHeader: Codable {
   public let description: String?
   public let image: String?
   
-  public init(title: String? = nil,
-              description: String? = nil,
-              image: String? = nil) {
+  public init(
+    title: String? = nil,
+    description: String? = nil,
+    image: String? = nil
+  ) {
     self.title = title
     self.description = description
     self.image = image
@@ -142,8 +144,10 @@ public struct ConfigVerificationCodeField: Codable {
   public let sendVerificationCodeTo: ConfigField?
   public let buttonVerificationCode: ConfigField?
   
-  public init(sendVerificationCodeTo: ConfigField? = nil,
-              buttonVerificationCode: ConfigField? = nil) {
+  public init(
+    sendVerificationCodeTo: ConfigField? = nil,
+    buttonVerificationCode: ConfigField? = nil
+  ) {
     self.sendVerificationCodeTo = sendVerificationCodeTo
     self.buttonVerificationCode = buttonVerificationCode
   }

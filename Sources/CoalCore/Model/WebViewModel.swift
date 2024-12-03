@@ -11,7 +11,10 @@ public struct WebViewModel {
   public var title: String?
   public var url: String?
   
-  public init(title: String? = nil, url: String? = nil) {
+  public init(
+    title: String? = nil,
+    url: String? = nil
+  ) {
     self.title = title
     self.url = url
   }

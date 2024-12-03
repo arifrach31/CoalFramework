@@ -20,8 +20,10 @@ public struct ForgotButton {
   public var text: String?
   public var coalScreen: CoalScreenType? = .forgot
   
-  public init(isVisible: Bool? = true,
-              text: String? = nil) {
+  public init(
+    isVisible: Bool? = true,
+    text: String? = nil
+  ) {
     self.isVisible = isVisible
     self.text = text
   }

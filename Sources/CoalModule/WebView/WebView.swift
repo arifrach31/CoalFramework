@@ -12,7 +12,10 @@ public struct WebView: View {
   @StateObject private var viewModel: WebViewViewModel
   public var navigator: CoalNavigatorProtocol?
   
-  public init(navigator: CoalNavigatorProtocol? = nil, config: WebViewModel? = nil) {
+  public init(
+    navigator: CoalNavigatorProtocol? = nil,
+    config: WebViewModel? = nil
+  ) {
     _viewModel = StateObject(wrappedValue: WebViewViewModel(config: config))
     self.navigator = navigator
   }

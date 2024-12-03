@@ -11,7 +11,10 @@ public struct CoalTabInfo {
   public let title: String
   public let icon: String?
   
-  public init(title: String, icon: String?) {
+  public init(
+    title: String,
+    icon: String?
+  ) {
     self.title = title
     self.icon = icon
   }

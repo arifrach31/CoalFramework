@@ -15,8 +15,10 @@ public struct NetworkConfig: NetworkConfigProvider {
   public var baseURL: String
   public var basicAuth: BasicAuthConfig
   
-  public init(baseURL: String = "",
-              basicAuth: BasicAuthConfig = BasicAuthConfig()) {
+  public init(
+    baseURL: String = "",
+    basicAuth: BasicAuthConfig = BasicAuthConfig()
+  ) {
     self.baseURL = baseURL
     self.basicAuth = basicAuth
   }
@@ -30,8 +32,10 @@ public struct BasicAuthConfig {
   public var username: String
   public var password: String
   
-  public init(username: String = "",
-              password: String = "") {
+  public init(
+    username: String = "",
+    password: String = ""
+  ) {
     self.username = username
     self.password = password
   }

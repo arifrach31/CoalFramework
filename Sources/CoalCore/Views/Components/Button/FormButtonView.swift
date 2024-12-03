@@ -14,7 +14,11 @@ public struct AdditionalAchorText {
   public let achorText: String?
   public let coalScreen: CoalScreenType?
   
-  public init(text: String?, achorText: String?, coalScreen: CoalScreenType? = .register) {
+  public init(
+    text: String?,
+    achorText: String?,
+    coalScreen: CoalScreenType? = .register
+  ) {
     self.text = text
     self.achorText = achorText
     self.coalScreen = coalScreen

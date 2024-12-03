@@ -34,7 +34,11 @@ public struct CarouselModel: Identifiable {
   public var image: String
   public var url: String
   
-  public init(id: UUID = UUID(), image: String = "", url: String = "") {
+  public init(
+    id: UUID = UUID(),
+    image: String = "",
+    url: String = ""
+  ) {
     self.id = id
     self.image = image
     self.url = url
@@ -47,7 +51,12 @@ public struct CategoryModel: Identifiable {
   public var icon: String
   public var title: String
   
-  public init(id: UUID = UUID(), background: String = "", icon: String = "", title: String = "") {
+  public init(
+    id: UUID = UUID(),
+    background: String = "",
+    icon: String = "",
+    title: String = ""
+  ) {
     self.id = id
     self.background = background
     self.icon = icon
@@ -62,7 +71,13 @@ public struct ProductListModel: Identifiable {
   public var title: String
   public var description: String
   
-  public init(id: UUID = UUID(), image: String = "", category: String = "", title: String = "", description: String = "") {
+  public init(
+    id: UUID = UUID(),
+    image: String = "",
+    category: String = "",
+    title: String = "",
+    description: String = ""
+  ) {
     self.id = id
     self.image = image
     self.category = category

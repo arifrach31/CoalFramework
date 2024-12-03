@@ -56,7 +56,11 @@ public struct ToastModel {
   public var subtitle: String?
   public var isError: Bool
   
-  public init(title: String? = "", subtitle: String? = "", isError: Bool = false) {
+  public init(
+    title: String? = "",
+    subtitle: String? = "",
+    isError: Bool = false
+  ) {
     self.id = UUID()
     self.title = title
     self.subtitle = subtitle
