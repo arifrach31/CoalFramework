@@ -42,7 +42,7 @@ public struct CoalImageView: View {
     } else if let image = UIImage(named: imageURL) {
       staticImageView(image: Image(uiImage: image))
     } else if let systemImage = UIImage(systemName: imageURL) {
-      systemImageView(image: Image(systemName: imageURL))
+      systemImageView(image: Image(uiImage: systemImage))
     } else {
       placeholderView
     }
