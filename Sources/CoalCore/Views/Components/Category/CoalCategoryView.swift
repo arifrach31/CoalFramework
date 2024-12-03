@@ -11,20 +11,9 @@ import ThemeLGN
 
 public struct CoalCategoryView: View {
   private let category: CategoryModel
-  private let didSelectItem: (CategoryModel) -> Void
-  private let iconSize: CGFloat
-  private let cardSize: CGFloat
   
-  public init(
-    category: CategoryModel,
-    didSelectItem: @escaping (CategoryModel) -> Void = {_ in},
-    iconSize: CGFloat = 30,
-    cardSize: CGFloat = 60
-  ) {
+  public init(category: CategoryModel) {
     self.category = category
-    self.didSelectItem = didSelectItem
-    self.iconSize = iconSize
-    self.cardSize = cardSize
   }
   
   public var body: some View {
@@ -33,21 +22,21 @@ public struct CoalCategoryView: View {
       categoryTitle
     }
     .onTapGesture {
-      didSelectItem(category)
+      category.didSelectItem(category)
     }
   }
   
   private var categoryIcon: some View {
     ZStack {
       Color(hex: category.background)
-        .frame(width: cardSize, height: cardSize)
+        .frame(width: category.cardSize, height: category.cardSize)
         .cornerRadius(15)
       
       CoalImageView(
         imageURL: category.icon,
         cornerRadius: 15,
-        width: iconSize,
-        height: iconSize
+        width: category.iconSize,
+        height: category.iconSize
       )
     }
   }

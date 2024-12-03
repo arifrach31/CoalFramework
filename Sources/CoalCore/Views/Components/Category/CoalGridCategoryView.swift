@@ -10,44 +10,20 @@ import LegionUI
 import ThemeLGN
 
 public struct CoalGridCategoryView: View {
-  public let categories: [CategoryModel]
-  public var layoutType: LayoutDirectionType
-  public var gridRows: Int
-  public var iconSize: CGFloat
-  public var cardSize: CGFloat
-  public var title: String
-  public var actionTitle: String
-  public var didSelectSeeAll: () -> Void
-  public var didSelectItem: (CategoryModel) -> Void
+  public let categories: [CategoryModel]?
   
-  public init(
-    categories: [CategoryModel],
-    layoutType: LayoutDirectionType,
-    gridRows: Int,
-    title: String,
-    actionTitle: String = CoalString.seeAll,
-    iconSize: CGFloat = 30,
-    cardSize: CGFloat = 60,
-    didSelectSeeAll: @escaping () -> Void = {},
-    didSelectItem: @escaping (CategoryModel) -> Void = { _ in }
-  ) {
+  public init(categories: [CategoryModel]? = nil) {
     self.categories = categories
-    self.layoutType = layoutType
-    self.gridRows = gridRows
-    self.title = title
-    self.actionTitle = actionTitle
-    self.iconSize = iconSize
-    self.cardSize = cardSize
-    self.didSelectSeeAll = didSelectSeeAll
-    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      if !title.isEmpty {
+      if categories?.first?.titleSection != nil {
         headerSection
       }
-      gridView
+      if let categories = categories, !categories.isEmpty {
+        gridView(categories: categories)
+      }
     }
     .padding(.bottom, 20)
     .background(Color(.systemGray6))
@@ -55,13 +31,16 @@ public struct CoalGridCategoryView: View {
   
   private var headerSection: some View {
     HStack {
-      Text(title)
+      Text(categories?.first?.titleSection ?? "")
         .lgnBodyLargeBold()
       
       Spacer()
       
-      AnchorText(title: actionTitle, tintColor: Color.LGNTheme.tertiary500) {
-        didSelectSeeAll()
+      AnchorText(
+        title: categories?.first?.actionTitleSection ?? "",
+        tintColor: Color.LGNTheme.tertiary500
+      ) {
+        categories?.first?.didSelectSeeAll()
       }
       .variant(size: .small)
     }
@@ -70,15 +49,13 @@ public struct CoalGridCategoryView: View {
     .background(Color(.systemGray6))
   }
   
-  private var gridView: some View {
-    CoalGridView(layoutType: layoutType, gridRows: gridRows) {
+  private func gridView(categories: [CategoryModel]) -> some View {
+    CoalGridView(
+      layoutType: categories.first?.layoutType ?? .horizontal,
+      gridRows: categories.first?.gridRows ?? 1
+    ) {
       ForEach(categories) { category in
-        CoalCategoryView(
-          category: category,
-          didSelectItem: didSelectItem,
-          iconSize: iconSize,
-          cardSize: cardSize
-        )
+        CoalCategoryView(category: category)
       }
     }
   }

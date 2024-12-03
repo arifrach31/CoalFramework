@@ -13,18 +13,8 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
       isShowNavBar: true,
       section: [.carousel, .category, .productList],
       carouselConfig: getCarousel(),
-      categoryConfig: CoalGridCategoryView(
-        categories: getCategories(),
-        layoutType: .horizontal,
-        gridRows: 1,
-        title: "Category"
-      ),
-      catalogConfig: CoalGridCatalogView(
-        catalog: getProductList(),
-        layoutType: .vertical,
-        gridRows: 2,
-        title: "Product List"
-      )
+      categoryConfig: getCategories(),
+      catalogConfig: getProductList()
     )
     return homeConfig
   }

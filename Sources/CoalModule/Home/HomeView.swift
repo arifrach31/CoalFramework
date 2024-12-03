@@ -46,29 +46,13 @@ public struct HomeView: View {
     case .category:
       let categoryConfig = config.homeConfig?.categoryConfig
       CoalGridCategoryView(
-        categories: categoryConfig?.categories ?? [],
-        layoutType: categoryConfig?.layoutType ?? .horizontal,
-        gridRows: categoryConfig?.gridRows ?? 1,
-        title: categoryConfig?.title ?? CoalString.category,
-        actionTitle: categoryConfig?.actionTitle ?? CoalString.seeAll,
-        iconSize: categoryConfig?.iconSize ?? 30,
-        cardSize: categoryConfig?.cardSize ?? 60,
-        didSelectSeeAll: categoryConfig?.didSelectSeeAll ?? {},
-        didSelectItem: categoryConfig?.didSelectItem ?? {_ in}
+        categories: categoryConfig
       )
       
     case .productList:
       let catalogConfig = config.homeConfig?.catalogConfig
       CoalGridCatalogView(
-        catalog: catalogConfig?.catalog ?? [],
-        layoutType: catalogConfig?.layoutType ?? .vertical,
-        gridRows: catalogConfig?.gridRows ?? 2,
-        imgSize: catalogConfig?.imgSize ?? 120,
-        cardSize: catalogConfig?.cardSize ?? 240,
-        title: catalogConfig?.title ?? CoalString.productList,
-        actionTitle: catalogConfig?.actionTitle ?? CoalString.seeAll,
-        didSelectSeeAll: catalogConfig?.didSelectSeeAll ?? {},
-        didSelectItem: catalogConfig?.didSelectItem ?? {_ in}
+        catalog: catalogConfig
       )
     }
   }

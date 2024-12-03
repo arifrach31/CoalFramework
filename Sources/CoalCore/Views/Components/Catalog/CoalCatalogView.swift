@@ -11,23 +11,9 @@ import ThemeLGN
 
 public struct CoalCatalogView: View {
   private let catalog: ProductListModel
-  private let layout: LayoutDirectionType
-  private let imgSize: CGFloat
-  private let cardSize: CGFloat
-  private let didSelectItem: (ProductListModel) -> Void
   
-  public init(
-    catalog: ProductListModel,
-    layout: LayoutDirectionType,
-    imgSize: CGFloat = 120,
-    cardSize: CGFloat = 240,
-    didSelectItem: @escaping (ProductListModel) -> Void = { _ in }
-  ) {
+  public init(catalog: ProductListModel) {
     self.catalog = catalog
-    self.layout = layout
-    self.imgSize = imgSize
-    self.cardSize = cardSize
-    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
@@ -36,13 +22,13 @@ public struct CoalCatalogView: View {
       titleSection
       descriptionSection
     }
-    .frame(width: layout == .horizontal ? cardSize : nil)
+    .frame(width: catalog.layoutType == .horizontal ? catalog.cardSize : nil)
     .frame(maxWidth: .infinity)
     .background(Color.white)
     .cornerRadius(15)
     .shadow(radius: 4)
     .onTapGesture {
-      didSelectItem(catalog)
+      catalog.didSelectItem(catalog)
     }
   }
   
@@ -72,7 +58,7 @@ public struct CoalCatalogView: View {
     CoalImageView(
       imageURL: catalog.image,
       cornerRadius: 16,
-      height: imgSize
+      height: catalog.imgSize
     )
   }
   

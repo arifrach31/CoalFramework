@@ -10,74 +10,50 @@ import LegionUI
 import ThemeLGN
 
 public struct CoalGridCatalogView: View {
-  public let catalog: [ProductListModel]
-  public var layoutType: LayoutDirectionType
-  public var gridRows: Int
-  public var imgSize: CGFloat
-  public var cardSize: CGFloat
-  public var title: String
-  public var actionTitle: String
-  public var didSelectSeeAll: () -> Void
-  public var didSelectItem: (ProductListModel) -> Void
+  public let catalog: [ProductListModel]?
   
-  public init(
-    catalog: [ProductListModel],
-    layoutType: LayoutDirectionType,
-    gridRows: Int,
-    imgSize: CGFloat = 120,
-    cardSize: CGFloat = 240,
-    title: String,
-    actionTitle: String = CoalString.seeAll,
-    didSelectSeeAll: @escaping () -> Void = {},
-    didSelectItem: @escaping (ProductListModel) -> Void = { _ in }
-  ) {
+  public init(catalog: [ProductListModel]? = nil) {
     self.catalog = catalog
-    self.layoutType = layoutType
-    self.gridRows = gridRows
-    self.imgSize = imgSize
-    self.cardSize = cardSize
-    self.title = title
-    self.actionTitle = actionTitle
-    self.didSelectSeeAll = didSelectSeeAll
-    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
     VStack(alignment: .leading, spacing: 8) {
-      if !title.isEmpty {
+      if catalog?.first?.title.isEmpty != nil {
         headerSection
       }
-      gridView
+      if let catalog = catalog, !catalog.isEmpty {
+        gridView(catalog: catalog)
+      }
     }
     .padding(.bottom, 20)
   }
   
   private var headerSection: some View {
     HStack {
-      Text(title)
+      Text(catalog?.first?.titleSection ?? "")
         .lgnBodyLargeBold()
       
       Spacer()
       
-      AnchorText(title: actionTitle, tintColor: Color.LGNTheme.tertiary500) {
-        didSelectSeeAll()
+      AnchorText(
+        title: catalog?.first?.actionTitleSection ?? "",
+        tintColor: Color.LGNTheme.tertiary500
+      ) {
+        catalog?.first?.didSelectSeeAll()
       }
       .variant(size: .small)
     }
     .padding(.horizontal, 20)
     .padding(.vertical, 16)
   }
-  
-  private var gridView: some View {
-    CoalGridView(layoutType: layoutType, gridRows: gridRows) {
+    
+  private func gridView(catalog: [ProductListModel]) -> some View {
+    CoalGridView(
+      layoutType: catalog.first?.layoutType ?? .horizontal,
+      gridRows: catalog.first?.gridRows ?? 1
+    ) {
       ForEach(catalog) { item in
-        CoalCatalogView(
-          catalog: item,
-          layout: layoutType,
-          imgSize: imgSize,
-          cardSize: cardSize,
-          didSelectItem: didSelectItem
-        )
+        CoalCatalogView(catalog: item)
       }
     }
   }

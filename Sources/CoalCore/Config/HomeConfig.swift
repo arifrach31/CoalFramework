@@ -15,15 +15,15 @@ public class HomeConfig {
   public var section: [HomeSectionType]?
   public var isShowNavBar: Bool?
   public var carouselConfig: [CarouselModel]?
-  public var categoryConfig: CoalGridCategoryView?
-  public var catalogConfig: CoalGridCatalogView?
+  public var categoryConfig: [CategoryModel]?
+  public var catalogConfig: [ProductListModel]?
   
   public init(
     isShowNavBar: Bool? = false,
     section: [HomeSectionType]? = [],
     carouselConfig: [CarouselModel]? = nil,
-    categoryConfig: CoalGridCategoryView? = nil,
-    catalogConfig: CoalGridCatalogView? = nil
+    categoryConfig: [CategoryModel]? = nil,
+    catalogConfig: [ProductListModel]? = nil
   ) {
     self.isShowNavBar = isShowNavBar
     self.section = section
