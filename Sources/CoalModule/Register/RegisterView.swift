@@ -29,8 +29,7 @@ public struct RegisterView: View {
       leftAction: { navigator?.popToPreviousView() },
       backgroundImage: backgroundImage,
       backgroundColor: backgroundColor,
-      isLoading: viewModel.isLoading,
-      isScrollView: true
+      isLoading: viewModel.isLoading
     ) {
       bottomSheetView
     }
@@ -40,7 +39,7 @@ public struct RegisterView: View {
   }
   
   private var bottomSheetView: some View {
-    BottomSheetView {
+    BottomSheetView(isScrollView: true) {
       FormHeaderView(configHeader: config.registerConfig?.header)
       
       if let form = config.registerConfig?.fields {

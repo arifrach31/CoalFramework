@@ -123,7 +123,10 @@ public struct CoalBaseView<Content: View>: View {
     if isShowingBottomSheet {
       VStack {
         Spacer()
-        BottomSheetView(isShowing: $isShowingBottomSheet, dragable: true) {
+        BottomSheetView(
+          isShowing: $isShowingBottomSheet,
+          isDraggable: true
+        ) {
           AnyView(bottomSheetContent)
         }
       }
