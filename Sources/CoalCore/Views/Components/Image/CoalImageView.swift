@@ -53,7 +53,7 @@ public struct CoalImageView: View {
       case .success(let image):
         image
           .resizable()
-          .scaledToFill()
+          .frame(width: width, height: height)
       case .failure(_), .empty:
         placeholderView
       @unknown default:
