@@ -57,8 +57,6 @@ public struct CategoryModel: Identifiable {
   public var gridRows: Int
   public var iconSize: CGFloat
   public var cardSize: CGFloat
-  public var didSelectSeeAll: () -> Void
-  public var didSelectItem: (CategoryModel) -> Void
   
   public init(
     id: UUID = UUID(),
@@ -70,9 +68,7 @@ public struct CategoryModel: Identifiable {
     layoutType: LayoutDirectionType = .horizontal,
     gridRows: Int = 1,
     iconSize: CGFloat = 30,
-    cardSize: CGFloat = 60,
-    didSelectSeeAll: @escaping () -> Void = {},
-    didSelectItem: @escaping (CategoryModel) -> Void = { _ in }
+    cardSize: CGFloat = 60
   ) {
     self.id = id
     self.background = background
@@ -84,8 +80,6 @@ public struct CategoryModel: Identifiable {
     self.gridRows = gridRows
     self.iconSize = iconSize
     self.cardSize = cardSize
-    self.didSelectSeeAll = didSelectSeeAll
-    self.didSelectItem = didSelectItem
   }
 }
 
@@ -101,8 +95,6 @@ public struct ProductListModel: Identifiable {
   public var gridRows: Int
   public var imgSize: CGFloat
   public var cardSize: CGFloat
-  public var didSelectSeeAll: () -> Void
-  public let didSelectItem: (ProductListModel) -> Void
   
   public init(
     id: UUID = UUID(),
@@ -115,9 +107,7 @@ public struct ProductListModel: Identifiable {
     layoutType: LayoutDirectionType = .vertical,
     gridRows: Int = 2,
     imgSize: CGFloat = 120,
-    cardSize: CGFloat = 240,
-    didSelectSeeAll: @escaping () -> Void = {},
-    didSelectItem: @escaping (ProductListModel) -> Void = { _ in }
+    cardSize: CGFloat = 240
   ) {
     self.id = id
     self.image = image
@@ -130,7 +120,5 @@ public struct ProductListModel: Identifiable {
     self.gridRows = gridRows
     self.imgSize = imgSize
     self.cardSize = cardSize
-    self.didSelectSeeAll = didSelectSeeAll
-    self.didSelectItem = didSelectItem
   }
 }

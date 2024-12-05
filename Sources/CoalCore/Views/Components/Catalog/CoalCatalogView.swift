@@ -11,9 +11,14 @@ import ThemeLGN
 
 public struct CoalCatalogView: View {
   private let catalog: ProductListModel
+  private let didSelectItem: (ProductListModel) -> Void
   
-  public init(catalog: ProductListModel) {
+  public init(
+    catalog: ProductListModel,
+    didSelectItem: @escaping (ProductListModel) -> Void = { _ in }
+  ) {
     self.catalog = catalog
+    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
@@ -28,7 +33,7 @@ public struct CoalCatalogView: View {
     .cornerRadius(15)
     .shadow(radius: 4)
     .onTapGesture {
-      catalog.didSelectItem(catalog)
+      didSelectItem(catalog)
     }
   }
   

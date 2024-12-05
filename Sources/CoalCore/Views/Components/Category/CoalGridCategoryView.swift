@@ -11,9 +11,14 @@ import ThemeLGN
 
 public struct CoalGridCategoryView: View {
   private let categories: [CategoryModel]?
+  private var didSelectSeeAll: () -> Void
   
-  public init(categories: [CategoryModel]? = nil) {
+  public init(
+    categories: [CategoryModel]? = nil,
+    didSelectSeeAll: @escaping () -> Void = {}
+  ) {
     self.categories = categories
+    self.didSelectSeeAll = didSelectSeeAll
   }
   
   public var body: some View {
@@ -40,7 +45,7 @@ public struct CoalGridCategoryView: View {
         title: categories?.first?.actionTitleSection ?? "",
         tintColor: Color.LGNTheme.tertiary500
       ) {
-        categories?.first?.didSelectSeeAll()
+        didSelectSeeAll()
       }
       .variant(size: .small)
     }

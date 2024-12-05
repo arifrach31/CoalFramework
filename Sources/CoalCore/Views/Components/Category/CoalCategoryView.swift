@@ -11,9 +11,14 @@ import ThemeLGN
 
 public struct CoalCategoryView: View {
   private let category: CategoryModel
+  private var didSelectItem: (CategoryModel) -> Void
   
-  public init(category: CategoryModel) {
+  public init(
+    category: CategoryModel,
+    didSelectItem: @escaping (CategoryModel) -> Void = { _ in }
+  ) {
     self.category = category
+    self.didSelectItem = didSelectItem
   }
   
   public var body: some View {
@@ -22,7 +27,7 @@ public struct CoalCategoryView: View {
       categoryTitle
     }
     .onTapGesture {
-      category.didSelectItem(category)
+      didSelectItem(category)
     }
   }
   
