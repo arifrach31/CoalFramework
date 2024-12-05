@@ -10,7 +10,7 @@ import LegionUI
 import ThemeLGN
 
 public struct CoalGridCatalogView: View {
-  public let catalog: [ProductListModel]?
+  private let catalog: [ProductListModel]?
   
   public init(catalog: [ProductListModel]? = nil) {
     self.catalog = catalog
