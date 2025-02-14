@@ -17,6 +17,7 @@ public enum HomeSectionType: Identifiable {
   case carousel
   case category
   case productList
+  case profile
   
   public var id: String {
     switch self {
@@ -26,6 +27,8 @@ public enum HomeSectionType: Identifiable {
       return "category"
     case .productList:
       return "productList"
+    case .profile:
+      return "profile"
     }
   }
 }

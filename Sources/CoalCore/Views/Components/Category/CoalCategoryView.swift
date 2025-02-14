@@ -41,7 +41,8 @@ public struct CoalCategoryView: View {
         imageURL: category.icon,
         cornerRadius: 15,
         width: category.iconSize,
-        height: category.iconSize
+        height: category.iconSize,
+        color: .white
       )
     }
   }

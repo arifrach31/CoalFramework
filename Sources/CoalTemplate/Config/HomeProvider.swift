@@ -11,12 +11,30 @@ class HomeProvider: HomeConfigProvider, HomeSectionProvider {
   func getConfig() -> HomeConfig {
     let homeConfig = HomeConfig(
       isShowNavBar: true,
-      section: [.carousel, .category, .productList],
+      section: [.profile, .carousel, .category, .productList],
       carouselConfig: getCarousel(),
       categoryConfig: getCategories(),
-      catalogConfig: getProductList()
+      catalogConfig: getProductList(),
+      profileConfig: getProfile()
     )
     return homeConfig
+  }
+  
+  func getProfile() -> ProfileModel {
+    return ProfileModel(
+      image: "person.circle.fill",
+      name: "Fajar Rizqy Anugrah Illahi",
+      role: "General Manager Operation",
+      time: "11:08 AM, 15 Jan",
+      notificationImage: "bell.fill",
+      notificationCount: 4,
+      nameColor: .black,
+      nameFontSize: 16,
+      roleTextColor: .gray,
+      roleFontSize: 14,
+      timeTextColor: .gray,
+      notificationAction: .uikit(ViewController())
+    )
   }
   
   func getCarousel() -> [CarouselModel] {

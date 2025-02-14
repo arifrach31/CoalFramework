@@ -12,20 +12,20 @@ public struct CoalImageView: View {
   private let cornerRadius: CGFloat
   private let width: CGFloat?
   private let height: CGFloat?
-  private let placeholderColor: Color
+  private let color: Color
   
   public init(
     imageURL: String,
     cornerRadius: CGFloat = 16,
     width: CGFloat? = nil,
     height: CGFloat? = nil,
-    placeholderColor: Color = .gray
+    color: Color = .gray
   ) {
     self.imageURL = imageURL
     self.cornerRadius = cornerRadius
     self.width = width
     self.height = height
-    self.placeholderColor = placeholderColor
+    self.color = color
   }
   
   public var body: some View {
@@ -40,8 +40,8 @@ public struct CoalImageView: View {
       asyncImageView(url: url)
     } else if let image = UIImage(named: imageURL) {
       staticImageView(image: Image(uiImage: image))
-    } else if UIImage(systemName: imageURL) != nil {
-      systemImageView(image: Image(systemName: imageURL))
+    } else if let systemImage = UIImage(systemName: imageURL) {
+      systemImageView(image: Image(uiImage: systemImage))
     } else {
       placeholderView
     }
@@ -70,14 +70,15 @@ public struct CoalImageView: View {
   
   private func systemImageView(image: Image) -> some View {
     image
+      .renderingMode(.template)
       .resizable()
-      .scaledToFit()
+      .aspectRatio(contentMode: .fit)
       .frame(width: width, height: height)
-      .foregroundColor(.white)
+      .foregroundColor(color)
   }
   
   private var placeholderView: some View {
     RoundedRectangle(cornerRadius: cornerRadius)
-      .fill(placeholderColor)
+      .fill(color)
   }
 }

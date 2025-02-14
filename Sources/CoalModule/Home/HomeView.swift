@@ -54,6 +54,23 @@ public struct HomeView: View {
       CoalGridCatalogView(
         catalog: catalogConfig
       )
+    case .profile:
+      if let profileConfig = config.homeConfig?.profileConfig {
+        CoalProfileView(
+          model: profileConfig,
+          didSelectNotification: {
+            notificationAction()
+          }
+        )
+      }
+    }
+  }
+  
+  private func notificationAction() {
+    if let screen = config.homeConfig?.profileConfig?.notificationAction {
+      navigator?.navigate(screen)
+    } else {
+      navigator?.goTo(.account)
     }
   }
 }

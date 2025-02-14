@@ -17,18 +17,21 @@ public class HomeConfig {
   public var carouselConfig: [CarouselModel]?
   public var categoryConfig: [CategoryModel]?
   public var catalogConfig: [ProductListModel]?
+  public var profileConfig: ProfileModel?
   
   public init(
     isShowNavBar: Bool? = false,
     section: [HomeSectionType]? = [],
     carouselConfig: [CarouselModel]? = nil,
     categoryConfig: [CategoryModel]? = nil,
-    catalogConfig: [ProductListModel]? = nil
+    catalogConfig: [ProductListModel]? = nil,
+    profileConfig: ProfileModel? = nil
   ) {
     self.isShowNavBar = isShowNavBar
     self.section = section
     self.carouselConfig = carouselConfig
     self.categoryConfig = categoryConfig
     self.catalogConfig = catalogConfig
+    self.profileConfig = profileConfig
   }
 }
